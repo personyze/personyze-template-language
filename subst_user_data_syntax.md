@@ -312,6 +312,8 @@ Usually the first option is called "Desktop view", and the second one is called 
 
 If the popup element doesn't fit the screen (is too large), and this template is `$responsive`, then the popup will be scaled down by applying `zoom`.
 
+Note that when using `$responsive` regular `style` attributes and `<style>` tags can still be used, as usual.
+
 ## Menu items
 
 When you edit content on Personyze, there's visual editor that has parameters for various parts of the template.
