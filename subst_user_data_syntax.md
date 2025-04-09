@@ -407,7 +407,7 @@ Example:
 
 ```
 <input name="email" ${args->email_required}>
-${menu args->email_required name='Required Field', type='checkbox', param='value_on=required', param='value_off=style="opacity:0.5"'}
+${menu args->email_required name='Required Field', type='checkbox', param='value_on=required="1"', param='value_off=style="opacity:0.5"'}
 ```
 
 ### select
