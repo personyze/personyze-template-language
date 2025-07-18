@@ -1,32 +1,29 @@
-# Personyze form templates
-
-
 ## Form with 2 buttons
 
 
 
 ```
-<div class="$responsive" data-style="position:relative; background-color:white; box-sizing:border-box; ${args->style:html:default('width:sel(500px, 90vw); padding:30px 40px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}" onupdate="var df=ns.joyquery('child::div', this).get(0).style, dl=ns.joyquery('child::div:last-child', this).get(0).style, fs=this.style; df.backgroundColor=fs.borderTopColor; df.border=fs.border; df.borderBottom='none'; df.borderTopLeftRadius=fs.borderTopLeftRadius; df.borderTopRightRadius=fs.borderTopRightRadius; dl.border=fs.border; dl.borderTop='none'; dl.borderBottomLeftRadius=fs.borderBottomLeftRadius; dl.borderBottomRightRadius=fs.borderBottomRightRadius; fs.borderRadius=0; fs.border='none'">
+<div class="$responsive" data-style="position:relative; background-color:white; box-sizing:border-box; ${args->style:html:default('width:sel(500px, 90vw); padding:30px 40px')}" onupdate="var df=ns.joyquery('child::div', this).get(0).style, dl=ns.joyquery('child::div:last-child', this).get(0).style, fs=this.style; df.backgroundColor=fs.borderTopColor; df.border=fs.border; df.borderBottom='none'; df.borderTopLeftRadius=fs.borderTopLeftRadius; df.borderTopRightRadius=fs.borderTopRightRadius; dl.border=fs.border; dl.borderTop='none'; dl.borderBottomLeftRadius=fs.borderBottomLeftRadius; dl.borderBottomRightRadius=fs.borderBottomRightRadius; fs.borderRadius=0; fs.border='none'">
     <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
-    ${block->show_close_button:default(1):arg_name(Show close button):arg_section(9, 0, 'Close button', 'close')}
+    ${block->show_close_button:default(1)}
     <div style="width:1px; vertical-align:middle" class="$copystyle" data-from="preceding-sibling::*" data-js="s.padding=fs.padding">
-        ${args->close_button:default('<img src="http://counter.personyze.com/images/close-buttons/black-16x16.png" style="position:absolute; top:16px; right:16px; width:16px; height:16px;" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0">'):input_type(dontshowagain):arg_name(Close button):arg_section(9, 1, 'Close button', 'close')}
+        ${args->close_button:default('<img src="http://counter.personyze.com/images/close-buttons/black-16x16.png" style="position:absolute; top:16px; right:16px; width:16px; height:16px;" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0">')}
     </div>
     <div class="$switch-elem" data-case="a">
-		<div data-case="a" class="$cform st_f" ontplsubmit="personyze.push(['Submit', '${action_id:html}', this._get_value_ex(), arguments[1], arguments[2]]); return true" ontplaftersubmit="this.parentNode._set_case('b', null, false, {template: 'animator_fade'}); var redir=this.dataset.redir, t=this.dataset.redirDelay; if (redir) setTimeout(function() {location.href=redir}, t*1000)" data-redir="${args->redir:html:arg_name(After submit redirect to this URL):arg_section(7, 1, 'After submit', 'check')}" data-redir-delay="${args->redir_delay:html:input_type(number):arg_name('Redirect delay, sec'):arg_section(7, 2, 'After submit', 'check')}" style="margin:8px 0 10px">
-			<div data-style="vertical-align:middle; ${args->logo_style:html:default('text-align:center; padding:0 0 40px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Logo', 'image')}">
-				<img src="${args->logo_url:html:default('https://static.personyze.com/upload/362/2ced8f83fce5a056.png'):input_type(personyze_media_url):arg_name(URL):arg_section(1, 0, 'Logo', 'image')}">
+		<div data-case="a" class="$cform st_f" ontplsubmit="personyze.push(['Submit', '${action_id:html}', this._get_value_ex(), arguments[1], arguments[2]]); return true" ontplaftersubmit="this.parentNode._set_case('b', null, false, {template: 'animator_fade'}); var redir=this.dataset.redir, t=this.dataset.redirDelay; if (redir) setTimeout(function() {location.href=redir}, t*1000)" data-redir="${args->redir:html}" data-redir-delay="${args->redir_delay:html}" style="margin:8px 0 10px">
+			<div data-style="vertical-align:middle; ${args->logo_style:html:default('text-align:center; padding:0 0 40px;')}">
+				<img src="${args->logo_url:html:default('https://static.personyze.com/upload/362/2ced8f83fce5a056.png')}">
 			</div>
-			<div data-style="vertical-align:middle; ${args->message_style:html:default('color:black; text-align:center; font-family:Helvetica,san-serif; font-weight:normal; font-size:15px; padding:10px 0; letter-spacing:1px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 1, 'Call message', 'bars')}">
-				${args->message_text:default('Don&#39;t miss out'):arg_name(Text):arg_section(2, 0, 'Call message', 'bars')}
+			<div data-style="vertical-align:middle; ${args->message_style:html:default('color:black; text-align:center; font-family:Helvetica,san-serif; font-weight:normal; font-size:15px; padding:10px 0; letter-spacing:1px')}">
+				${args->message_text:default('Don&#39;t miss out')}
 			</div>
-			<div data-style="vertical-align:middle; ${args->content_style:html:default('color:black; text-align:center; font-family:Fjalla One,san-serif; font-weight:normal; font-size:28px; line-height:38px; padding:10px 40px; text-transform:uppercase; letter-spacing:2px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Content', 'bars')}">
-				${args->content_text:default('Exclusives, offers, and the latest from us'):arg_name(Text):arg_section(3, 0, 'Content', 'bars')}
+			<div data-style="vertical-align:middle; ${args->content_style:html:default('color:black; text-align:center; font-family:Fjalla One,san-serif; font-weight:normal; font-size:28px; line-height:38px; padding:10px 40px; text-transform:uppercase; letter-spacing:2px')}">
+				${args->content_text:default('Exclusives, offers, and the latest from us')}
 			</div>
 			<div>
-				<span data-style="${args->email_field_label_style:html:default('font-family:Helvetica,san-serif; font-weight:normal; font-size:13px'):input_type(css):input_props('with_responsive=1'):arg_name(Label style):arg_section(4, 1, 'Email field', 'envelope')}">${args->email_field_label:default('Email Address*'):arg_name(Label):arg_section(4, 0, 'Email field', 'envelope')}</span>
+				<span data-style="${args->email_field_label_style:html:default('font-family:Helvetica,san-serif; font-weight:normal; font-size:13px')}">${args->email_field_label:default('Email Address*')}</span>
 				<div style="margin-top:4px">
-					<input form="st_f" name="email" data-prop-column="email" pattern="^[^\s@]+@[^\s@\.]+\.[^\s@]+$" required="1" placeholder="${args->email_field_placeholder:html:default(Email Address):arg_name(Field placeholder):arg_section(4, 2, 'Email field', 'envelope')}" data-style="${args->email_field_style:html:default('font-family: Helvetica,san-serif;
+					<input form="st_f" name="email" data-prop-column="email" pattern="^[^\s@]+@[^\s@\.]+\.[^\s@]+$" required="1" placeholder="${args->email_field_placeholder:html:default(Email Address)}" data-style="${args->email_field_style:html:default('font-family: Helvetica,san-serif;
 font-weight: normal;
 font-size: 13px;
 width: 100%;
@@ -35,25 +32,58 @@ padding: 10px;
 box-sizing: border-box;
 border: 1px solid rgb(196,196,196);
 border-radius: 3px;
-color: rgb(162,162,162);'):input_type(css):input_props('with_responsive=1'):arg_name(Field style):arg_section(4, 3, 'Email field', 'envelope')}">
+color: rgb(162,162,162);')}">
 				</div>
 			</div>
 			<div style="margin-top:20px; white-space:nowrap">
 				<div style="display:inline-block; vertical-align:top; width:50%; box-sizing:border-box; padding-right:10px">
-					<div class="$personyze_button_dont_show_again" data-action_id="${action_id:html}" data-n_sessions="0" data-style="box-sizing:border-box; ${args->cancel_button_style:html:default('font-family:Fjalla One,san-serif; font-weight:normal; font-size:13px; width:100%; height:40px; line-height:40px; text-align:center; text-transform:uppercase; border:1px solid black; border-radius:3px; background-color:white; color:black; padding:0'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(8, 1, 'Cancel button', 'close')}">${args->cancel_button_label:default(No Thanks):arg_name(Label):arg_section(8, 0, 'Cancel button', 'close')}</div>
+					<div class="$personyze_button_dont_show_again" data-action_id="${action_id:html}" data-n_sessions="0" data-style="box-sizing:border-box; ${args->cancel_button_style:html:default('font-family:Fjalla One,san-serif; font-weight:normal; font-size:13px; width:100%; height:40px; line-height:40px; text-align:center; text-transform:uppercase; border:1px solid black; border-radius:3px; background-color:white; color:black; padding:0')}">${args->cancel_button_label:default(No Thanks)}</div>
 				</div><div style="display:inline-block; vertical-align:top; width:50%; box-sizing:border-box; padding-left:10px">
-					<button form="st_f" type="submit" class="$flat_btn" data-style="display:inline-block; ${args->action_button_style:html:default('font-family:Fjalla One,san-serif; font-weight:normal; font-size:13px; width:100%; height:40px; line-height:40px; text-align:center; text-transform:uppercase; border:0; border-radius:3px; background-color:black; color:white; padding:0'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(6, 1, 'Action button', 'check')}">
-						${args->action_button_label:default(Sign Up):arg_name(Label):arg_section(6, 0, 'Action button', 'check')}
+					<button form="st_f" type="submit" class="$flat_btn" data-style="display:inline-block; ${args->action_button_style:html:default('font-family:Fjalla One,san-serif; font-weight:normal; font-size:13px; width:100%; height:40px; line-height:40px; text-align:center; text-transform:uppercase; border:0; border-radius:3px; background-color:black; color:white; padding:0')}">
+						${args->action_button_label:default(Sign Up)}
 					</button>
 				</div>
 			</div>
 		</div>
 		<div data-case="b">
-			${args->success:default(Thank you!):arg_name(Thank you text):arg_section(7, 0, 'After submit', 'check')}
+			${args->success:default(Thank you!)}
 		</div>
 	</div>
-    <div data-style="${args->info_style:html:default('margin-top:55px; font-family:Helvetica,san-serif; font-weight:normal; font-size:11px; text-align:center; color:rgb(162,162,162)'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(5, 1, 'Info', 'info')}">${args->info_text:default('By signing up, you agree to our&nbsp;<a href="#" style="text-decoration:underline; cursor:pointer; color:inherit">Privacy Policy</a> and <a href="#" style="text-decoration:underline; cursor:pointer; color:inherit">Terms of Use</a>'):arg_name(Text):arg_section(5, 0, 'Info', 'info')}</div>
+    <div data-style="${args->info_style:html:default('margin-top:55px; font-family:Helvetica,san-serif; font-weight:normal; font-size:11px; text-align:center; color:rgb(162,162,162)')}">${args->info_text:default('By signing up, you agree to our&nbsp;<a href="#" style="text-decoration:underline; cursor:pointer; color:inherit">Privacy Policy</a> and <a href="#" style="text-decoration:underline; cursor:pointer; color:inherit">Terms of Use</a>')}</div>
 </div>
+
+${menu name='Box', icon='th-large'}
+	${menu args->style name='Style', type='css', param='with_responsive=1'}
+${menu name='Logo', icon='image'}
+	${menu args->logo_url name='URL', type='personyze_media_url'}
+	${menu args->logo_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Call message', icon='bars'}
+	${menu args->message_text name='Text'}
+	${menu args->message_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Content', icon='bars'}
+	${menu args->content_text name='Text'}
+	${menu args->content_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Email field', icon='envelope'}
+	${menu args->email_field_label name='Label'}
+	${menu args->email_field_label_style name='Label style', type='css', param='with_responsive=1'}
+	${menu args->email_field_placeholder name='Field placeholder'}
+	${menu args->email_field_style name='Field style', type='css', param='with_responsive=1'}
+${menu name='Info', icon='info'}
+	${menu args->info_text name='Text'}
+	${menu args->info_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Action button', icon='check'}
+	${menu args->action_button_label name='Label'}
+	${menu args->action_button_style name='Style', type='css', param='with_responsive=1'}
+${menu name='After submit', icon='check'}
+	${menu args->success name='Thank you text'}
+	${menu args->redir name='After submit redirect to this URL'}
+	${menu args->redir_delay name='Redirect delay, sec', type='number'}
+${menu name='Cancel button', icon='close'}
+	${menu args->cancel_button_label name='Label'}
+	${menu args->cancel_button_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Close button', icon='close'}
+	${menu block->show_close_button name='Show close button'}
+	${menu args->close_button name='Close button', type='dontshowagain'}
 ```
 
 
@@ -221,28 +251,28 @@ ${menu name='After submit', icon='check'}
 
 
 ```
-<div class="$responsive" data-style="position:relative; background-image:url(${args->bgimage_url:html:default('https://www.abbotsfordchrysler.com/wp-content/uploads/2019/04/AC-RAM1500-Features-ComfortDriving.jpg'):input_type(personyze_media_url):arg_name(URL):arg_section(0, 1, 'Box', 'th-large')}); overflow:hidden; ${args->style:html:default('width: sel(600px, 90vw);
+<div class="$responsive" data-style="position:relative; background-image:url(${args->bgimage_url:html:default('https://www.abbotsfordchrysler.com/wp-content/uploads/2019/04/AC-RAM1500-Features-ComfortDriving.jpg')}); overflow:hidden; ${args->style:html:default('width: sel(600px, 90vw);
 background-size: cover;
 background-position: center;
 background-repeat: no-repeat;
 box-sizing: border-box;
 border: 1px solid #a6a6a6;
 border-radius: 4px;
-background-color: rgba(0, 0, 0, 0.7);'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
+background-color: rgba(0, 0, 0, 0.7);')}">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,600" rel="stylesheet">
-    ${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close button', 'close')}
+    ${block->show_close_button:default(1)}
     <div style="position:absolute; top:16px; right:16px; z-index:2">
-        ${args->close_button:default('<img src="https://counter.personyze.com/images/close-buttons/rect-white-orange-16x16.png" style="width:16px; height:16px" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0">'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 1, 'Close button', 'close')}
+        ${args->close_button:default('<img src="https://counter.personyze.com/images/close-buttons/rect-white-orange-16x16.png" style="width:16px; height:16px" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0">')}
     </div>
-     <div class="$switch-elem" data-case="a" data-style="width:100%; height:100%; box-sizing:border-box; ${args->shading_style:html:default('background-color: rgba(0, 0, 0, 0.07);'):input_type(css):input_props('with_responsive=1'):arg_name(Shading):arg_section(0, 2, 'Box', 'th-large')}; ${args->send_confirm_style:html:default('padding:30px; font-family:Open Sans,san-serif; font-weight:normal; font-size:sel(18px, 14px); color:white; text-align:center'):input_type(css):input_props('with_responsive=1'):arg_name(Confirmation style):arg_section(7, 2, 'Email Box', 'envelope')}">
-		<div data-case="a" class="$cform st_f" ontplsubmit="personyze.push(['Submit', '${action_id:html}', this._get_value_ex(), arguments[1], arguments[2]]); return true" ontplaftersubmit="this.parentNode._set_case('b', null, false, {template: 'animator_fade'}); var redir=this.dataset.redir, t=this.dataset.redirDelay; if (redir) setTimeout(function() {location.href=redir}, t*1000)" data-redir="${args->redir:html:arg_name(After submit redirect to this URL):arg_section(11, 1, 'After submit', 'check')}" data-redir-delay="${args->redir_delay:html:input_type(number):arg_name('Redirect delay, sec'):arg_section(11, 2, 'After submit', 'check')}" style="position:relative; width:100%; height:100%">
+     <div class="$switch-elem" data-case="a" data-style="width:100%; height:100%; box-sizing:border-box; ${args->shading_style:html:default('background-color: rgba(0, 0, 0, 0.07);')}; ${args->send_confirm_style:html:default('padding:30px; font-family:Open Sans,san-serif; font-weight:normal; font-size:sel(18px, 14px); color:white; text-align:center')}">
+		<div data-case="a" class="$cform st_f" ontplsubmit="personyze.push(['Submit', '${action_id:html}', this._get_value_ex(), arguments[1], arguments[2]]); return true" ontplaftersubmit="this.parentNode._set_case('b', null, false, {template: 'animator_fade'}); var redir=this.dataset.redir, t=this.dataset.redirDelay; if (redir) setTimeout(function() {location.href=redir}, t*1000)" data-redir="${args->redir:html}" data-redir-delay="${args->redir_delay:html}" style="position:relative; width:100%; height:100%">
             <div data-style="${args->message_style:html:default('color: white;
 font-family: Montserrat,san-serif;
 font-weight: 700;
 font-size: sel(40px, 22px);
 line-height: 1;
-text-align: left;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Call message', 'bars')}">
-                ${args->message_text:default(Title):arg_name(Text):arg_section(1, 0, 'Call message', 'bars')}
+text-align: left;')}">
+                ${args->message_text:default(Title)}
             </div>
             <div data-style="${args->gift_style:html:default('margin-top: 8px;
 color: white;
@@ -250,8 +280,8 @@ font-family: Montserrat,san-serif;
 font-weight: 900;
 font-size: sel(18px, 14px);
 line-height: 1.25;
-text-align: left;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 1, 'Gift', 'gift')}">
-                ${args->gift_text:default(Sub Title):arg_name(Text):arg_section(2, 0, 'Gift', 'gift')}
+text-align: left;')}">
+                ${args->gift_text:default(Sub Title)}
             </div>
             <div>
                 <div data-style="${args->content_style:html:default('margin-bottom: 14px;
@@ -260,53 +290,104 @@ font-family: Open Sans,san-serif;
 font-weight: 800;
 font-size: sel(12px, 14px);
 line-height: 1.25;
-text-align: left;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Info', 'bars')}">
-                    ${args->content_text:arg_name(Text):arg_section(3, 0, 'Info', 'bars')}
+text-align: left;')}">
+                    ${args->content_text}
                 </div>
 
                 <div data-style="${args->style7:html:default('text-align: center;
-font-size: 18px;'):input_type(css):input_props('with_responsive=1'):arg_name(Fields area Style):arg_section(0, 3, 'Box', 'th-large')}">
-					${block->with_f2:default(1):arg_name(With Name):arg_section(5, 0, 'Name Box', 'edit')}
+font-size: 18px;')}">
+					${block->with_f2:default(1)}
 					<div>
-						<input form="st_f" name="Name" required="1" data-prop-column="${args->f2_db:html:default(first_name):input_type(select_social):input_props('with_empty=1'):arg_name(Name save to database):arg_section(5, 1, 'Name Box', 'edit')}" data-style="box-sizing:border-box; ${args->f1_style:html:default('margin-bottom:20px; padding:10px; font-family:Open Sans,san-serif; font-weight:600; font-size:selsel(20px, 5vw); width:100%; border:1px solid rgb(62,62,62); border-radius:4px; color:rgb(122,122,122); text-align:left'):input_type(css):input_props('with_responsive=1'):arg_name(Input style):arg_section(5, 3, 'Name Box', 'edit')}" placeholder="${args->f2:html:default(Name):arg_name(Name Placeholder Text):arg_section(5, 2, 'Name Box', 'edit')}">
+						<input form="st_f" name="Name" required="1" data-prop-column="${args->f2_db:html:default(first_name)}" data-style="box-sizing:border-box; ${args->f1_style:html:default('margin-bottom:20px; padding:10px; font-family:Open Sans,san-serif; font-weight:600; font-size:selsel(20px, 5vw); width:100%; border:1px solid rgb(62,62,62); border-radius:4px; color:rgb(122,122,122); text-align:left')}" placeholder="${args->f2:html:default(Name)}">
 					</div>
-					${block->with_f6:default(1):arg_name(With Telephone):arg_section(6, 0, 'Telephone Box', 'edit')}
+					${block->with_f6:default(1)}
 					<div>
-						<input form="st_f" name="Phone" type="tel" required="${args->f6_req:html:default(1):input_type(checkbox):arg_name(Telephone is required field):arg_section(6, 2, 'Telephone Box', 'edit')}" data-prop-column="${args->f6_db:html:default():input_type(select_social):input_props('with_empty=1'):arg_name(Telephone save to database):arg_section(6, 1, 'Telephone Box', 'edit')}" data-style="box-sizing:border-box; ${args->f1_style:html}" placeholder="${args->f6:html:default(Telephone):arg_name(Telephone Placeholder Text):arg_section(6, 3, 'Telephone Box', 'edit')}">
+						<input form="st_f" name="Phone" type="tel" required="${args->f6_req:html:default(1)}" data-prop-column="${args->f6_db:html}" data-style="box-sizing:border-box; ${args->f1_style:html}" placeholder="${args->f6:html:default(Telephone)}">
 					</div>
 					<div>
-						<input form="st_f" name="Email" pattern="^[^\s@]+@[^\s@\.]+\.[^\s@]+$" required="1" data-prop-column="${args->f3_db:html:default(email):input_type(select_social):input_props('with_empty=1'):arg_name(Email save to database):arg_section(7, 0, 'Email Box', 'envelope')}" data-style="box-sizing:border-box; ${args->f1_style:html}" placeholder="${args->f3:html:default(E-Mail):arg_name(Email Placeholder Text):arg_section(7, 1, 'Email Box', 'envelope')}">
+						<input form="st_f" name="Email" pattern="^[^\s@]+@[^\s@\.]+\.[^\s@]+$" required="1" data-prop-column="${args->f3_db:html:default(email)}" data-style="box-sizing:border-box; ${args->f1_style:html}" placeholder="${args->f3:html:default(E-Mail)}">
 					</div>
-					${block->with_f5:default(0):arg_name(With Details):arg_section(8, 0, 'Details Box', 'edit')}
+					${block->with_f5:default(0)}
 					<div>
-						<textarea form="st_f" name="Details" data-style="box-sizing:border-box; ${args->f5_style:html:input_type(css):input_props('with_responsive=1'):arg_name(Input style):arg_section(8, 2, 'Details Box', 'edit')}" placeholder="${args->f5:html:arg_name(Details Placeholder Text):arg_section(8, 1, 'Details Box', 'edit')}"></textarea>
+						<textarea form="st_f" name="Details" data-style="box-sizing:border-box; ${args->f5_style:html}" placeholder="${args->f5:html}"></textarea>
 					</div>
-					${block->with_f4:default(0):arg_name(With Checkbox):arg_section(9, 0, 'Checkbox', 'edit')}
-					<div data-style="${args->style9:html:input_type(css):input_props('with_responsive=1'):arg_name(Checkbox Style):arg_section(9, 1, 'Checkbox', 'edit')}">
+					${block->with_f4:default(0)}
+					<div data-style="${args->style9:html}">
 						<label>
-							<input form="st_f" name="Checkbox" type="checkbox" data-prop-column="${args->f4_db:html:input_type(select_social):input_props('with_empty=1'):arg_name(Checkbox save to database):arg_section(9, 2, 'Checkbox', 'edit')}" value="1">
-							${args->text_9:arg_name(Text):arg_section(9, 3, 'Checkbox', 'edit')}
+							<input form="st_f" name="Checkbox" type="checkbox" data-prop-column="${args->f4_db:html}" value="1">
+							${args->text_9}
 						</label>
 					</div>
 				</div>
 
-                <button form="st_f" type="submit" class="$flat_btn" with_responsive="1" style="display:block; border:0; white-space:normal; box-sizing:border-box; ${args->button_style:html:default('display:block; padding:8px 32px; font-family:Open Sans,san-serif; font-weight:normal; font-size:sel(18px, 14px); width:100%; min-height:44px; background-color:#5492dd; color:white; border-bottom:2px solid #3f75bd; border-radius:4px; text-transform:uppercase'):input_type(css):arg_name(Style):arg_section(10, 1, 'Action button', 'check')}" hover_style="${args->button_h_style:html:default('background-color: #FFFFFF;
+                <button form="st_f" type="submit" class="$flat_btn" with_responsive="1" style="display:block; border:0; white-space:normal; box-sizing:border-box; ${args->button_style:html:default('display:block; padding:8px 32px; font-family:Open Sans,san-serif; font-weight:normal; font-size:sel(18px, 14px); width:100%; min-height:44px; background-color:#5492dd; color:white; border-bottom:2px solid #3f75bd; border-radius:4px; text-transform:uppercase')}" hover_style="${args->button_h_style:html:default('background-color: #FFFFFF;
 border-color: #5492dd;
-color: #5492dd;'):input_type(css):arg_name(Hover Style):arg_section(10, 2, 'Action button', 'check')}">
-					${args->button_caption:default(CONTACT ME):arg_name(Caption):arg_section(10, 0, 'Action button', 'check')}
+color: #5492dd;')}">
+					${args->button_caption:default(CONTACT ME)}
                 </button>
             </div>
         </div>
 		<div data-case="b">
 			${args->success:default('<div style="text-align: center; font-size:30px ;">Thank you! We will schedule you in.</div>
-'):arg_name(Thank you text):arg_section(11, 0, 'After submit', 'check')}
+')}
 		</div>
     </div>
 
     ${args->footer:default('<p style="color: #ffffff; padding: 35px; text-size: 10px;">We will try to meet your preferred date and time. We are GDPR compliant and will not spam you. By clicking the above button, you agree to our <a data-saferedirecturl="https://www.google.com/url?q=https://www.abbotsfordchrysler.com/privacy-policy/&amp;source=gmail&amp;ust=1559168237409000&amp;usg=AFQjCNHZwC-vxhrIxYb-rjytZTwobPcUrA" href="https://www.abbotsfordchrysler.com/privacy-policy/" style="color:#fff;" target="_blank"><b>Privacy Policy</b></a>.</p>
-'):arg_name(Footer):arg_section(12, 0, 'Footer', 'bars')}
+')}
 
 </div>
+
+${menu name='Box', icon='th-large'}
+	${menu args->style name='Style', type='css', param='with_responsive=1'}
+	${menu args->bgimage_url name='URL', type='personyze_media_url'}
+	${menu args->shading_style name='Shading', type='css', param='with_responsive=1'}
+	${menu args->style7 name='Fields area Style', type='css', param='with_responsive=1'}
+${menu name='Call message', icon='bars'}
+	${menu args->message_text name='Text'}
+	${menu args->message_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Gift', icon='gift'}
+	${menu args->gift_text name='Text'}
+	${menu args->gift_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Info', icon='bars'}
+	${menu args->content_text name='Text'}
+	${menu args->content_style name='Style', type='css', param='with_responsive=1'}
+${menu name='Close button', icon='close'}
+	${menu block->show_close_button name='Show close button'}
+	${menu args->close_button name='Close button', type='dontshowagain'}
+${menu name='Name Box', icon='edit'}
+	${menu block->with_f2 name='With Name'}
+	${menu args->f2_db name='Name save to database', type='select_social', param='with_empty=1'}
+	${menu args->f2 name='Name Placeholder Text'}
+	${menu args->f1_style name='Input style', type='css', param='with_responsive=1'}
+${menu name='Telephone Box', icon='edit'}
+	${menu block->with_f6 name='With Telephone'}
+	${menu args->f6_db name='Telephone save to database', type='select_social', param='with_empty=1'}
+	${menu args->f6_req name='Telephone is required field', type='checkbox', param='value_on=1', param='value_off='}
+	${menu args->f6 name='Telephone Placeholder Text'}
+${menu name='Email Box', icon='envelope'}
+	${menu args->f3_db name='Email save to database', type='select_social', param='with_empty=1'}
+	${menu args->f3 name='Email Placeholder Text'}
+	${menu args->send_confirm_style name='Confirmation style', type='css', param='with_responsive=1'}
+${menu name='Details Box', icon='edit'}
+	${menu block->with_f5 name='With Details'}
+	${menu args->f5 name='Details Placeholder Text'}
+	${menu args->f5_style name='Input style', type='css', param='with_responsive=1'}
+${menu name='Checkbox', icon='edit'}
+	${menu block->with_f4 name='With Checkbox'}
+	${menu args->style9 name='Checkbox Style', type='css', param='with_responsive=1'}
+	${menu args->f4_db name='Checkbox save to database', type='select_social', param='with_empty=1'}
+	${menu args->text_9 name='Text'}
+${menu name='Action button', icon='check'}
+	${menu args->button_caption name='Caption'}
+	${menu args->button_style name='Style', type='css'}
+	${menu args->button_h_style name='Hover Style', type='css'}
+${menu name='After submit', icon='check'}
+	${menu args->success name='Thank you text'}
+	${menu args->redir name='After submit redirect to this URL'}
+	${menu args->redir_delay name='Redirect delay, sec', type='number'}
+${menu name='Footer', icon='bars'}
+	${menu args->footer name='Footer'}
 ```
 
 
@@ -1423,3 +1504,5 @@ ${menu name='After Submission', icon='check-circle'}
 	${menu args->redir_delay name='Redirect Delay (sec)', description='Delay before redirecting after submission.', type='number'}
 	${menu args->customjs name='Custom JavaScript', description='JS code executed after submission.', type='textarea'}
 ```
+
+

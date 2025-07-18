@@ -572,7 +572,7 @@ Form can contain text input fields, checkboxes, drop-down menues, and other HTML
 They must have `form="form_name"` and `name="input_name"` attributes.
 Also they can have the following attributes that will be handled by the form:
 
-- `required="1"` - Makes the input required (the form cannot be submitted if this input is not filled in).
+- `required="1"` - Makes the input required (the form cannot be submitted if this input is not filled in). No such attribute, or empty value (like `required=""`) makes the field optional.
 - `pattern="..."` - Regular expression to validate the input.
 - `data-valid_if="..."` - JavaScript code that will be executed to validate the input. If it returns boolean true, then the value is considered to be ok. If boolean false - the value is invalid, and error message will be shown. Either the message set on the form element in `data-invalid_value_message="..."` attribute, or a default one. If the code returns string, this string will be shown as error message.
 - `data-use_hidden="1"` - Normally, if the input is hidden (see about form cases below), it's value is not returned by `form._get_value()` or `form._get_value_ex()`. If you specify this attribute, the input will be included in the form value anyway.
