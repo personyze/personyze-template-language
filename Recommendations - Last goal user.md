@@ -1068,12 +1068,28 @@ display: inline-block;
 						${args->text_views:default('<strong>Trending now!</strong>&nbsp;${s->n_viewed}&nbsp;others have looked at this recently&nbsp;')}
 					</div>
 				${end}
+				${if 100 - s->n_viewed / s->overall_n_viewed * 100 < args->min_views_percent:json:html:default(5)}
+					${block->with_views_percent:default(0)}
+					<div>
+						<hr class="$icon ${args->icon_views_percent:html:default(user)}" style="${args->icon_views_style_percent:html:default('font-size: 100%;
+')}">&nbsp;
+						${args->text_views_percent:default('<strong>Popular!</strong>&nbsp;One of the ${args->min_views_percent}%&nbsp;most popular products')}
+					</div>
+				${end}
 				${if s->n_goal >= args->min_goals:json:html:default(2)}
 					${block->with_goals:default(1)}
 					<div>
 						<hr class="$icon ${args->icon_goals:html:default(shopping-cart)}" style="${args->icon_goals_style:html:default('font-size: 100%;
 ')}">&nbsp;
 						${args->text_goals:default('<strong>Popular!</strong> Sold ${s->n_goal}&nbsp;times recently')}
+					</div>
+				${end}
+				${if 100 - s->percentile_goal < args->min_goals_percent:json:html:default(5)}
+					${block->with_goals_percent:default(0)}
+					<div>
+						<hr class="$icon ${args->icon_goals_percent:html:default(user)}" style="${args->icon_goals_style_percent:html:default('font-size: 100%;
+')}">&nbsp;
+						${args->text_goals_percent:default('<strong>Best seller!</strong>&nbsp;One of the ${args->min_goals_percent}%&nbsp;of best selling products')}
 					</div>
 				${end}
 				${if p->inventory between 1 and args->min_inventory:html:default(300)}
@@ -1143,38 +1159,50 @@ ${menu name='Line 1: views', icon='bars'}
 	${menu args->icon_views name='Icon for views', type='icon'}
 	${menu args->icon_views_style name='Icon for views: style', type='css'}
 	${menu args->text_views name='Line 1: views'}
-${menu name='Line 2: purchases', icon='bars'}
+${menu name='Line 2: most popular', icon='bars'}
+	${menu block->with_views_percent name='With most popular'}
+	${menu args->min_views_percent name='Show if this product is amongst N% of the most popular products on the site', type='site_db_overall_stat', param='stat_table_alias=s'}
+	${menu args->icon_views_percent name='Icon for most popular', type='icon'}
+	${menu args->icon_views_style_percent name='Icon for most popular: style', type='css'}
+	${menu args->text_views_percent name='Line 2: most popular'}
+${menu name='Line 3: purchases', icon='bars'}
 	${menu block->with_goals name='With goals'}
 	${menu args->min_goals name='Dont show if less purchases', type='site_db_overall_stat', param='stat_table_alias=s'}
 	${menu args->icon_goals name='Icon for purchases', type='icon'}
 	${menu args->icon_goals_style name='Icon for purchases: style', type='css'}
-	${menu args->text_goals name='Line 2: purchases'}
-${menu name='Line 3: inventory', icon='bars'}
+	${menu args->text_goals name='Line 3: purchases'}
+${menu name='Line 4: best seller', icon='bars'}
+	${menu block->with_goals_percent name='With best seller'}
+	${menu args->min_goals_percent name='Show if this product is amongst N% of the best selling products on the site', type='site_db_overall_stat', param='stat_table_alias=s'}
+	${menu args->icon_goals_percent name='Icon for best seller', type='icon'}
+	${menu args->icon_goals_style_percent name='Icon for best seller: style', type='css'}
+	${menu args->text_goals_percent name='Line 4: best seller'}
+${menu name='Line 5: inventory', icon='bars'}
 	${menu block->with_inventory name='With inventory'}
 	${menu args->min_inventory name='Dont show if more items in stock than', type='number', param='min=0'}
 	${menu args->min_goals_for_inventory name='Dont show if less purchases', type='site_db_overall_stat', param='stat_table_alias=s'}
 	${menu args->icon_inventory name='Icon for inventory', type='icon'}
 	${menu args->icon_inventory_style name='Icon for inventory: style', type='css'}
-	${menu args->text_inventory name='Line 3: inventory'}
-${menu name='Line 4: Price drop', icon='bars'}
+	${menu args->text_inventory name='Line 5: inventory'}
+${menu name='Line 6: Price drop', icon='bars'}
 	${menu block->with_price_drop name='With price drop'}
 	${menu args->min_price_drop name='Show if drop percent at least', type='number', param='min=1'}
 	${menu args->min_price_drop_days name='Show if drop was before N days or less', type='number', param='min=1'}
 	${menu args->icon_price_drop name='Icon for price drop', type='icon'}
 	${menu args->icon_price_drop_style name='Icon for price drop: style', type='css'}
-	${menu args->text_price_drop name='Line 4: text. Use {P} for percent, and {D} for no. of days'}
-${menu name='Line 5: Discount', icon='bars'}
+	${menu args->text_price_drop name='Line 6: text. Use {P} for percent, and {D} for no. of days'}
+${menu name='Line 7: Discount', icon='bars'}
 	${menu block->with_discount name='With discount'}
 	${menu args->min_discount name='Show if discount % is at least', type='number', param='min=1'}
 	${menu args->icon_discount name='Icon for discount', type='icon'}
 	${menu args->icon_discount_style name='Icon for discount: style', type='css'}
-	${menu args->text_discount name='Line 5: text. Use {P} for discount percent'}
-${menu name='Line 6: New in stock', icon='bars'}
+	${menu args->text_discount name='Line 7: text. Use {P} for discount percent'}
+${menu name='Line 8: New in stock', icon='bars'}
 	${menu block->with_new name='With new in stock'}
 	${menu args->min_new_days name='Show if product appeared this no. of days ago', type='number', param='min=1'}
 	${menu args->icon_new name='Icon for new in stock', type='icon'}
 	${menu args->icon_new_style name='Icon for new in stock: style', type='css'}
-	${menu args->text_new name='Line 6: text. Use {D} for no. of days'}
+	${menu args->text_new name='Line 8: text. Use {D} for no. of days'}
 ${menu name='Free text 1', icon='bars'}
 	${menu block->with_free1 name='With free text 1'}
 	${menu args->icon_free1 name='Icon for free text 1', type='icon'}
@@ -1190,216 +1218,6 @@ ${menu name='Free text 3', icon='bars'}
 	${menu args->icon_free3 name='Icon for free text 3', type='icon'}
 	${menu args->icon_free3_style name='Icon for free text 3: style', type='css'}
 	${menu args->text_free3 name='Free text 3'}
-```
-
-
-## Multiple options
-
-
-
-```
-${foreach sum_products as p where p->for_period='recently' and p->n_goal>0 and p->last_goal_user_time_0 >= unix_timestamp()-172800 order by p->n_goal desc limit 1}
-	<div class="$responsive" style="${args->box_style:html:default('border-radius: 3em;
-background-color: rgb(219, 231, 208);
-display: inline-flex;
-align-items: center;
-color: black;
-')}">
-		${block->show_img:default(1)}
-		<div>
-			<a href="${p->cart_url:html}">
-                <img data-src="${p->image_big_url:html}" style="${args->img_style:html:default('max-width: 100px;
-max-height: 100px;
-width: auto;
-height: auto;
-border-radius: 50%;
-margin: 10px;
-')}">
-            </a>
-		</div>
-
-		<div>
-			<div>
-				${args->p_last_goal_user_0_first_name:default('<span>${p->last_goal_user_0_first_name} ${p->last_goal_user_0_last_name:substr(0, 1):uc:sprintf(''%s.'')}&nbsp;from&nbsp;${p->last_goal_user_0_current_city:sprintf(''city %s'')}</span>')}
-				${if p->last_goal_user_0_current_city}
-					(${p->last_goal_user_0_current_city})
-				${end}
-				<span style="color:gray">purchased</span>
-			</div>
-			<a href="${p->cart_url:html}" style="display:block; ${args->title_style:html:default('color: inherit;
-text-decoration: none;
-font-weight: bold;
-margin-top: 0.7em;
-margin-right: 0;
-margin-bottom: 0.7em;
-margin-left: 0;
-max-width: 15em;
-')}">
-                ${p->title}
-            </a>
-			<div>
-                ${args->text_before_time}
-				<span style="color:gray" data-v="${if tm-p->last_goal_user_time_0<86400}${p->last_goal_user_time_0:html}${end}" data-earlier="${args->earlier:html:default(recently)}" data-days="${args->days:html:default(days)}" data-hours="${args->hours:html:default(hours)}" data-minutes="${args->minutes:html:default(minutes ago)}" ontplready="var v=this.dataset.v, f=Date.now()/1000 - v, d=Math.floor(f/(24*60*60)), h=Math.floor(f/(60*60))%24, m=Math.floor(f/60)%60; this.textContent = !v ? this.dataset.earlier : (d ? d+' '+this.dataset.days+' ' : '') + (h+' '+this.dataset.hours+' ') + (this.dataset.minutes ? m+' '+this.dataset.minutes : '')"></span>
-                ${args->text_after_time:default('✅ Verified')}
-			</div>
-		</div>
-		${block->show_close_button:default(1)}
-		<div style="margin:10px 10px 10px 30px">
-			${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 8px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease 0s;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%);"></div></div>')}
-		</div>
-	</div>
-${end}
-
-${menu name='Frame', icon='th-large'}
-	${menu args->box_style name='Style', type='css', param='with_responsive=1'}
-	${menu args->title_style name='Product name Style', type='css', param='with_responsive=1'}
-	${menu p->title name='Product name'}
-${menu name='Time texts', icon='clock-o'}
-	${menu args->text_before_time name='Text before time'}
-	${menu args->days name='days'}
-	${menu args->hours name='hours'}
-	${menu args->minutes name='minutes'}
-	${menu args->earlier name='earlier'}
-	${menu args->text_after_time name='Text after time'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->show_close_button name='Show close button'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-${menu name='Image', icon='image'}
-	${menu block->show_img name='Show image'}
-	${menu args->img_style name='Image Style', type='css', param='with_responsive=1'}
-	${menu p->image_big_url name='Image db column'}
-```
-
-
-## Line
-
-
-
-```
-<div class="$responsive" data-style="display:inline-block; position:relative; ${args->style:html:default('background-color: #f1f1f1;
-color: #666666;
-padding: 0.5em;
-margin-top: 11px;
-margin-right: 0px;
-margin-bottom: 11px;
-margin-left: 0px;
-')}">
-	${block->x:default(0)}
-	<div style="position:absolute; ${args->x_style:html}">
-		${args->x}
-	</div>
-
-	${foreach products_interactions as p where p->interaction_status in ('viewed','extra','favorite') and p->last_interaction_time>=tm order by p->last_interaction_time desc limit 1}
-		<div data-style="display:inline-block; vertical-align:middle; ${args->tag_style:html:default('background-color: #fc9208;
-color: white;
-padding-top: 0.2em;
-padding-right: 0.3em;
-padding-bottom: 0.2em;
-padding-left: 0.3em;
-margin-right: 0.5em;
-')}">
-			${args->tag:default(Popular!)}
-		</div>
-
-		&nbsp;
-
-		${block->stats_recently:default(0)}
-		<span data-style="${args->text_style_recently:html}">
-			${foreach sum_products_recently as s where s->internal_id = p->internal_id limit 1}
-				${args->n_viewed_recently:default('${s->n_viewed} other people are considering this.')}
-				<span ontplready="this._v='${s->n_viewed:html}'|0; this._g='${s->n_goal:html}'|0"></span>
-			${end}
-			${block->hide_no_view_recently}
-			<span ontplready="var p=this.previousElementSibling||{}; if ((p._v|0) < ('${args->hide_no_view_recently:html:default(10)}'|0) || (p._g|0) < ('${args->hide_no_goal_recently:html:default(7)}'|0)) _S_T.dismiss_action(${action_id:html})"></span>
-		</span>
-
-		${block->stats_1day:default(0)}
-		<span data-style="${args->text_style_1day:html}">
-			${foreach sum_products_1day as s where s->internal_id = p->internal_id limit 1}
-				${args->n_viewed_1day:default('${s->n_viewed}&nbsp;visitors viewed in the last 24 hour.')}
-				<span ontplready="this._v='${s->n_viewed:html}'|0; this._g='${s->n_goal:html}'|0"></span>
-			${end}
-			${block->hide_no_view_1day}
-			<span ontplready="var p=this.previousElementSibling||{}; if ((p._v|0) < ('${args->hide_no_view_1day:html:default(10)}'|0) || (p._g|0) < ('${args->hide_no_goal_1day:html:default(7)}'|0)) _S_T.dismiss_action(${action_id:html})"></span>
-		</span>
-
-		${block->stats_2day:default(1)}
-		<span data-style="${args->text_style_2day:html:default('font-size: 12px;
-')}">
-			${foreach sum_products_2day as s where s->internal_id = p->internal_id limit 1}
-				${args->n_viewed_2day:default('${s->n_viewed}&nbsp;visitors viewed in the last 48 hours.')}
-				<span ontplready="this._v='${s->n_viewed:html}'|0; this._g='${s->n_goal:html}'|0"></span>
-			${end}
-			${block->hide_no_view_2day:default(1)}
-			<span ontplready="var p=this.previousElementSibling||{}; if ((p._v|0) < ('${args->hide_no_view_2day:html:default(1)}'|0) || (p._g|0) < ('${args->hide_no_goal_2day:html}'|0)) _S_T.dismiss_action(${action_id:html})"></span>
-		</span>
-
-		${block->stats_4day:default(0)}
-		<span data-style="${args->text_style_4day:html}">
-			${foreach sum_products_4day as s where s->internal_id = p->internal_id limit 1}
-				${args->n_viewed_4day:default('${s->n_viewed}&nbsp;visitors viewed in the last 4 days.')}
-				<span ontplready="this._v='${s->n_viewed:html}'|0; this._g='${s->n_goal:html}'|0"></span>
-			${end}
-			${block->hide_no_view_4day}
-			<span ontplready="var p=this.previousElementSibling||{}; if ((p._v|0) < ('${args->hide_no_view_4day:html:default(1)}'|0) || (p._g|0) < ('${args->hide_no_goal_4day:html}'|0)) _S_T.dismiss_action(${action_id:html})"></span>
-		</span>
-
-		${block->stats_week:default(0)}
-		<span data-style="${args->text_style_week:html}">
-			${foreach sum_products_week as s where s->internal_id = p->internal_id limit 1}
-				${args->n_viewed_week:default('${s->n_viewed} other people are considering this.')}
-				<span ontplready="this._v='${s->n_viewed:html}'|0; this._g='${s->n_goal:html}'|0"></span>
-			${end}
-			${block->hide_no_view_week}
-			<span ontplready="var p=this.previousElementSibling||{}; if ((p._v|0) < ('${args->hide_no_view_week:html}'|0) || (p._g|0) < ('${args->hide_no_goal_week:html}'|0)) _S_T.dismiss_action(${action_id:html})"></span>
-		</span>
-	${end}
-</div>
-
-${menu name='Frame', icon='th-large'}
-	${menu args->style name='Style', type='css', param='with_responsive=1'}
-${menu name='Badge', icon='bookmark'}
-	${menu args->tag name='Text'}
-	${menu args->tag_style name='Style', type='css', param='with_responsive=1'}
-${menu name='Close button', icon='close'}
-	${menu block->x name='With close button'}
-	${menu args->x name='Close button', type='dontshowagain', param='style=cursor:pointer; vertical-align:middle'}
-	${menu args->x_style name='Close button position', type='css'}
-${menu name='Site statistics: recently', icon='bar-chart'}
-	${menu block->stats_recently name='Site statistics: recently'}
-	${menu args->text_style_recently name='Style', type='css', param='with_responsive=1'}
-	${menu args->n_viewed_recently name='Text'}
-	${menu block->hide_no_view_recently name='Hide the widget if no views'}
-	${menu args->hide_no_view_recently name='Hide the widget if less views than', type='number', param='min=0'}
-	${menu args->hide_no_goal_recently name='Hide the widget if less purchases than', type='number', param='min=0'}
-${menu name='Site statistics: 1-day', icon='bar-chart'}
-	${menu block->stats_1day name='Site statistics: 1day'}
-	${menu args->text_style_1day name='Style', type='css', param='with_responsive=1'}
-	${menu args->n_viewed_1day name='Text'}
-	${menu block->hide_no_view_1day name='Hide the widget if no views'}
-	${menu args->hide_no_view_1day name='Hide the widget if less views than', type='number', param='min=0'}
-	${menu args->hide_no_goal_1day name='Hide the widget if less purchases than', type='number', param='min=0'}
-${menu name='Site statistics: 2-day', icon='bar-chart'}
-	${menu block->stats_2day name='Site statistics: 2day'}
-	${menu args->text_style_2day name='Style', type='css', param='with_responsive=1'}
-	${menu args->n_viewed_2day name='Text'}
-	${menu block->hide_no_view_2day name='Hide the widget if no views'}
-	${menu args->hide_no_view_2day name='Hide the widget if less views than', type='number', param='min=0'}
-	${menu args->hide_no_goal_2day name='Hide the widget if less purchases than', type='number', param='min=0'}
-${menu name='Site statistics: 4-day', icon='bar-chart'}
-	${menu block->stats_4day name='Site statistics: 4day'}
-	${menu args->text_style_4day name='Style', type='css', param='with_responsive=1'}
-	${menu args->n_viewed_4day name='Text'}
-	${menu block->hide_no_view_4day name='Hide the widget if no views'}
-	${menu args->hide_no_view_4day name='Hide the widget if less views than', type='number', param='min=0'}
-	${menu args->hide_no_goal_4day name='Hide the widget if less purchases than', type='number', param='min=0'}
-${menu name='Site statistics: week', icon='bar-chart'}
-	${menu block->stats_week name='Site statistics: week'}
-	${menu args->text_style_week name='Style', type='css', param='with_responsive=1'}
-	${menu args->n_viewed_week name='Text'}
-	${menu block->hide_no_view_week name='Hide the widget if no views'}
-	${menu args->hide_no_view_week name='Hide the widget if less views than', type='number', param='min=0'}
-	${menu args->hide_no_goal_week name='Hide the widget if less purchases than', type='number', param='min=0'}
 ```
 
 

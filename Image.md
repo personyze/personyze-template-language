@@ -1,3026 +1,276 @@
-# Personyze banner templates
+## Alert Popup
 
-
-## Personal Message
-
-
+A responsive, dynamic popup that alerts users. It features a customizable close button and two editable CTA buttons,
 
 ```
-<div class="$responsive" data-style="${args->style:html:default('width:sel(700px, 80vw); background-color:#E7E7E7'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-	<div data-style="position:relative; ${args->td_style:html:default('padding:sel(20px, 3vw) sel(100px, 8vw) 5px; text-align:center; color:black; font-size:14px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Content', 'bookmark')}">
-		${args->content:default(Download our FREE Testing Toolkit! Download our FREE Testing Toolkit! Download our FREE Testing Toolkit! Download our FREE Testing Toolkit!):arg_name(Text):arg_section(1, 0, 'Content', 'bookmark')}
-		<div style="text-align:inherit">
-			<a href="${args->href:html:default('#'):arg_name(URL):arg_section(2, 2, 'Action button', 'link')}" target="${args->target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(2, 3, 'Action button', 'link')}" data-style="display:inline-block; ${args->action_button_text_style:html:default('text-decoration:none; width:sel(250px, 40vw); margin:1em 0 0.5em; padding:10px 0; background-color:blue; border-radius:5px; font-size:16px; color:white'):input_type(css):input_props('with_responsive=1'):arg_name(Text style):arg_section(2, 1, 'Action button', 'link')}">
-				${args->action_button_text:default(GET IT NOW):arg_name(Text):arg_section(2, 0, 'Action button', 'link')}
-			</a>
-		</div>
-		${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close button', 'close')}
-		<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top:8px; right:8px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Close button', 'close')}">
-			${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(58, 110, 207); text-decoration-color: rgb(58, 110, 207); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(244, 242, 242); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close button', 'close')}
-		</div>
-	</div>
+<style>
+  /* Alert Container */
+  .alert-container {
+    position: relative;
+    background-color: #FFE5E5; /* Light red background */
+    border: 1px solid #FF0000; /* Red border for alert */
+    border-radius: 8px;
+    padding: 16px;
+    width: 320px; /* Adjust as needed */
+    margin: 0 auto;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+  }
+
+  /* Alert Label in top-left */
+  .alert-label {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #FF0000;
+    color: #FFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  /* Close Button (X) in top-right */
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  /* Main Alert Text */
+  .alert-text {
+    margin-top: 36px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.4;
+  }
+
+  /* CTA Button Container */
+  .cta-container {
+    text-align: center;
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* CTA Button Style */
+  .cta-button {
+    background-color: #FF0000;
+    color: #FFF;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .cta-button:hover {
+    background-color: #CC0000;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 480px) {
+    .alert-container {
+      width: 90%;
+    }
+    .alert-text {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<div class="alert-container">
+  <!-- Alert Label -->
+  <div class="alert-label">
+    ${args->alert_label:default(IMPORTANT ALERT)}
+  </div>
+
+  <!-- Personyze Editable Close Button (Default: Top-Right) -->
+  ${args->close_button:default('<a href="javascript:" style="font-size: 24px; color: black; font-weight: lighter; line-height: 1; text-decoration: none; position: absolute; right: 10px; top: 5px;" class="$personyze_button_dont_show_again" data-action_id="${action_id}" title="Close">×</a>')}
+
+  <!-- Main Alert Text -->
+  <div class="alert-text">
+    ${args->alert_text:default(Your account will expire in 3 days. Please take action immediately!)}
+  </div>
+
+  <!-- CTA Buttons -->
+  <div class="cta-container">
+    <a href="${args->cta1_href:html:default('href="#"')}"
+       class="cta-button"
+       data-style="${args->cta1_style:html}"
+       title="Primary Action">
+      ${args->cta1_text:default(Renew Now)}
+    </a>
+    <a href="${args->cta2_href:html:default('href="javascript:"')}"
+       class="cta-button"
+       data-style="${args->cta2_style:html}"
+       title="Secondary Action">
+      ${args->cta2_text:default(Maybe Later)}
+    </a>
+  </div>
 </div>
+
+<!-- PERSONYZE MENU OPTIONS -->
+
+${menu name='Alert Settings', icon='exclamation-triangle'}
+	${menu args->alert_label name='Alert Label', description='Label text (top-left)'}
+	${menu args->alert_text name='Alert Text', description='Main alert message'}
+${menu name='CTA Button 1', icon='hand-pointer-o'}
+	${menu args->cta1_text name='CTA 1 Text'}
+	${menu args->cta1_href name='CTA 1 URL', type='a_attrs'}
+	${menu args->cta1_style name='CTA 1 Style', type='css'}
+${menu name='CTA Button 2', icon='hand-o-up'}
+	${menu args->cta2_text name='CTA 2 Text'}
+	${menu args->cta2_href name='CTA 2 URL', type='a_attrs'}
+	${menu args->cta2_style name='CTA 2 Style', type='css'}
+${menu name='Close Button', icon='times'}
+	${menu args->close_button name='Close button HTML', type='dontshowagain'}
 ```
 
 
-## 2 Buttons
+## Tall Banner with CTA & Image Options
 
-
-
-```
-<div class="$responsive" data-style="position:relative; overflow:hidden; ${args->box_style:html:default('max-width: 640px;
-background-color: #002856;
-width: 640px;
-color: #002856;
-border-radius: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}" >
-	<table style="border-collapse:collapse; border:none">
-		<tr style="border:none">
-			<td style="border:none; background-repeat:no-repeat; background-position:center; ${args->image_style:html:default('background-image: url(''https://cdn.personyze.com/upload/362/9021b00a37b389c0.jpeg'');
-background-size: 100% 100%;'):input_type(css):arg_name(Picture URL):arg_section(1, 0, 'Picture', 'image')}">
-				<div data-style="width:${args->image_width:html:default('sel(300px, 40vw)'):input_type(css_length):input_props('with_responsive=1'):arg_name('Image width', 'Picture URL'):arg_section(1, 1, 'Picture', 'image')}; height:${args->image_height:html:default('sel(300px, 40vw)'):input_type(css_length):input_props('with_responsive=1'):arg_name('Image height', 'Picture URL'):arg_section(1, 2, 'Picture', 'image')}"></div>
-			</td>
-			<td style="border:none; padding:0 1em">
-				<div data-style="max-height:${args->image_height:html}">
-					<div data-style="outline:0; ${args->title_style:html:default('color: #fff;
-font-size: sel(30px, 4vw);
-font-weight: 300;
-line-height: 32px;
-text-align: center;
-margin-top: 30px;
-margin-right: 0px;
-margin-bottom: 0px;
-margin-left: 0px;'):input_type(css):input_props('with_responsive=1'):arg_name(Title style):arg_section(2, 1, 'Content', 'bars')}">
-						${args->title:default('<div style="text-align: center;">Text Text<br />
-Text Text</div>
-'):arg_name(Title):arg_section(2, 0, 'Content', 'bars')}
-					</div>
-					<div data-style="outline:0; ${args->text_style:html:default('text-align: center;
-color: #ffffff;
-font-size: sel(18px, 4vw);
-padding: 5px;
-line-height: 24px;
-font-weight: 200;'):input_type(css):input_props('with_responsive=1'):arg_name(Title style):arg_section(2, 3, 'Content', 'bars')}">
-						${args->text:default('<p style="text-align: center;">Text TextText TextText TextText TextText TextText TextText Text</p>
-'):arg_name(Text):arg_section(2, 2, 'Content', 'bars')}
-					</div>
-					<div style="text-align:center; ${args->buttons_style:html:default('margin-top: 1em;
-margin-right: 0;
-margin-bottom: 2em;
-margin-left: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Buttons margin):arg_section(3, 4, 'First Button', 'hand-o-up')}">
-						${block->show_button:default(1):arg_name(Show button):arg_section(3, 0, 'First Button', 'hand-o-up')}
-						<a ${args->href:default('href="javascript:" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'First Button', 'hand-o-up')} data-style="${args->button_text_style:html:default('font-family: Arial;
-font-size: sel(15px, 4vw);
-color: white;
-text-decoration: none;
-background-color: #f7941e;
-padding-top: 15px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-border-radius: 2px;
-font-weight: bolder;
-margin-top: 1px;
-margin-right: 1px;
-margin-bottom: 1px;
-margin-left: 1px;
-width: 100%;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'First Button', 'hand-o-up')}">  ${args->button_t:default(GOT IT!):arg_name(Text_button):arg_section(3, 1, 'First Button', 'hand-o-up')}
-						</a>
-
-						${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-						<a ${args->href_3:input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')} data-style="display:inline-block; ${args->button_text_style_2:html:input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-							${args->button_t_2:arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-						</a>
-					</div>
-				</div>
-			</td>
-		</tr>
-	</table>
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: 8px;
-right: 8px;
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close Button Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-</div>
-```
-
-
-## Fullscreen few steps popup
-
-
+vertically oriented banner template featuring flexible image, text, and dual CTA button configurations—including custom JavaScript, auto-dismiss behavior, and animations—for robust technical customization.
 
 ```
-<table class="$responsive" data-style="border-collapse:collapse; ${args->style:html:default('width: sel(100%, auto);
-height: sel(100%, auto);
-background-image: url(''https://static.personyze.com/upload/362/7d0a26d42b6f9a72.jpeg'');
-background-size: cover;
-background-color: white;')}">
-	<tr>
-		<td data-style="position:relative; ${args->style_2:html:default('background-color: rgba(9, 6, 6, 0.57);
-color: black;
-text-align: center;
-vertical-align: middle;
-padding-top: 10%;
-padding-right: sel(10%, 10px);
-padding-bottom: 10%;
-padding-left: sel(10%, 10px);')}">
-			<img src="${args->image_src:html:default('https://counter.personyze.com/images/logo.png')}" style="${args->image_style:html:default('width:auto; height:auto; border:none')}">
-			<div id="sw" class="$switch-elem" data-case="0">
-				<div data-case="0">
-					<div data-style="margin:${args->margin:html:default('sel(12px, 8px)')} 0; ${args->style_t1:html:default('color:white; font-size:sel(25px, 5vw)')}">
-						${args->text_1:default(Your Title Goes Here)}
-					</div>
-					<div data-style="margin:${args->margin:html} 0; ${args->style_t2:html:default('color: white;
-font-size: sel(14px, 4vw);')}">
-						${args->text_2:default(Sub tile goes here Sub tile goes here Sub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes hereSub tile goes here Sub tile goes hereSub tile goes here Sub tile goes here v Sub tile goes here vSub tile goes here)}
-					</div>
-					<div data-style="margin:${args->margin:html} 0">
-						${settings->a:onclick('by_id.sw._set_case(1, null, false, {template: ''animator_fade''})')}
-						<a class="$flat_btn" with_responsive="1" onclick="by_id.sw._set_case(1, null, false, {template: 'animator_fade'})" data-style="display:inline-block; width:${args->button_width:html:default('sel(110px, 33vw)')}; height:${args->button_height:html:default(30px)}; line-height:${args->button_height:html}; ${args->yes_style:html:default('background-color: rgb(96, 142, 77);
-color: white;
-border-radius: 15px;
-box-shadow: 0 0 2px rgba(13, 7, 7, 0.6);
-margin: 10px;')}" hover_style="${args->yes_h_style:html:default('color: white;
-background-color: red;')}">
-							${args->yes_1:default(Button 1)}
-						</a>
-						${block->with_second_button:default(1)}
-						<a class="$flat_btn $personyze_button_dont_show_again" with_responsive="1" data-action_id="${action_id:html}" data-style="display:inline-block; width:${args->button_width:html}; height:${args->button_height:html}; line-height:${args->button_height:html}; ${args->b2_style:html:default('background-color: rgb(160, 131, 131);
-color: white;
-border-radius: 15px;
-box-shadow: 0 0 2px rgba(13, 7, 7, 0.6);')}" hover_style="${args->yes_h_style:html}">
-							${args->b2_1:default(close)}
-						</a>
-					</div>
-				</div>
-
-				<div data-case="1">
-					<div data-style="margin:${args->margin:html} 0; ${args->style_t4:html:default('color:white; font-size:sel(25px, 5vw)')}">
-						${args->text_4:default(Your offer goes here Your offer goes here Your offer goes hereYour offer goes hereYour offer goes here)}
-					</div>
-					<div data-style="margin:${args->margin:html} 0">
-						<a class="$flat_btn" with_responsive="1" href="${args->href_2:html:default('#')}" target="${args->target_2:html:default(_blank)}" data-style="display:inline-block; width:${args->button_width:html}; height:${args->button_height:html}; line-height:${args->button_height:html}; ${args->yes_style:html}" hover_style="${args->yes_h_style:html}">
-							${args->close_1:default(Get offer)}
-						</a>
-					</div>
-					<div data-style="margin:${args->margin:html} 0">
-						${block->with_close_4:default(1)}
-						<a class="$personyze_button_dont_show_again" data-action_id="${action_id:html}" data-style="${args->b4_style:html:default('text-decoration: none;
-color: rgba(256, 256, 256, 0.83);')}">
-							${args->b4_1:default('<br />
-<br />
-Close')}
-						</a>
-					</div>
-				</div>
-			</div>
-			${block->show_close_button:default(1)}
-			<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: 6px;
-right: 6px;
+<div class="$responsive" data-style="box-sizing: border-box;
+margin: 0 auto;
+position: relative;
+overflow: hidden;
+${args->style:html:default('width: 160px;
+height: 600px;
+border: 1px solid #1a1a1a;
+background-color: #222;
 ')}">
-				${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 2px solid; box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: white; text-decoration-color: white; outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease 0s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
-			</div>
-		</td>
-	</tr>
-</table>
 
-${menu name='Box', icon='th-large'}
-	${menu args->style name='Style', type='css', param='with_responsive=1'}
-	${menu args->style_2 name='Style', type='css', param='with_responsive=1'}
-	${menu args->margin name='Paragraph spacing', type='css_length', param='with_responsive=1'}
-	${menu args->button_width name='Button Width', type='css_length', param='with_responsive=1'}
-	${menu args->button_height name='Button Height', type='css_length', param='with_responsive=1'}
-${menu name='Logo', icon='image'}
-	${menu args->image_src name='URL', type='personyze_media_url'}
-	${menu args->image_style name='Image style', type='css', param='with_responsive=1'}
-${menu name='Step 1', icon='bars'}
-	${menu args->style_t1 name='Style', type='css', param='with_responsive=1'}
-	${menu args->style_t2 name='Style', type='css', param='with_responsive=1'}
-	${menu args->text_1 name='Line 1'}
-	${menu args->text_2 name='Line 1'}
-	${menu args->yes_1 name='Button 1 text'}
-	${menu args->b2_1 name='Button 2 text'}
-	${menu args->yes_style name='Button 1 Style', type='css'}
-	${menu args->yes_h_style name='Button 1 Hover Style', type='css'}
-	${menu block->with_second_button name='Show Button 2'}
-	${menu args->b2_style name='Button 2 Style', type='css'}
-${menu name='Step 2', icon='bars'}
-	${menu args->text_4 name='Line 1'}
-	${menu args->style_t4 name='Style', type='css', param='with_responsive=1'}
-	${menu args->href_2 name='Button 3 URL'}
-	${menu args->target_2 name='Button 3 Open link in', type='a_target'}
-	${menu args->close_1 name='Button 3 text'}
-	${menu block->with_close_4 name='Show Close Link'}
-	${menu args->b4_1 name='Close Link'}
-	${menu args->b4_style name='Close Link Style', type='css'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->show_close_button name='Show close button'}
-	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-```
+  <!-- Background Image -->
+  <div data-style="position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url(${args->image_bgc:html:default('https://cdn.personyze.com/upload/362/ace46de3a2bab43a.png')});
+    background-repeat: no-repeat;
+    background-position: center 50%;
+    ${args->img_bg_style:html:default('background-color: #111;')}">
+  </div>
 
+  <!-- Optional Foreground Image -->
+  ${block->with_image:default(1)}
+  <div data-style="position: absolute; width: 100%; top: 10px; text-align: center;">
+    <img src="${args->foreground_image:html:default('https://cdn.personyze.com/upload/362/836ce71c4644386c.png')}"
+         alt="${args->foreground_image_alt:html:default(Image)}"
+         data-style="${args->foreground_image_style:html:default('max-width: 140px; height: auto; background-color: #fafafa; border-radius: 20px; padding: 5px; margin-top: 15px;')}">
+  </div>
+  ${endblock}
 
-## Message
-
-
-
-```
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,700' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-<style id="pahkuhou2_styles"></style>
-<div id="pahkuhou2_popup" style="position:relative; box-sizing: border-box; ${args->style:html:default('width: 352px;
-background-color: rgba(236, 240, 241, 1);
-border: 7px solid #fff;
-text-align: center;
-')}" data-action_id="${action_id:html}">
-
-${block->show_close_button:default(1)}
-<div style="cursor:pointer; position:absolute; z-index:1; ${args->close_button_style:html:default('top: 15px;
-right: 8px;
-')}">
-    ${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 0px solid; box-shadow: none; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 15px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease 0s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 43%, currentcolor 43%, currentcolor 59%, transparent 59%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 43%, currentcolor 43%, currentcolor 59%, transparent 59%, transparent 100%);"></div></div>')}
-</div>
-
-<div style="position: absolute; padding: 4px 10px; margin-top: -5px; ${args->title_style:html:default('background-color: white;
-color: rgb(83, 112, 167);
-font-family: Source Sans Pro,sans-serif;
-font-size: 16px;
-font-weight: 600;
-letter-spacing: 1px;
-')}">${args->title_text:default(NEW!)}</div>
-<div style="padding: 0 20px; margin-top: 40px; ${args->content_style:html:default('font-size: 17px;
-color: #464646;
-line-height: 24px;
-font-family: Source Sans Pro,sans-serif;
-font-weight: 400;
-text-align: center;
-')}">${args->content_text:default('<div style="text-align: center;">I know where you live!&nbsp;&nbsp;<br />
-Scroll down or close me and I will go away.&nbsp;</div>
-')}</div>
-
-<a href="${args->button_link:html}" onclick="${args->button_link_js:html}" target="${args->button_target:html:default(_blank)}" style="${args->button_style:html:default('display: inline-block;
-margin-top: 20px;
-margin-right: 0;
-margin-bottom: 30px;
-margin-left: 0;
-text-align: center;
-width: 120px;
-font-size: 15px;
-color: white;
-border-bottom: 2px solid rgb(83, 112, 167);
-background-color: rgb(83, 112, 167);
-border-radius: 4px;
-padding-top: 8px;
-padding-right: 0;
-padding-bottom: 8px;
-padding-left: 0;
-text-decoration: none;
-')}">${args->button_caption:default(Some Button)}</a>
-
-<a href="${args->button2_link:html}" onclick="${args->button2_link_js:html}" target="${args->button2_target:html}" style="${args->button2_style:html}">${args->button2_caption}</a>
-</div>
-<div class="pahkuhou2-plus" style="position:absolute; top:50%; transform:translateY(-50%); display: block; cursor: pointer; ${args->label_style:html:default('font-family: Source Sans Pro,sans-serif;
-font-size: 13px;
-text-align: left;
-letter-spacing: 1px;
-')}" data-width="${args->label_width:html:default(55)}" data-height="${args->label_height:html:default(110)}" data-bgcolor="${args->label_bgcolor:html:default('#a78c53')}" ontplready="
-    var popup = by_id.pahkuhou2_popup,
-    style = by_id.pahkuhou2_styles,
-    direction = 'right';
-
-    switch(_S_T.act_params['${action_id:html}'].popup_settings.position_number) {
-        case 1:
-        case 4:
-        case 7: direction = 'left'; break;
-    };
-
-    style.innerHTML = '.pahkuhou2-popup { margin-' + direction + ': 0; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; -o-transition: all 1s ease; transition: all 1s ease; } ' +
-        '.pahkuhou2-plus { ' + direction + ': -2000px; -webkit-transition: all 1.25s ease; -moz-transition: all 1.25s ease; -o-transition: all 1.25s ease; transition: all 1.25s ease; } ' +
-        '@media all and (max-width: 900px) { .pahkuhou2-popup { margin-' + direction + ': -2000px; } .pahkuhou2-plus { ' + direction + ': 0; } }';
-
-    var plus = this,
-    popup_width = popup.getBoundingClientRect().width,
-    Direction = direction[0].toUpperCase() + direction.substring(1);
-
-    var c = plus.children[0],
-        w = +plus.dataset.width.replace(/[^0-9\.-]/g, ''),
-        h = (+plus.dataset.height.replace(/[^0-9\.-]/g, '')) / 2;
-
-    plus.style['border-top'] = h + 'px solid transparent';
-    plus.style['border-bottom'] = h + 'px solid transparent';
-    plus.style['border' + Direction] = w + 'px solid ' + plus.dataset.bgcolor;
-
-    if (c) c.style.transform = 'translate(' + (direction === 'left' ? -w : w - (+getComputedStyle(c).width.replace(/[^0-9\.-]/g, ''))) + 'px, -50%)';
-
-    plus.addEventListener('click', function () {
-        plus.style[direction] = '-' + popup_width + 'px';
-        popup.style['margin' + Direction] = 0;
-    });
-
-    document.addEventListener('scroll', function () {
-        var scrolled = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrolled < 150) return;
-
-        popup.style['margin' + Direction] = '-' + popup_width + 'px';
-        plus.style[direction] = 0;
-    });
-">
-
-    <span style="position: absolute; ${args->label_title_style:html:default('line-height: 1;
-text-align: center;
-width: 2.5em;
-color: white;
-')}">
-        ${args->label_title:default(SALE)}
+  <!-- Title -->
+  <div data-style="position: absolute; width: 100%; ${args->content_title_position:html:default('text-align: center; top: 80px;')}">
+    <span data-style="${args->title_style:html:default('font-family: Viga; color: #fff; font-size: 25px; line-height: 1.2; letter-spacing: 1px;')}">
+      ${args->title:default(UNIVERSITY CREATIVE EVENT)}
     </span>
-</div>
+  </div>
 
-${menu name='Popup', icon='th-large'}
-	${menu args->style name='Style', type='css'}
-${menu name='Title', icon='bookmark'}
-	${menu args->title_text name='Text'}
-	${menu args->title_style name='Style', type='css'}
-${menu name='Content', icon='bookmark'}
-	${menu args->content_text name='Text'}
-	${menu args->content_style name='Style', type='css'}
-${menu name='Button', icon='check'}
-	${menu args->button_caption name='Caption'}
-	${menu args->button_link name='Link', type='url'}
-	${menu args->button_link_js name='Javascript', type='source_javascript'}
-	${menu args->button_target name='Open link in', type='a_target'}
-	${menu args->button_style name='Style', type='css'}
-${menu name='Second Button', icon='check'}
-	${menu args->button2_caption name='Caption'}
-	${menu args->button2_link name='Link', type='url'}
-	${menu args->button2_link_js name='Javascript', type='source_javascript'}
-	${menu args->button2_target name='Open link in', type='a_target'}
-	${menu args->button2_style name='Style', type='css'}
-${menu name='Close button', icon='close'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-${menu name='Label', icon='bookmark'}
-	${menu args->label_title name='Text'}
-	${menu args->label_title_style name='Style', type='css'}
-	${menu args->label_width name='Width, px'}
-	${menu args->label_height name='Height, px'}
-	${menu args->label_bgcolor name='Background color', type='color'}
-	${menu args->label_style name='Style', type='css'}
-```
+  <!-- Description -->
+  <div data-style="position: absolute; width: 100%; ${args->content_style:html:default('font-family: Open Sans; color: #ccc; text-align: center; top: 250px; font-size: 22px; line-height: 1.2;')}">
+    ${args->title4:default('for<br />innovative<br />technologies')}
+  </div>
 
+  <!-- CTA Buttons -->
+  <div data-style="position: absolute; width: 100%; ${args->button_style:html:default('text-align: center; bottom: 150px;')}">
 
-## Tall-banner
-
-
-
-```
-<div class="$responsive" data-style="box-sizing: border-box;
-margin: 0 auto;
-position: relative;
-overflow: hidden;
-${args->style:html:default('
-width: 160px;
-height: 600px;
-border: 1px solid #0c0c0e'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}
-">
-<div data-style="position: absolute;
-	width:100%;
-	height: 100%;
-	background-image: url(${args->image_bgc:html:default():input_type(personyze_media_url):arg_name(Background image):arg_section(0, 1, 'Box', 'th-large')});
-	background-repeat: no-repeat;
-	background-position: 0 50%;
-	${args->img_bg_style:html:default('background-color:#33313E'):input_type(css):input_props('with_responsive=1'):arg_name(Background style):arg_section(0, 2, 'Box', 'th-large')}"></div>
-
-		<div data-style="position: absolute; width:100%;
-		${args->content_title1_position:html:default('
-		text-align: center;
-		top: 80px'):input_type(css):input_props('with_responsive=1'):arg_name(Title position):arg_section(1, 0, 'Title', 'bookmark')}">
-		<span data-style="
-			${args->action_text_style:html:default('
-			font-family: Viga;
-			color: #fff;
-			font-size: 25px;
-			line-height: 0.9;
-			letter-spacing: 2px'):input_type(css):input_props('with_responsive=1'):arg_name(Title line 1 font):arg_section(1, 2, 'Title', 'bookmark')}">
-			${args->title:default(ANNUAL):arg_name(Title line 1):arg_section(1, 1, 'Title', 'bookmark')}
-			<span data-style="
-				${args->action_text2_style:html:default('
-				color: #fff;
-				font-size: 22px;
-				letter-spacing: 1px'):input_type(css):input_props('with_responsive=1'):arg_name(Title line 2 font):arg_section(1, 4, 'Title', 'bookmark')}
-				">${args->title2:default(BUSINESS):arg_name(Title line 2):arg_section(1, 3, 'Title', 'bookmark')}</span>  <span data-style="
-			${args->action_text3_style:html:default('
-			color: #fff;
-			font-size: 18px;
-			letter-spacing: 0'):input_type(css):input_props('with_responsive=1'):arg_name(Title line 3 font):arg_section(1, 6, 'Title', 'bookmark')}
-			">${args->title3:default(CONFERENCE):arg_name(Title line 3):arg_section(1, 5, 'Title', 'bookmark')}</span></span>
-		</div>
-		<div data-style="position: absolute;
-			width: 100%;
-			${args->content_style:html:default('
-			font-family: ''Open Sans'';
-			color: #fff;
-			text-align: center;
-			top: 250px;
-			font-size: 22px;
-			line-height: 0.9;
-			letter-spacing: 0'):input_type(css):input_props('with_responsive=1'):arg_name(Line 4 font):arg_section(2, 0, 'Text', 'file-text')}
-			">${args->title4:default('for<br />
-innovative<br />
-technologies'):arg_name(Line 4):arg_section(2, 1, 'Text', 'file-text')}
-		</div>
-
-<div data-style="position: absolute;
-width: 100%;
-${args->button_style:html:default('text-align: center;
-bottom: 150px;'):input_type(css):input_props('with_responsive=1'):arg_name(Button position):arg_section(4, 3, 'Button', 'hand-o-up')}">
-<a href="${args->href:html:default('#'):arg_name(URL):arg_section(4, 1, 'Button', 'hand-o-up')}" target="${args->target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(4, 2, 'Button', 'hand-o-up')}"
-	data-style="letter-spacing: 0;
-	${args->button_text_style:html:default('
-	font-family: Viga;
-	color: #fff;
-	font-size: 20px;
-	line-height: 1;
-	letter-spacing: 0;
-	padding: 10px 20px;
-	text-decoration: none;
-	background-color: #fc5729'):input_type(css):input_props('with_responsive=1'):arg_name(Button style):arg_section(4, 4, 'Button', 'hand-o-up')}">
-	${args->title_button:default(ATTEND):arg_name(Button text):arg_section(4, 0, 'Button', 'hand-o-up')}
-</a>
-</div>
-<div data-style="position: absolute;
-width: 100%;
-${args->pace_position:html:default('
-text-align: center;
-bottom: 35px'):input_type(css):input_props('with_responsive=1'):arg_name(Position_Place_1):arg_section(3, 0, 'Place', 'file-text')}
-">
-<span data-style="
-	${args->place_style:html:default('font-family: ''Open Sans'';
-	font-weight: 200;
-	color: #fff;
-	font-size: 12px;
-	line-height: 1;
-	letter-spacing: 0'):input_type(css):input_props('with_responsive=1'):arg_name(Style_Place_1):arg_section(3, 1, 'Place', 'file-text')}
-	">${args->title_place:default('July 25-26, Paris'):arg_name(Place_text):arg_section(3, 2, 'Place', 'file-text')}</span>
-</div>
-${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top:5px; right:5px;z-index:9999'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-	${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 6px; color: rgb(244, 242, 242); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-</div>
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Viga:400|Open+Sans:400,700">
-</div>
-```
-
-
-## Two button popup/banner
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: white;
-padding: 43px;
-max-width: 600px;
-border-radius: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: -12px;
-right: -10px;
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: black; text-decoration-color: black; outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://static.personyze.com/upload/362/2ced8f83fce5a056.png'):input_type(personyze_media_url):arg_name(URL):arg_section(1, 0, 'Image', 'image')}" style="vertical-align:bottom; ${args->image_style:html:default('width: sel(550px, 60vw);
-height: sel(33px, 40vw);
-max-width: 400px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 1, 'Image', 'image')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('color:black; text-align:center; font-family:Fjalla One,san-serif; font-weight:normal; font-size:28px; line-height:38px; padding:10px 40px; text-transform:uppercase; letter-spacing:2px'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Text Text):arg_name(Text 1 line 1):arg_section(2, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('color:black; text-align:center; font-family:Helvetica,san-serif; font-weight:normal; font-size:15px; padding:10px 0; letter-spacing:1px'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 4, 'Text 1', 'bars')}">
-					${args->line_2:default('Text Text Text Text Text Text<br />
-Text Text Text Text Text Text Text Text'):arg_name(Text 1 line 2):arg_section(2, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href="javascript:" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-family: Fjalla One,san-serif;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 40px;
-line-height: 40px;
-text-align: center;
-text-transform: uppercase;
-border: 1px solid black;
-border-radius: 3px;
-background-color: white;
-color: black;
-padding: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(Close):arg_name(Text_button):arg_section(3, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('font-family: Fjalla One,san-serif;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 40px;
-line-height: 40px;
-text-align: center;
-text-transform: uppercase;
-border: 0;
-border-radius: 3px;
-background-color: rgb(74, 135, 86);
-color: rgb(248, 249, 247);
-padding: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(View):arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Bottom bar
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width: 100%;
+    ${block->button1:default(1)}
+    <div style="margin-bottom: 15px;">
+      <a ${args->href1:default('href="#"')}
+         data-js="${args->cta_js:html}"
+         data-dismiss="${args->cta_dismiss:html}"
+         target="${args->target:html:default(_self)}"
+         data-style="${args->button1_style:html:default('font-size: 16px;
+background-color: #3498db;
+color: #fff;
 padding-top: 10px;
-padding-right: 25px;
+padding-right: 24px;
 padding-bottom: 10px;
-padding-left: 25px;
-text-align: center;
-color: #fff;
-background-color: black;
-box-sizing: border-box;
-vertical-align: middle;
-')}">
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    <span data-style="${args->title_text_style:html:default('font-weight: normal;
-font-size: 15px;
-line-height: 30px;
-color: white;
-text-align: justify;
-padding: 0px;
-margin: 0;
-vertical-align: middle;
-')}">${args->title_text:default(YOUR TEXT)}</span>
-
-	${block->with_button:default(1)}
-	<a ${args->button_link:default('href=""')} data-style="${args->button_style:html:default('display: inline-block;
-color: #fff;
-font-family: Khand,sans-serif;
-font-weight: normal;
-font-size: 14px;
-text-transform: uppercase;
+padding-left: 24px;
+border-radius: 30px;
 text-decoration: none;
-margin-left: 16px;
-background-color: rgb(118, 177, 109);
-padding-top: 5px;
-padding-right: 15px;
-padding-bottom: 5px;
-padding-left: 15px;
+')}"
+         style="animation: ${args->button1_animation:html:default(bounce)} 1.5s infinite;"
+         class="$personyze_button">
+         ${args->button1_text:default(Join Now)}
+      </a>
+    </div>
+    ${endblock}
+
+    ${block->button2:default(1)}
+    <div>
+      <a ${args->href2:default('href="#"')}
+         target="${args->target:html}"
+         data-style="${args->button2_style:html:default('font-size: 14px;
+background: transparent;
+color: #eee;
+text-decoration: underline;
+padding-top: 10px;
+padding-right: 20px;
+padding-bottom: 10px;
+padding-left: 20px;
 border-radius: 20px;
-')}">
-		${args->button_caption:default(Learn more!)}
-	</a>
-
-	${block->with_button_2:default(1)}
-	<a ${args->button_2_link:default('href=""')} data-style="${args->button_2_style:html:default('line-height: 24px;
-color: #f1c40f;
-border-radius: 5px;
-font-family: Poppins,sans-serif;
-font-weight: normal;
-font-size: 10px;
-text-decoration: none;
-margin-top: auto;
-margin-right: auto;
-margin-bottom: auto;
-margin-left: 16px;
-vertical-align: middle;
-')}">
-		${args->button_2_caption:default(Contact us)}
-	</a>
-
-    ${block->show_close_button:default(1)}
-    <div data-style="${args->close_button_style:html:default('position: absolute;
-top: 12px;
-right: 10px;
-')}">
-        ${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgba(146, 83, 83, 0.98); text-decoration-color: rgba(146, 83, 83, 0.98); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease 0s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
+')}"
+         class="$personyze_button">
+         ${args->button2_text:default(Maybe Later)}
+      </a>
     </div>
+    ${endblock}
+
+  </div>
+
+  <!-- Close Button -->
+  ${block->x:default(1)}
+  <div data-style="${args->close_button_style:html:default('position: absolute; top: 3px; right: 3px; z-index: 9999;')}" title="Close">
+    ${args->x:default('<a href="javascript:" class="$personyze_button_dont_show_again" data-action_id="${action_id}" style="font-size: 20px; color: #fff; background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 50%; text-decoration: none;">&times;</a>')}
+  </div>
+
 </div>
 
 ${menu name='Box', icon='th-large'}
-	${menu args->style name='Style', type='css', param='with_responsive=1'}
-${menu name='Title', icon='bookmark'}
-	${menu args->title_text name='Text'}
-	${menu args->title_text_style name='Style', type='css', param='with_responsive=1'}
-${menu name='Button', icon='hand-o-up'}
-	${menu block->with_button name='With button'}
-	${menu args->button_link name='Link', type='a_attrs'}
-	${menu args->button_caption name='Caption'}
-	${menu args->button_style name='Style', type='css', param='with_responsive=1'}
-${menu name='Second Button', icon='hand-o-up'}
-	${menu block->with_button_2 name='With button'}
-	${menu args->button_2_link name='Link', type='a_attrs'}
-	${menu args->button_2_caption name='Caption'}
-	${menu args->button_2_style name='Style', type='css', param='with_responsive=1'}
-${menu name='Close button', icon='close'}
-	${menu block->show_close_button name='Show close button'}
-	${menu args->close_button_style name='Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-```
-
-
-## Small popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(256, 256, 256);
-padding: 10px;
-border-radius: 2px;
-width: 280px;
-box-shadow: 0 0 8px 4px rgb(222, 207, 207);
-margin-top: 1px;
-margin-right: 15px;
-margin-bottom: 1px;
-margin-left: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('text-align: right;
-width: 100%;
-top: -10px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 5px; background-color: rgb(190, 61, 22); text-decoration-color: rgb(190, 61, 22); outline-color: rgb(110, 88, 52); outline-width: 10px; color: rgb(246, 244, 244); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 20px;
-color: rgba(38, 38, 63, 0.73);
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: bold;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(TEXT TEXT TEXT TEXT  TEXT TEXT):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 14px;
-color: rgb(90, 58, 58);
-padding-top: 0px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: lighter;
-text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Text Text Text):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-size: 14px;
-color: rgb(256, 256, 256);
-text-decoration: none;
-background-color: rgba(71,206,144,1);
-padding-top: 8px;
-padding-right: 15px;
-padding-bottom: 8px;
-padding-left: 15px;
-border-radius: 2px;
-font-weight: 600;
-margin: 5px;
-text-transform: uppercase;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(View Offer):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href="javascript:" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('color: rgba(42, 28, 28, 0.45);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(Not interested):arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(253, 253, 253);
-padding-top: 6px;
-padding-right: 6px;
-padding-bottom: 15px;
-padding-left: 6px;
-border-radius: 5px;
-max-width: sel(100%, 90vw);
-width: 400px;
-border: solid thin rgb(203, 155, 155);
-height: auto;
-')}">
-	${block->show_close_button:default(1)}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: -12px;
-right: sel(-10px, -5px);
-z-index: 9999;
-')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: black; text-decoration-color: black; outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease 0s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
-	</div>
-<div data-style="${args->line_11_style:html:default('color: rgb(36, 36, 66);
-text-align: center;
-font-family: Arial;
-font-weight: bold;
-font-size: 20px;
-line-height: 38px;
-padding: 5px;
-text-transform: uppercase;
-letter-spacing: 1px;
-')}">
-					${args->line_11:default(Your title goes here)}
-				</div>
-				<div data-style="${args->line_12_style:html:default('color: rgb(89, 58, 58);
-text-align: center;
-font-family: Arial;
-font-weight: normal;
-font-size: 13px;
-padding-top: 5px;
-padding-right: 0;
-padding-bottom: 10px;
-padding-left: 0;
-letter-spacing: 1px;
-')}">
-					${args->line_12:default(Free text)}
-				</div>
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://cdn.personyze.com/upload/362/18d08e19c0855cd3.jpeg')}" style="vertical-align:bottom; ${args->image_style:html:default('max-width: 95%;
-')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: rgb(231, 219, 219);
-')}">
-				<div data-style="${args->line_1_style:html:default('color: rgb(70, 42, 42);
-text-align: center;
-font-family: Arial;
-font-weight: bold;
-font-size: 20px;
-line-height: 38px;
-padding: 5px;
-text-transform: uppercase;
-letter-spacing: 1px;
-')}">
-					${args->line_1:default(Your title goes here)}
-				</div>
-				<div data-style="${args->line_2_style:html:default('color: rgb(132, 185, 131);
-')}">
-					${args->line_2:default(Free)}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-family: Arial;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 30px;
-line-height: 30px;
-text-align: center;
-text-transform: uppercase;
-border: 1px solid rgb(160, 65, 65);
-border-radius: 3px;
-background-color: rgb(118, 66, 66);
-color: rgb(249, 247, 247);
-padding: 0;
-')}">  ${args->button_t:default(MORE INFO)}
-				</a>
-
-				${block->show_button_2:default(1)}
-				<a ${args->href_2}
-					data-style="display:inline-block; ${args->button_text_style_2:html}">
-					${args->button_t_2}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-
-${menu name='Box', icon='th-large'}
-	${menu args->style name='Box style', type='css', param='with_responsive=1'}
-${menu name='Text Header', icon='bars'}
-	${menu args->line_11 name='Text 11 line 11'}
-	${menu args->line_11_style name='Text 11 style', type='css', param='with_responsive=1'}
-	${menu args->line_12 name='Text 1 line 2'}
-	${menu args->line_12_style name='Text 12 style', type='css', param='with_responsive=1'}
+	${menu args->style name='Box Style', type='css', param='with_responsive=1'}
+	${menu args->image_bgc name='Background Image', type='personyze_media_url'}
+	${menu args->img_bg_style name='Background Style', type='css', param='with_responsive=1'}
 ${menu name='Image', icon='image'}
-	${menu args->image_src name='URL', type='personyze_media_url'}
-	${menu args->image_style name='Text 1 style', type='css', param='with_responsive=1'}
-${menu name='Text 1', icon='bars'}
-	${menu args->text_1_style name='Text 1 style', type='css', param='with_responsive=1'}
-	${menu args->line_1 name='Text 1 line 1'}
-	${menu args->line_1_style name='Text 1 style', type='css', param='with_responsive=1'}
-	${menu args->line_2 name='Text 1 line 2'}
-	${menu args->line_2_style name='Text 1 style', type='css', param='with_responsive=1'}
-${menu name='Button', icon='hand-o-up'}
-	${menu args->button_t name='Text_button'}
-	${menu args->href name='URL', type='a_attrs'}
-	${menu args->button_text_style name='Button text style', type='css', param='with_responsive=1'}
-${menu name='Second Button', icon='hand-o-up'}
-	${menu block->show_button_2 name='Show second button'}
-	${menu args->button_t_2 name='Text_button'}
-	${menu args->href_2 name='URL', type='a_attrs'}
-	${menu args->button_text_style_2 name='Button text style', type='css', param='with_responsive=1'}
+	${menu block->with_image name='Show Foreground Image'}
+	${menu args->foreground_image name='Image URL', type='personyze_media_url'}
+	${menu args->foreground_image_alt name='Image Alt'}
+	${menu args->foreground_image_style name='Image Style', type='css', param='with_responsive=1'}
+${menu name='Text Block', icon='font'}
+	${menu args->title name='Title Text'}
+	${menu args->title_style name='Title Style', type='css', param='with_responsive=1'}
+	${menu args->content_title_position name='Title Position', type='css', param='with_responsive=1'}
+	${menu args->title4 name='Description Text'}
+	${menu args->content_style name='Description Style', type='css', param='with_responsive=1'}
+${menu name='Primary CTA Button', icon='hand-pointer-o'}
+	${menu block->button1 name='Show Button'}
+	${menu args->button1_text name='Button Text'}
+	${menu args->href1 name='Button URL', type='a_attrs'}
+	${menu args->button1_style name='Button Style', type='css', param='with_responsive=1'}
+	${menu args->button1_animation name='Animation', type='select', param='options=[["None",""],["Bounce","bounce"],["Pulse","pulse"],["Shake","shake"]]'}
+	${menu args->cta_js name='JS on Click'}
+	${menu args->cta_dismiss name='Auto Dismiss'}
+${menu name='Secondary CTA Button', icon='hand-o-up'}
+	${menu block->button2 name='Show Second Button'}
+	${menu args->button2_text name='Second Button Text'}
+	${menu args->href2 name='Second Button URL', type='a_attrs'}
+	${menu args->button2_style name='Second Button Style', type='css', param='with_responsive=1'}
 ${menu name='Close Button', icon='times-circle'}
-	${menu block->show_close_button name='Show close button'}
-	${menu args->close_button_style name='Close_btn_Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-```
-
-
-## Popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgba(124, 176, 120, 0.55);
-padding-top: 0px;
-padding-right: 25px;
-padding-bottom: 0px;
-padding-left: 25px;
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;
-border-bottom-right-radius: 30px;
-border-bottom-left-radius: 30px;
-width: auto;
-background-image: url(''https://cdn.personyze.com/upload/362/5c566581bb271535.jpeg'');
-background-size: contain;
-background-repeat: no-repeat;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('float: right;
-width: 92%;
-text-align: right;
-position: absolute;
-top: -10px;
-right: -5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 28px;
-color: rgb(251, 250, 250);
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 0px;
-padding-left: 0px;
-font-weight: bold;
-text-align: left;
-text-transform: none;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Title goes here):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 18px;
-margin-top: 0;
-margin-right: 0;
-margin-bottom: 0px;
-margin-left: 0;
-font-weight: 400;
-color: rgb(256, 256, 256);
-line-height: 1.3;
-text-align: left;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default('Description goes here<br />
-&nbsp;'):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href="" data-personyze-click-target=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('height: auto;
-border: 2px solid rgb(70, 143, 61);
-line-height: 25px;
-text-align: center;
-color: rgb(251, 250, 250);
-border-radius: 15px;
-font-size: 1.2em;
-text-decoration: none;
-padding-top: 0px;
-padding-right: 15px;
-padding-bottom: 0px;
-padding-left: 15px;
-width: 80%;
-background-color: rgb(70, 143, 61);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(MORE INFO):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(0):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-
-</div>
-```
-
-
-## Top or Bottom Bar
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width:100%; padding:12px 48px; text-align:center; color:#fff; background-color:rgba(0,0,0,.8); box-sizing:border-box'):input_type(css):input_props(with_responsive=1):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    <span data-style="${args->title_text_style:html:default('font-family:Poppins,sans-serif; font-weight:normal; font-size:11px; line-height:28px'):input_type(css):input_props(with_responsive=1):arg_name(Style):arg_section(1, 1, 'Title', 'bookmark')}">${args->title_text:default('Sign up for personalized <span style="color:#ffff00;">deal alerts</span> and <span style="color:#ffff00;">exclusive discounts</span>'):arg_name(Text):arg_section(1, 0, 'Title', 'bookmark')}</span><a href="${args->button_link:html:default('javascript:'):input_type(url):arg_name(Link):arg_section(2, 2, 'Button', 'hand-o-up')}" onclick="${args->button_link_js:html:input_type(source_javascript):arg_name(Javascript):arg_section(2, 3, 'Button', 'hand-o-up')}" data-style="${args->button_style:html:default('display: inline-block;
-width: 120px;
-line-height: 24px;
-color: #fff;
-background-color: rgb(6, 224, 60);
-border-radius: 5px;
-font-family: Poppins,sans-serif;
-font-weight: normal;
-font-size: 10px;
-text-decoration: none;
-margin-left: 16px;
-vertical-align: middle;'):input_type(css):input_props(with_responsive=1):arg_name(Style):arg_section(2, 1, 'Button', 'hand-o-up')}">${args->button_caption:default(Join Now):arg_name(Caption):arg_section(2, 0, 'Button', 'hand-o-up')}</a>
-    ${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close button', 'close')}
-    <div data-style="${args->close_button_style:html:default('position:absolute; top:18px; right:16px'):input_type(css):input_props(with_responsive=1):arg_name(Style):arg_section(3, 1, 'Close button', 'close')}">
-        ${args->close_button:default('<img src="http://counter.emarketer.com/images/close-buttons/rect-white-orange-16x16.png" style="width:16px; height:16px; [object CSSStyleDeclaration]" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0">'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close button', 'close')}
-    </div>
-</div>
-
-```
-
-
-## Personal Message
-
-
-
-```
-<div class="$responsive" data-style="${args->style:html:default('width:sel(700px, 80vw); background-color:#E7E7E7'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-	<div data-style="position:relative; ${args->td_style:html:default('padding:sel(20px, 3vw) sel(100px, 8vw) 5px; text-align:center; color:black; font-size:14px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Content', 'bookmark')}">
-		${args->content:default(Download our FREE Testing Toolkit! Download our FREE Testing Toolkit! Download our FREE Testing Toolkit! Download our FREE Testing Toolkit!):arg_name(Text):arg_section(1, 0, 'Content', 'bookmark')}
-		<div style="text-align:inherit">
-			<a href="${args->href:html:default('#'):arg_name(URL):arg_section(2, 2, 'Action button', 'link')}" target="${args->target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(2, 3, 'Action button', 'link')}" data-style="display:inline-block; ${args->action_button_text_style:html:default('text-decoration:none; width:sel(250px, 40vw); margin:1em 0 0.5em; padding:10px 0; background-color:blue; border-radius:5px; font-size:16px; color:white'):input_type(css):input_props('with_responsive=1'):arg_name(Text style):arg_section(2, 1, 'Action button', 'link')}">
-				${args->action_button_text:default(GET IT NOW):arg_name(Text):arg_section(2, 0, 'Action button', 'link')}
-			</a>
-		</div>
-		${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close button', 'close')}
-		<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top:8px; right:8px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Close button', 'close')}">
-			${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(58, 110, 207); text-decoration-color: rgb(58, 110, 207); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(244, 242, 242); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close button', 'close')}
-		</div>
-	</div>
-</div>
-```
-
-
-## 2 Buttons tempalte
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(49, 43, 73);
-padding: 25px;
-box-shadow: 0 0 3px 2px rgb(49, 43, 73);
-border-radius: 14px;
-width: 500px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('direction: inherit;
-text-align: right;
-width: 100%;
-top: 12px;
-left: -8px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgba(13, 7, 7, 0); text-decoration-color: rgba(13, 7, 7, 0); outline-color: rgb(206, 54, 64); outline-width: 10px; color: white; cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://counter.emarketer.com/images/logo.png'):input_type(emarketer_media_url):arg_name(URL):arg_section(1, 0, 'Image', 'image')}" style="vertical-align:bottom; ${args->image_style:html:default('width: sel(auto, 60vw);
-height: sel(auto, 40vw);'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 1, 'Image', 'image')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 18px;
-color: white;
-padding: 40px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT):arg_name(Text 1 line 1):arg_section(2, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size:15px'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 4, 'Text 1', 'bars')}">
-					${args->line_2:arg_name(Text 1 line 2):arg_section(2, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(3, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-size: 14px;
-color: rgb(36, 20, 20);
-text-decoration: none;
-background-color: rgb(103, 256, 73);
-padding-top: 8px;
-padding-right: 20px;
-padding-bottom: 8px;
-padding-left: 20px;
-border-radius: 15px;
-font-weight: bold;
-margin: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(Button 1):arg_name(Text_button):arg_section(3, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href="Button 2"'):input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('font-size: 14px;
-color: rgba(256, 256, 256, 0.77);
-text-decoration: none;
-background-color: rgb(169, 185, 208);
-padding-top: 8px;
-padding-right: 20px;
-padding-bottom: 8px;
-padding-left: 20px;
-border-radius: 15px;
-font-weight: bold;
-margin: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(Button 2):arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## 2 buttons
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(49, 43, 73);
-padding: 25px;
-border-radius: 2px;
-width: 550px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('float: right;
-width: 92%;
-text-align: right;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 22px;
-color: white;
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: bold;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 14px;
-color: white;
-padding-top: 0px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: lighter;
-text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXTEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXTT TEXT):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('width: sel(200px, auto);
-padding: sel(10px, 1vw);
-border-width: 2px;
-text-align: center;
-font-size: sel(25px, 5vw);
-background-color: rgb(220, 73, 20);
-border-color: rgb(220, 73, 20);
-box-shadow: 0 0 3px black;
-color: rgb(256, 256, 256);
-border-radius: 0px;
-margin: 8px;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default('<span style="font-weight:bold">YES</span><span style="font-size:60%">, I want it</span>'):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('width: sel(200px, auto);
-padding: sel(10px, 1vw);
-border-width: 2px;
-text-align: center;
-font-size: sel(25px, 5vw);
-background-color: rgb(238, 232, 232);
-border-color: rgb(220, 73, 20);
-box-shadow: 0 0 3px black;
-color: rgb(120, 79, 79);
-border-radius: 0px;
-margin: 8px;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default('<span style="font-weight:bold">NO</span><span style="font-size:60%">, not now thanks</span>'):arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Small Popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(256, 256, 256);
-padding: 10px;
-border-radius: 2px;
-width: 280px;
-box-shadow: 0 0 8px 4px rgb(222, 207, 207);
-margin-top: 1px;
-margin-right: 15px;
-margin-bottom: 1px;
-margin-left: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('text-align: right;
-width: 100%;
-top: -10px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 5px; background-color: rgb(190, 61, 22); text-decoration-color: rgb(190, 61, 22); outline-color: rgb(110, 88, 52); outline-width: 10px; color: rgb(246, 244, 244); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 20px;
-color: rgba(38, 38, 63, 0.73);
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: bold;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(TEXT TEXT TEXT TEXT  TEXT TEXT):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 14px;
-color: rgb(90, 58, 58);
-padding-top: 0px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: lighter;
-text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Text Text Text):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-size: 14px;
-color: rgb(256, 256, 256);
-text-decoration: none;
-background-color: rgba(71,206,144,1);
-padding-top: 8px;
-padding-right: 15px;
-padding-bottom: 8px;
-padding-left: 15px;
-border-radius: 2px;
-font-weight: 600;
-margin: 5px;
-text-transform: uppercase;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(View Offer):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('color: rgba(42, 28, 28, 0.45);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(Not interested):arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Simple Popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(238, 232, 232);
-padding: 10px;
-border-radius: 2px;
-width: 580px;
-box-shadow: 0 0 8px 4px rgb(222, 207, 207);
-margin-top: 1px;
-margin-right: 15px;
-margin-bottom: 1px;
-margin-left: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('text-align: right;
-width: 100%;
-top: -10px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 0px solid; box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 5px; background-color: rgb(190, 61, 22); text-decoration-color: rgb(190, 61, 22); outline-color: rgb(110, 88, 52); outline-width: 10px; color: rgb(246, 244, 244); cursor: pointer; transition: all 0.3s ease 0s;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 20px;
-color: rgba(38, 38, 63, 0.73);
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: bold;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(TEXT TEXT TEXT TEXT  TEXT TEXT):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 14px;
-color: rgb(90, 58, 58);
-padding-top: 0px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: lighter;
-text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Text Text Text):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-size: 14px;
-color: rgb(256, 256, 256);
-text-decoration: none;
-background-color: rgb(68, 126, 88);
-padding-top: 8px;
-padding-right: 15px;
-padding-bottom: 8px;
-padding-left: 15px;
-border-radius: 2px;
-font-weight: 600;
-margin: 5px;
-text-transform: uppercase;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(MORE DETAILS):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('color: rgba(42, 28, 28, 0.45);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(Dismissed):arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Popup with image
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgba(20, 10, 11, 0.8);
-padding: 43px;
-max-width: 600px;
-border-radius: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: -17px;
-right: -10px;
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 29px; height: 29px; box-sizing: border-box; border-radius: 50%; border: 0px solid; box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: rgb(206, 54, 64); text-decoration-color: rgb(206, 54, 64); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease 0s;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://cdn.e-marketer.io/upload/362/7d0a26d42b6f9a72.jpeg'):input_type(emarketer_media_url):arg_name(URL):arg_section(1, 0, 'Image', 'image')}" style="vertical-align:bottom; ${args->image_style:html:default('width: sel(550px, 60vw);
-height: sel(33px, 40vw);
-max-width: 400px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 1, 'Image', 'image')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 18px;
-font-weight: 900;
-padding: 10px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Text Text):arg_name(Text 1 line 1):arg_section(2, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size:15px'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Text Text Text Text Text Text Text Text Text Text Text Text Text Text):arg_name(Text 1 line 2):arg_section(2, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-family: Open Sans;
-font-size: 23px;
-color: white;
-text-decoration: none;
-background-color: rgba(128, 128, 128, 0.9);
-padding-top: 4px;
-padding-right: 20px;
-padding-bottom: 4px;
-padding-left: 20px;
-box-shadow: 0 0 2px rgb(222, 202, 202);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(Close):arg_name(Text_button):arg_section(3, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('margin: 15px;
-font-family: Open Sans;
-font-size: 23px;
-color: white;
-text-decoration: none;
-background-color: #4E8150;
-padding-top: 4px;
-padding-right: 21px;
-padding-bottom: 4px;
-padding-left: 20px;
-box-shadow: 0 0 2px rgb(149, 189, 127);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(View):arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width: 300px;
-padding-top: 20px;
-padding-right: 30px;
-padding-bottom: 20px;
-padding-left: 28px;
-text-align: center;
-color: #fff;
-background-color: #002d73;
-box-sizing: border-box;
-box-shadow: 6px 1px 1px 1px rgba(65, 90, 134, 0.02);
-border-radius: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-    <link href="https://fonts.googleapis.com/css?family=Khand" rel="stylesheet">
-    <span data-style="${args->title_text_style:html:default('font-weight: normal;
-font-size: 12px;
-text-transform: uppercase;
-font-family: Arial;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Title', 'bookmark')}">${args->title_text:default(Congrats you have 15% off waiting for you at cart):arg_name(Text):arg_section(1, 0, 'Title', 'bookmark')}</span><a href="${args->button_link:html:default('https://www.refrigiwear.com/cart'):input_type(url):arg_name(Link):arg_section(2, 2, 'Button', 'hand-o-up')}" onclick="${args->button_link_js:html:input_type(source_javascript):arg_name(Javascript):arg_section(2, 3, 'Button', 'hand-o-up')}" data-style="${args->button_style:html:default('display: inline-block;
-color: #fff;
-font-family: Khand,sans-serif;
-font-weight: normal;
-font-size: 15px;
-text-transform: uppercase;
-text-decoration: none;
-margin: 11px;
-background-color: rgb(133, 185, 121);
-padding: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 1, 'Button', 'hand-o-up')}">${args->link_text:default(Prod3x15):arg_name(Text):arg_section(2, 0, 'Button', 'hand-o-up')}</a>
-    ${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close button', 'close')}
-    <div data-style="${args->close_button_style:html:default('position: absolute;
-top: -10px;
-right: -5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Close button', 'close')}">
-        ${args->close_button:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close button', 'close')}
-    </div>
-</div>
-```
-
-
-## 2 Buttons
-
-
-
-```
-<div class="$responsive" data-style="position:relative; overflow:hidden; ${args->box_style:html:default('max-width: 640px;
-background-color: #002856;
-width: 640px;
-color: #002856;
-border-radius: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}" >
-	<table style="border-collapse:collapse; border:none">
-		<tr style="border:none">
-			<td style="border:none; background-repeat:no-repeat; background-position:center; ${args->image_style:html:default('background-image: url(''https://cdn.e-marketer.io/upload/362/9021b00a37b389c0.jpeg'');
-background-size: 100% 100%;'):input_type(css):arg_name(Picture URL):arg_section(1, 0, 'Picture', 'image')}">
-				<div data-style="width:${args->image_width:html:default('sel(300px, 40vw)'):input_type(css_length):input_props('with_responsive=1'):arg_name('Image width', 'Picture URL'):arg_section(1, 1, 'Picture', 'image')}; height:${args->image_height:html:default('sel(300px, 40vw)'):input_type(css_length):input_props('with_responsive=1'):arg_name('Image height', 'Picture URL'):arg_section(1, 2, 'Picture', 'image')}"></div>
-			</td>
-			<td style="border:none; padding:0 1em">
-				<div data-style="max-height:${args->image_height:html}">
-					<div data-style="outline:0; ${args->title_style:html:default('color: #fff;
-font-size: sel(30px, 4vw);
-font-weight: 300;
-line-height: 32px;
-text-align: center;
-margin-top: 30px;
-margin-right: 0px;
-margin-bottom: 0px;
-margin-left: 0px;'):input_type(css):input_props('with_responsive=1'):arg_name(Title style):arg_section(2, 1, 'Content', 'bars')}">
-						${args->title:default('<div style="text-align: center;">Text Text<br />
-Text Text</div>
-'):arg_name(Title):arg_section(2, 0, 'Content', 'bars')}
-					</div>
-					<div data-style="outline:0; ${args->text_style:html:default('text-align: center;
-color: #ffffff;
-font-size: sel(18px, 4vw);
-padding: 5px;
-line-height: 24px;
-font-weight: 200;'):input_type(css):input_props('with_responsive=1'):arg_name(Title style):arg_section(2, 3, 'Content', 'bars')}">
-						${args->text:default('<p style="text-align: center;">Text TextText TextText TextText TextText TextText TextText Text</p>
-'):arg_name(Text):arg_section(2, 2, 'Content', 'bars')}
-					</div>
-					<div style="text-align:center; ${args->buttons_style:html:default('margin-top: 1em;
-margin-right: 0;
-margin-bottom: 2em;
-margin-left: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Buttons margin):arg_section(3, 4, 'First Button', 'hand-o-up')}">
-						${block->show_button:default(1):arg_name(Show button):arg_section(3, 0, 'First Button', 'hand-o-up')}
-						<a ${args->href:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'First Button', 'hand-o-up')} data-style="${args->button_text_style:html:default('font-family: Arial;
-font-size: sel(15px, 4vw);
-color: white;
-text-decoration: none;
-background-color: #f7941e;
-padding-top: 15px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-border-radius: 2px;
-font-weight: bolder;
-margin-top: 1px;
-margin-right: 1px;
-margin-bottom: 1px;
-margin-left: 1px;
-width: 100%;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'First Button', 'hand-o-up')}">  ${args->button_t:default(GOT IT!):arg_name(Text_button):arg_section(3, 1, 'First Button', 'hand-o-up')}
-						</a>
-
-						${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-						<a ${args->href_3:input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')} data-style="display:inline-block; ${args->button_text_style_2:html:input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-							${args->button_t_2:arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-						</a>
-					</div>
-				</div>
-			</td>
-		</tr>
-	</table>
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: 8px;
-right: 8px;
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close Button Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-</div>
-```
-
-
-## Timer popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; background-color:#0B0B0B; text-align:center; box-sizing:border-box; ${args->style:html:default('width: sel(430px, auto);
-padding-top: 30px;
-padding-right: 0px;
-padding-bottom: 60px;
-padding-left: 0px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-    <style>@font-face { font-family:Segment7Standard; src:url('https://static.emarketer.com/upload/4241/12050534867b94b3.otf'); }</style>
-    <link href="https://fonts.googleapis.com/css?family=Oswald:400" rel="stylesheet">
-    ${block->show_close_button:default(0):arg_name(Show close button):arg_section(6, 0, 'Close button', 'close')}
-    <div style="position:absolute; top:16px; right:16px">
-        ${args->close_button:input_type(dontshowagain):arg_name(Close button):arg_section(6, 1, 'Close button', 'close')}
-    </div>
-    <div data-style="vertical-align:middle; ${args->logo_style:html:default('text-align:center; padding:0 0 40px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Logo', 'image')}">
-        <img src="${args->logo_url:html:default('https://cdn.e-marketer.io/upload/362/185f3236b1b4ab52.png'):input_type(emarketer_media_url):arg_name(URL):arg_section(1, 0, 'Logo', 'image')}">
-    </div>
-    <div data-style="vertical-align:middle; ${args->content_style:html:default('color:white; text-align:center; font-family:Oswald,san-serif; font-weight:normal; font-size:30px; line-height:38px; padding:10px 40px; text-transform:uppercase'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 1, 'Content', 'bars')}">
-        ${args->content_text:default(100% Sign-in bonus to $300):arg_name(Text):arg_section(2, 0, 'Content', 'bars')}
-    </div>
-    <div style="position:relative; display:inline-block; margin-top:8px; text-align:center; background-color:#010101; width:400px; height:170px">
-        <div style="position:absolute; left:0; right:0; white-space:nowrap"><div style="display:inline-block; vertical-align:top"><div style="width:200px; height:170px; text-align:center;"><div style="display:inline-block; height:100%; vertical-align:middle"></div><div style="display:inline-block; vertical-align:middle; padding:0 4px"><div style="margin-top:24px; line-height:1; color:#213B2D; font-size:154px; font-family:Segment7Standard; transform:scaleX(0.85) skewX(-4deg);">88</div></div></div></div><div style="position:absolute; display:inline-block; left:0; right:0"><div style="line-height:1; color:#39E34C; font-size: 154px; font-family: serif; transform: skewX(-5deg); margin-top:-8px">:</div></div><div style="display:inline-block; vertical-align:top"><div style="width:200px; height:170px; text-align:center;"><div style="display:inline-block; height:100%; vertical-align:middle"></div><div style="display:inline-block; vertical-align:middle; padding:0 4px;"><div style="margin-top:24px; line-height:1; color:#213B2D; font-size: 154px; font-family:Segment7Standard; transform:scaleX(0.85) skewX(-4deg);">88</div></div></div></div></div>
-        <div class="$timer_base" data-value="${args->timer_value:html:default(12780):input_type(time):input_props('is_span=1'):arg_name(Start time):arg_section(3, 0, 'Timer', 'hourglass-start')}" values_count="2" block_style="width:200px; height:170px; background-color:0; text-align:center" number_style="margin-top:24px; line-height:1; color:#39E34C; font-size:154px; font-family:Segment7Standard; transform: scaleX(.85) skewX(-4deg)" no_captions="1" autostart="1"></div>
-    </div>
-    <div style="margin-top:45px; white-space:nowrap">
-        <a href="${args->signin_button_href:html:default('#'):input_type(url):arg_name(URL):arg_section(4, 1, 'Sign-in button', 'check')}" onclick="${args->signin_button_js:html:input_type(source_javascript):arg_name(Javascript):arg_section(4, 3, 'Sign-in button', 'check')}" target="${args->signin_button_target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(4, 2, 'Sign-in button', 'check')}" data-style="display:inline-block; vertical-align:top; ${args->signin_button_style:html:default('font-family:Oswald,san-serif; font-weight:normal; font-size:24px; width:100px; height:51px; line-height:51px; text-align:center; text-decoration:none; text-transform:uppercase; border-radius:3px; color:white; padding:0'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(4, 4, 'Sign-in button', 'check')}">${args->signin_button_label:default(Sign-in):arg_name(Label):arg_section(4, 0, 'Sign-in button', 'check')}</a>
-        <a href="${args->join_button_href:html:default('#'):input_type(url):arg_name(URL):arg_section(5, 1, 'Join button', 'check')}" onclick="${args->join_button_js:html:input_type(source_javascript):arg_name(Javascript):arg_section(5, 3, 'Join button', 'check')}" target="${args->join_button_target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(5, 2, 'Join button', 'check')}" data-style="display:inline-block; vertical-align:top; ${args->join_button_style:html:default('font-family: Oswald,san-serif;
-font-weight: normal;
-font-size: 24px;
-width: 120px;
-height: 51px;
-line-height: 51px;
-text-align: center;
-text-decoration: none;
-text-transform: uppercase;
-border-radius: 3px;
-background-color: #369425;
-color: white;
-padding: 0;
-border-bottom-width: 2px;
-border-top-color: rgba(0, 0, 0, 1);
-border-right-color: rgba(0, 0, 0, 1);
-border-bottom-color: #25661A;
-border-left-color: rgba(0, 0, 0, 1);
-border-top-style: none;
-border-right-style: none;
-border-bottom-style: solid;
-border-left-style: none;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(5, 4, 'Join button', 'check')}">${args->join_button_label:default(Join now):arg_name(Label):arg_section(5, 0, 'Join button', 'check')}</a>
-    </div>
-</div>
-
-```
-
-
-## Popup with image on top
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: white;
-padding: 0px;
-max-width: 600px;
-border-radius: 5px;
-border: solid thin rgb(237, 223, 223);'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: -12px;
-right: -10px;
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: black; text-decoration-color: black; outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://cdn.e-marketer.io/upload/362/18d08e19c0855cd3.jpeg'):input_type(emarketer_media_url):arg_name(URL):arg_section(1, 0, 'Image', 'image')}" style="vertical-align:bottom; ${args->image_style:html:default('width: sel(auto, 60vw);
-height: sel(33px, 40vw);
-max-width: 400px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 1, 'Image', 'image')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('color: black;
-text-align: center;
-font-family: Arial;
-font-weight: normal;
-font-size: 20px;
-line-height: 38px;
-padding: 5px;
-text-transform: uppercase;
-letter-spacing: 2px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Your title goes here):arg_name(Text 1 line 1):arg_section(2, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('color: rgb(89, 58, 58);
-text-align: center;
-font-family: Arial;
-font-weight: normal;
-font-size: 13px;
-padding-top: 5px;
-padding-right: 0;
-padding-bottom: 10px;
-padding-left: 0;
-letter-spacing: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Description):arg_name(Text 1 line 2):arg_section(2, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-family: Arial;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 40px;
-line-height: 40px;
-text-align: center;
-text-transform: uppercase;
-border: 1px solid #f7941d;
-border-radius: 3px;
-background-color: #f7941d;
-color: #002856;
-padding: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(Close):arg_name(Text_button):arg_section(3, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(0):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Tall-banner
-
-
-
-```
-<div class="$responsive" data-style="box-sizing: border-box;
-margin: 0 auto;
-position: relative;
-overflow: hidden;
-${args->style:html:default('
-width: 160px;
-height: 600px;
-border: 1px solid #0c0c0e'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}
-">
-<div data-style="position: absolute;
-	width:100%;
-	height: 100%;
-	background-image: url(${args->image_bgc:html:default():input_type(emarketer_media_url):arg_name(Background image):arg_section(0, 1, 'Box', 'th-large')});
-	background-repeat: no-repeat;
-	background-position: 0 50%;
-	${args->img_bg_style:html:default('background-color:#33313E'):input_type(css):input_props('with_responsive=1'):arg_name(Background style):arg_section(0, 2, 'Box', 'th-large')}"></div>
-
-		<div data-style="position: absolute; width:100%;
-		${args->content_title1_position:html:default('
-		text-align: center;
-		top: 80px'):input_type(css):input_props('with_responsive=1'):arg_name(Title position):arg_section(1, 0, 'Title', 'bookmark')}">
-		<span data-style="
-			${args->action_text_style:html:default('
-			font-family: Viga;
-			color: #fff;
-			font-size: 25px;
-			line-height: 0.9;
-			letter-spacing: 2px'):input_type(css):input_props('with_responsive=1'):arg_name(Title line 1 font):arg_section(1, 2, 'Title', 'bookmark')}">
-			${args->title:default(ANNUAL):arg_name(Title line 1):arg_section(1, 1, 'Title', 'bookmark')}
-			<span data-style="
-				${args->action_text2_style:html:default('
-				color: #fff;
-				font-size: 22px;
-				letter-spacing: 1px'):input_type(css):input_props('with_responsive=1'):arg_name(Title line 2 font):arg_section(1, 4, 'Title', 'bookmark')}
-				">${args->title2:default(BUSINESS):arg_name(Title line 2):arg_section(1, 3, 'Title', 'bookmark')}</span>  <span data-style="
-			${args->action_text3_style:html:default('
-			color: #fff;
-			font-size: 18px;
-			letter-spacing: 0'):input_type(css):input_props('with_responsive=1'):arg_name(Title line 3 font):arg_section(1, 6, 'Title', 'bookmark')}
-			">${args->title3:default(CONFERENCE):arg_name(Title line 3):arg_section(1, 5, 'Title', 'bookmark')}</span></span>
-		</div>
-		<div data-style="position: absolute;
-			width: 100%;
-			${args->content_style:html:default('
-			font-family: ''Open Sans'';
-			color: #fff;
-			text-align: center;
-			top: 250px;
-			font-size: 22px;
-			line-height: 0.9;
-			letter-spacing: 0'):input_type(css):input_props('with_responsive=1'):arg_name(Line 4 font):arg_section(2, 0, 'Text', 'file-text')}
-			">${args->title4:default('for<br />
-innovative<br />
-technologies'):arg_name(Line 4):arg_section(2, 1, 'Text', 'file-text')}
-		</div>
-
-<div data-style="position: absolute;
-width: 100%;
-${args->button_style:html:default('text-align: center;
-bottom: 150px;'):input_type(css):input_props('with_responsive=1'):arg_name(Button position):arg_section(4, 3, 'Button', 'hand-o-up')}">
-<a href="${args->href:html:default('#'):arg_name(URL):arg_section(4, 1, 'Button', 'hand-o-up')}" target="${args->target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(4, 2, 'Button', 'hand-o-up')}"
-	data-style="letter-spacing: 0;
-	${args->button_text_style:html:default('
-	font-family: Viga;
-	color: #fff;
-	font-size: 20px;
-	line-height: 1;
-	letter-spacing: 0;
-	padding: 10px 20px;
-	text-decoration: none;
-	background-color: #fc5729'):input_type(css):input_props('with_responsive=1'):arg_name(Button style):arg_section(4, 4, 'Button', 'hand-o-up')}">
-	${args->title_button:default(ATTEND):arg_name(Button text):arg_section(4, 0, 'Button', 'hand-o-up')}
-</a>
-</div>
-<div data-style="position: absolute;
-width: 100%;
-${args->pace_position:html:default('
-text-align: center;
-bottom: 35px'):input_type(css):input_props('with_responsive=1'):arg_name(Position_Place_1):arg_section(3, 0, 'Place', 'file-text')}
-">
-<span data-style="
-	${args->place_style:html:default('font-family: ''Open Sans'';
-	font-weight: 200;
-	color: #fff;
-	font-size: 12px;
-	line-height: 1;
-	letter-spacing: 0'):input_type(css):input_props('with_responsive=1'):arg_name(Style_Place_1):arg_section(3, 1, 'Place', 'file-text')}
-	">${args->title_place:default('July 25-26, Paris'):arg_name(Place_text):arg_section(3, 2, 'Place', 'file-text')}</span>
-</div>
-${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top:5px; right:5px;z-index:9999'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-	${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 6px; color: rgb(244, 242, 242); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-</div>
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Viga:400|Open+Sans:400,700">
-</div>
-```
-
-
-## Simple banner/popup with link
-
-
-
-```
-<div class="$responsive">
-	<a href="${args->href:html:default('#'):arg_name(Link URL):arg_section(1, 0, 'Link', 'link')}" target="${args->target:html:default(_self):input_type(a_target):arg_name(Open link in):arg_section(1, 1, 'Link', 'link')}" style="display:inline-block; position:relative; text-decoration:none">
-		<img src="${args->image_src:html:default('https://cdn.e-marketer.io/upload/362/18d08e19c0855cd3.jpeg'):input_type(emarketer_media_url):arg_name(Image URL):arg_section(0, 0, 'Image', 'image')}" style="vertical-align:middle; ${args->image_style:html:default('max-width: sel(600px, 80vw);
-width: 400px;'):input_type(css):input_props('with_responsive=1'):arg_name(Image style):arg_section(0, 1, 'Image', 'image')}">
-		${block->show_text:default(0):arg_name(Show text):arg_section(2, 0, 'Text', 'bars')}
-		<div data-style="position:absolute; ${args->text_style:html:input_type(css):input_props('with_responsive=1'):arg_name(Text style):arg_section(2, 1, 'Text', 'bars')}">
-			${args->text:arg_name(Text):arg_section(2, 2, 'Text', 'bars')}
-		</div>
-		<span>
-			${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close Button', 'times-circle')}
-			<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top:5px; right:5px;z-index:9999'):input_type(css):input_props('with_responsive=1'):arg_name(Close button position):arg_section(3, 1, 'Close Button', 'times-circle')}">
-				${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 3px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close Button', 'times-circle')}
-			</div>
-		</span>
-	</a>
-</div>
-```
-
-
-## Two button popup/banner
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: white;
-padding: 43px;
-max-width: 600px;
-border-radius: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: -12px;
-right: -10px;
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: black; text-decoration-color: black; outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://static.emarketer.com/upload/362/2ced8f83fce5a056.png'):input_type(emarketer_media_url):arg_name(URL):arg_section(1, 0, 'Image', 'image')}" style="vertical-align:bottom; ${args->image_style:html:default('width: sel(550px, 60vw);
-height: sel(33px, 40vw);
-max-width: 400px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 1, 'Image', 'image')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('color:black; text-align:center; font-family:Fjalla One,san-serif; font-weight:normal; font-size:28px; line-height:38px; padding:10px 40px; text-transform:uppercase; letter-spacing:2px'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Text Text):arg_name(Text 1 line 1):arg_section(2, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('color:black; text-align:center; font-family:Helvetica,san-serif; font-weight:normal; font-size:15px; padding:10px 0; letter-spacing:1px'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 4, 'Text 1', 'bars')}">
-					${args->line_2:default('Text Text Text Text Text Text<br />
-Text Text Text Text Text Text Text Text'):arg_name(Text 1 line 2):arg_section(2, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-family: Fjalla One,san-serif;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 40px;
-line-height: 40px;
-text-align: center;
-text-transform: uppercase;
-border: 1px solid black;
-border-radius: 3px;
-background-color: white;
-color: black;
-padding: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(Close):arg_name(Text_button):arg_section(3, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('font-family: Fjalla One,san-serif;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 40px;
-line-height: 40px;
-text-align: center;
-text-transform: uppercase;
-border: 0;
-border-radius: 3px;
-background-color: rgb(74, 135, 86);
-color: rgb(248, 249, 247);
-padding: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(View):arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Bottom bar
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width: 100%;
-padding-top: 10px;
-padding-right: sel(48px, 5px);
-padding-bottom: 10px;
-padding-left: sel(48px, 5px);
-text-align: center;
-color: #fff;
-background-color: rgb(47, 41, 76);
-box-sizing: border-box;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-    <link href="https://fonts.googleapis.com/css?family=Khand" rel="stylesheet">
-    <span data-style="${args->title_text_style:html:default('font-family:Khand,sans-serif; font-weight:normal; font-size:15px; text-transform:uppercase'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Title', 'bookmark')}">${args->title_text:default(Your text goes here...Your text goes here...Your text goes here...Your text goes here):arg_name(Text):arg_section(1, 0, 'Title', 'bookmark')}</span><a href="${args->button_link:html:default('javascript:'):input_type(url):arg_name(Link):arg_section(2, 2, 'Button', 'hand-o-up')}" onclick="${args->button_link_js:html:input_type(source_javascript):arg_name(Javascript):arg_section(2, 3, 'Button', 'hand-o-up')}" data-style="${args->button_style:html:default('display: inline-block;
-color: #fff;
-font-family: Khand,sans-serif;
-font-weight: normal;
-font-size: 14px;
-text-transform: uppercase;
-text-decoration: none;
-margin-left: 16px;
-background-color: rgb(133, 185, 121);
-padding-top: 5px;
-padding-right: 15px;
-padding-bottom: 5px;
-padding-left: 15px;
-border-radius: 20px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 1, 'Button', 'hand-o-up')}">${args->link_text:default('CTA with link/JS'):arg_name(Text):arg_section(2, 0, 'Button', 'hand-o-up')}</a>
-    ${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close button', 'close')}
-    <div data-style="${args->close_button_style:html:default('position: absolute;
-top: 13px;
-right: 16px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Close button', 'close')}">
-        ${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(212, 192, 192); text-decoration-color: rgb(212, 192, 192); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close button', 'close')}
-    </div>
-</div>
-```
-
-
-## Small popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(256, 256, 256);
-padding: 10px;
-border-radius: 2px;
-width: 280px;
-box-shadow: 0 0 8px 4px rgb(222, 207, 207);
-margin-top: 1px;
-margin-right: 15px;
-margin-bottom: 1px;
-margin-left: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('text-align: right;
-width: 100%;
-top: -10px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 5px; background-color: rgb(190, 61, 22); text-decoration-color: rgb(190, 61, 22); outline-color: rgb(110, 88, 52); outline-width: 10px; color: rgb(246, 244, 244); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 20px;
-color: rgba(38, 38, 63, 0.73);
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: bold;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(TEXT TEXT TEXT TEXT  TEXT TEXT):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 14px;
-color: rgb(90, 58, 58);
-padding-top: 0px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-font-weight: lighter;
-text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Text Text Text):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-size: 14px;
-color: rgb(256, 256, 256);
-text-decoration: none;
-background-color: rgba(71,206,144,1);
-padding-top: 8px;
-padding-right: 15px;
-padding-bottom: 8px;
-padding-left: 15px;
-border-radius: 2px;
-font-weight: 600;
-margin: 5px;
-text-transform: uppercase;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(View Offer):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:default('href="javascript:" class="$emarketer_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"'):input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:default('color: rgba(42, 28, 28, 0.45);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:default(Not interested):arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgb(253, 253, 253);
-padding-top: 6px;
-padding-right: 6px;
-padding-bottom: 15px;
-padding-left: 6px;
-border-radius: 5px;
-max-width: sel(100%, 90vw);
-width: 400px;
-border: solid thin rgb(203, 155, 155);'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(5, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: -12px;
-right: sel(-10px, -5px);
-z-index: 9999;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(5, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: black; text-decoration-color: black; outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(255, 255, 255); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(5, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-		<tr>
-			<td style="text-align:center; padding:0">
-				<img src="${args->image_src:html:default('https://cdn.e-marketer.io/upload/362/18d08e19c0855cd3.jpeg'):input_type(emarketer_media_url):arg_name(URL):arg_section(1, 0, 'Image', 'image')}" style="vertical-align:bottom; ${args->image_style:html:default('max-width: 95%;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 1, 'Image', 'image')}">
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('color: rgb(70, 42, 42);
-text-align: center;
-font-family: Arial;
-font-weight: bold;
-font-size: 20px;
-line-height: 38px;
-padding: 5px;
-text-transform: uppercase;
-letter-spacing: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Your title goes here):arg_name(Text 1 line 1):arg_section(2, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('color: rgb(89, 58, 58);
-text-align: center;
-font-family: Arial;
-font-weight: normal;
-font-size: 13px;
-padding-top: 5px;
-padding-right: 0;
-padding-bottom: 10px;
-padding-left: 0;
-letter-spacing: 1px;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(2, 4, 'Text 1', 'bars')}">
-					${args->line_2:default(Text Text Text):arg_name(Text 1 line 2):arg_section(2, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href=""'):input_type(a_attrs):arg_name(URL):arg_section(3, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('font-family: Arial;
-font-weight: normal;
-font-size: 13px;
-width: 40%;
-height: 30px;
-line-height: 30px;
-text-align: center;
-text-transform: uppercase;
-border: 1px solid rgb(160, 65, 65);
-border-radius: 3px;
-background-color: rgb(118, 66, 66);
-color: rgb(249, 247, 247);
-padding: 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(MORE INFO):arg_name(Text_button):arg_section(3, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(1):arg_name(Show second button):arg_section(4, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:input_type(a_attrs):arg_name(URL):arg_section(4, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(4, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:arg_name(Text_button):arg_section(4, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display+SC:400|Open+Sans:400,300|Oswald:400,700">
-</div>
-```
-
-
-## Popup
-
-
-
-```
-<div class="$responsive" data-style="position:relative; display:inline-block; ${args->style:html:default('background-color: rgba(124, 176, 120, 0.55);
-padding-top: 0px;
-padding-right: 25px;
-padding-bottom: 0px;
-padding-left: 25px;
-border-top-left-radius: 10px;
-border-top-right-radius: 10px;
-border-bottom-right-radius: 30px;
-border-bottom-left-radius: 30px;
-width: auto;
-background-image: url(''https://cdn.e-marketer.io/upload/362/5c566581bb271535.jpeg'');
-background-size: contain;
-background-repeat: no-repeat;'):input_type(css):input_props('with_responsive=1'):arg_name(Box style):arg_section(0, 0, 'Box', 'th-large')}">
-	${block->show_close_button:default(1):arg_name(Show close button):arg_section(4, 0, 'Close Button', 'times-circle')}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('float: right;
-width: 92%;
-text-align: right;
-position: absolute;
-top: -10px;
-right: -5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Close_btn_Style):arg_section(4, 1, 'Close Button', 'times-circle')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(4, 2, 'Close Button', 'times-circle')}
-	</div>
-
-	<table data-style="width:100%; border-collapse:collapse">
-
-		<tr>
-			<td style="text-align:center; ${args->text_1_style:html:default('background-color: rgba(0, 0, 0, 0);
-color: white;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 0, 'Text 1', 'bars')}">
-				<div data-style="${args->line_1_style:html:default('font-size: 28px;
-color: rgb(251, 250, 250);
-padding-top: 40px;
-padding-right: 20px;
-padding-bottom: 0px;
-padding-left: 0px;
-font-weight: bold;
-text-align: left;
-text-transform: none;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 2, 'Text 1', 'bars')}">
-					${args->line_1:default(Title goes here):arg_name(Text 1 line 1):arg_section(1, 1, 'Text 1', 'bars')}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 18px;
-margin-top: 0;
-margin-right: 0;
-margin-bottom: 0px;
-margin-left: 0;
-font-weight: 400;
-color: rgb(256, 256, 256);
-line-height: 1.3;
-text-align: left;'):input_type(css):input_props('with_responsive=1'):arg_name(Text 1 style):arg_section(1, 4, 'Text 1', 'bars')}">
-					${args->line_2:default('Description goes here<br />
-&nbsp;'):arg_name(Text 1 line 2):arg_section(1, 3, 'Text 1', 'bars')}
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td style="text-align:center; padding:1em">
-				<a ${args->href:default('href="" data-emarketer-click-target=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 1, 'Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style:html:default('height: auto;
-border: 2px solid rgb(70, 143, 61);
-line-height: 25px;
-text-align: center;
-color: rgb(251, 250, 250);
-border-radius: 15px;
-font-size: 1.2em;
-text-decoration: none;
-padding-top: 0px;
-padding-right: 15px;
-padding-bottom: 0px;
-padding-left: 15px;
-width: 80%;
-background-color: rgb(70, 143, 61);'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 2, 'Button', 'hand-o-up')}">  ${args->button_t:default(MORE INFO):arg_name(Text_button):arg_section(2, 0, 'Button', 'hand-o-up')}
-				</a>
-
-				${block->show_button_2:default(0):arg_name(Show second button):arg_section(3, 0, 'Second Button', 'hand-o-up')}
-				<a ${args->href_2:input_type(a_attrs):arg_name(URL):arg_section(3, 2, 'Second Button', 'hand-o-up')}
-					data-style="display:inline-block; ${args->button_text_style_2:html:input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(3, 3, 'Second Button', 'hand-o-up')}">
-					${args->button_t_2:arg_name(Text_button):arg_section(3, 1, 'Second Button', 'hand-o-up')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-
-</div>
-```
-
-
-## Copy Coupon Banner
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width:100%; padding:12px 48px; text-align:center; color:#fff; background-color:rgba(0,0,0,.8); box-sizing:border-box'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Box', 'th-large')}">
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    <span data-style="${args->title_text_style:html:default('font-family:Poppins,sans-serif; font-weight:normal; font-size:11px; line-height:28px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 1, 'Title', 'bookmark')}">${args->title_text:default('Add code&nbsp;&nbsp;<span class="want-copy" style="color:#f1c40f;">FREESHP</span>&nbsp;to your shopping cart and get 10% off'):arg_name(Text):arg_section(1, 0, 'Title', 'bookmark')}</span><a href="${args->button_link:html:default('javascript:'):input_type(url):arg_name(Link):arg_section(2, 2, 'Button', 'hand-o-up')}" onclick="${args->button_link_js:html:default('var e = this.previousElementSibling.querySelector(''.want-copy'');
-if (e)
-{	var r = document.createRange();
-	r.selectNode(e);
-	var s = getSelection();
-	s.removeAllRanges();
-	s.addRange(r);
-	document.execCommand("Copy");
-	new ns.ElemsAnnotator(''info'').add(e, "Copied!").annotate(5000);
-}'):input_type(source_javascript):arg_name(Javascript):arg_section(2, 3, 'Button', 'hand-o-up')}" data-style="${args->button_style:html:default('display: inline-block;
-width: 120px;
-line-height: 24px;
-color: rgb(62, 50, 50);
-background-color: RGB(252, 204, 3);
-border-radius: 5px;
-font-family: Poppins,sans-serif;
-font-weight: normal;
-font-size: 10px;
-text-decoration: none;
-margin-left: 16px;
-vertical-align: middle;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 1, 'Button', 'hand-o-up')}">${args->button_caption:default(Copy CODE):arg_name(Caption):arg_section(2, 0, 'Button', 'hand-o-up')}</a>
-    ${block->show_close_button:default(1):arg_name(Show close button):arg_section(3, 0, 'Close button', 'close')}
-    <div data-style="${args->close_button_style:html:default('position:absolute; top:18px; right:16px'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 1, 'Close button', 'close')}">
-        ${args->close_button:default('<a href="javascript:" style="font-size: 24px; color: rgb(253, 253, 253); font-weight: bold; line-height: 1; text-decoration: none;" class="$emarketer_button_dont_show_again" data-action_id="${action_id}">×</a>'):input_type(dontshowagain):arg_name(Close button):arg_section(3, 2, 'Close button', 'close')}
-    </div>
-</div>
-```
-
-
-## Copy coupon code
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width: 100%;
-padding-top: sel(19px, 5px);
-padding-right: 48px;
-padding-bottom: sel(7px, 12px);
-padding-left: 48px;
-text-align: center;
-color: #fff;
-background-color: rgb(0, 0, 0);
-box-sizing: border-box;
-height: sel(70px, auto);
-')}">
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    <span data-style="${args->title_text_style:html:default('font-family: Poppins,sans-serif;
-font-weight: normal;
-font-size: 18px;
-line-height: 28px;
-')}">${args->title_text:default('Welcome to Kleidermafia Use&nbsp;<span class="want-copy" style="color:#f1c40f;"> MAFIA20&nbsp;</span>to get 20% Off Welcome Coupon')}</span><a href="${args->button_link:html:default('javascript:')}" onclick="${args->button_link_js:html:default('var e = this.previousElementSibling.querySelector(''.want-copy'');
-if (e)
-{	var r = document.createRange();
-	r.selectNode(e);
-	var s = getSelection();
-	s.removeAllRanges();
-	s.addRange(r);
-	document.execCommand("Copy");
-	new ns.ElemsAnnotator(''info'').add(e, "Copied!").annotate(5000);
-}')}" data-style="${args->button_style:html:default('display: inline-block;
-line-height: 24px;
-color: #000000;
-background-color: #ffc520;
-border-radius: 5px;
-font-family: Poppins,sans-serif;
-font-weight: normal;
-font-size: 13px;
-text-decoration: none;
-margin-left: 16px;
-vertical-align: middle;
-padding-top: 3px;
-padding-right: 10px;
-padding-bottom: 3px;
-padding-left: 10px;
-width: auto;
-')}">${args->button_caption:default(Copy CODE)}</a>
-    ${block->show_close_button:default(1)}
-    <div data-style="${args->close_button_style:html:default('position: absolute;
-top: 22px;
-right: 16px;
-')}">
-        ${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 2px solid; box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease 0s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
-    </div>
-</div>
-
-${menu name='Box', icon='th-large'}
-	${menu args->style name='Style', type='css', param='with_responsive=1'}
-${menu name='Title', icon='bookmark'}
-	${menu args->title_text name='Text'}
-	${menu args->title_text_style name='Style', type='css', param='with_responsive=1'}
-${menu name='Button', icon='hand-o-up'}
-	${menu args->button_caption name='Caption'}
-	${menu args->button_style name='Style', type='css', param='with_responsive=1'}
-	${menu args->button_link name='Link', type='url'}
-	${menu args->button_link_js name='Javascript', type='source_javascript'}
-${menu name='Close button', icon='close'}
-	${menu block->show_close_button name='Show close button'}
-	${menu args->close_button_style name='Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-```
-
-
-## Two columns
-
-
-
-```
-<div class="$responsive" data-style="position:relative; ${args->style:html:default('width: 650px;
-background-color: white;
-color: #424242;
-font-family: Roboto,san-serif;
-font-size: 16px;
-padding: 50px;
-border-radius: 2px;
-box-sizing: border-box;
-box-shadow: 0px 0px 8px 6px rgba(0, 0, 0, 0.3);'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Frame', 'th-large')}">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i,900">
-	${block->x:default(1):arg_name(With close button):arg_section(9, 0, 'Close button', 'close')}
-		<div style="position: absolute; top: 5px; right: 5px; cursor:pointer;">
-			${args->x:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 8px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(9, 1, 'Close button', 'close')}
-		</div>
-	${block->welcome:default(1):arg_name(With welcome message):arg_section(1, 0, 'Welcome message', 'th-large')}
-		<div data-style="${args->welcome_style:html:default('text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(1, 2, 'Welcome message', 'th-large')}">${args->welcome_text:default(Text Text):arg_name(Text):arg_section(1, 1, 'Welcome message', 'th-large')}</div>
-	${block->title:default(1):arg_name(With title):arg_section(2, 0, 'Title', 'th-large')}
-		<div data-style="${args->title_style:html:default('margin: 10px 60px 0; font-size: 32px; font-weight: 700; color: #41436e; text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(2, 2, 'Title', 'th-large')}">${args->title_text:default(Text Text Text TextText Text):arg_name(Text):arg_section(2, 1, 'Title', 'th-large')}</div>
-	${block->description:default(1):arg_name(With description):arg_section(3, 0, 'Description', 'th-large')}
-		<div data-style="${args->description_style:html:default('text-align: center; margin-top: 10px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(3, 2, 'Description', 'th-large')}">${args->description_text:default(Text TextText TextText TextText TextText TextText TextText TextText TextText TextText TextText TextText TextText TextText TextText TextText Text):arg_name(Text):arg_section(3, 1, 'Description', 'th-large')}</div>
-	<div data-style="${args->columns_block_style:html:default('margin: 20px 20px 0;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(4, 0, 'Columns', 'th-large')}">
-		${block->left_column:default(1):arg_name(With left column):arg_section(5, 0, 'Left column', 'th-large')}
-			<div data-style="${args->left_column_style:html:default('width: 50%; max-width: 100%; display: inline-block; vertical-align: top; box-sizing: border-box;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(5, 2, 'Left column', 'th-large')}">
-				${args->left_column_content:default('<ul style="list-style-type: none; padding: 0; line-height: 2;">
-	<li><img src="https://cdn.personyze.com/upload/4822/51930df8070b6c0b.png" style="position: relative; top: 5px; margin-right: 12px;" />Text Text</li>
-	<li><img src="https://cdn.personyze.com/upload/4822/51930df8070b6c0b.png" style="position: relative; top: 5px; margin-right: 12px;" />Text Text</li>
-	<li><img src="https://cdn.personyze.com/upload/4822/51930df8070b6c0b.png" style="position: relative; top: 5px; margin-right: 12px;" />Text Text</li>
-	<li><br />
-	Text TextText TextText TextText TextTexText</li>
-</ul>
-'):arg_name(Content):arg_section(5, 1, 'Left column', 'th-large')}
-			</div>${block->right_column:default(1):arg_name(With right column):arg_section(6, 0, 'Right column', 'th-large')}<div data-style="${args->right_column_style:html:default('width: 50%; max-width: 100%; display: inline-block; vertical-align: top; background-color: #f5f5f5; padding: 25px 27px; line-height: 1.5; box-sizing: border-box;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(6, 2, 'Right column', 'th-large')}">
-				${args->right_column_content:default('<p style="margin-top: 0;">Text TextText TextText TextText TextText TextText Text</p>
-
-<p>I don&#39;t mind receiving this weekly - <span style="font-weight: 700;">just takes 10 seconds to look at it</span>.&rdquo;</p>
-
-<p style="margin-bottom: 0; font-style: italic;">&mdash; Senior System Engineer</p>
-'):arg_name(Content):arg_section(6, 1, 'Right column', 'th-large')}
-			</div>
-	</div>
-	<div data-style="${args->button1_block_style:html:default('margin-top: 25px; text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Block style):arg_section(7, 2, 'Button 1', 'hand-o-up')}">
-		<a ${args->button1_link:default('href="" data-personyze-click-target=""'):input_type(a_attrs):arg_name(URL):arg_section(7, 1, 'Button 1', 'hand-o-up')} data-style="${args->button1_style:html:default('display: inline-block; padding: 12px 40px; background-color: #4b6cc9; color: white; font-size: 14px; text-transform: uppercase; text-decoration: none; border-radius: 2px;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(7, 3, 'Button 1', 'hand-o-up')}">${args->button1_text:default(Text TextText TextText TextText Text):arg_name(Text):arg_section(7, 0, 'Button 1', 'hand-o-up')}</a>
-	</div>
-	<div data-style="${args->button2_block_style:html:default('margin-top: 25px; text-align: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Block style):arg_section(8, 2, 'Button 2', 'hand-o-up')}">
-		<a ${args->button2_link:default('href="" data-personyze-click-target=""'):input_type(a_attrs):arg_name(URL):arg_section(8, 1, 'Button 2', 'hand-o-up')} data-style="${args->button2_style:html:default('color: #4b6cc9; text-decoration: none;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(8, 3, 'Button 2', 'hand-o-up')}">${args->button2_text:default(Text TextText TextText TextText TextText Text):arg_name(Text):arg_section(8, 0, 'Button 2', 'hand-o-up')}</a>
-	</div>
-</div>
-```
-
-
-## Banner
-
-
-
-```
-<div class="$responsive $a_add_params" data-style="position:relative; display:inline-block; overflow: hidden; ${args->style:html:default('width: 400px; height: 300px; background-color: white; color: black; font-family: Roboto,san-serif; font-size: 16px; border: 1px solid #E8E8E8; border-radius: 5px; box-sizing: border-box;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Frame', 'th-large')}" data-json-params="${args->url_params:html:default('[]'):input_type(external_media_url_params):arg_name(URL additional parameters):arg_section(0, 3, 'Frame', 'th-large')}" direction:${args->direction:default(ltr):input_type(select):input_props('options=[["Left to right","ltr"],["Right to left","rtl"]]'):arg_name(Localization settings):arg_section(0, 1, 'Frame', 'th-large')};">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i,900">
-	${block->x:default(0):arg_name(With close button):arg_section(4, 0, 'Close button', 'close')}
-	<div style="position: absolute; ${args->x_position:html:input_type(css):input_props('with_responsive=1'):arg_name(Position):arg_section(4, 2, 'Close button', 'close')}; cursor:pointer;">
-		${args->x:input_type(dontshowagain):arg_name(Close button):arg_section(4, 1, 'Close button', 'close')}
-	</div>
-
-	<table style="width: 100%; height: 100%; border: 0; border-collapse: collapse;">
-		<tr>
-			<td data-style="${args->line1_style:html:default('background-image: url(''https://cdn.personyze.com/upload/362/5c566581bb271535.jpeg'');
-background-size: cover;
-background-repeat: no-repeat;
-background-position: center;'):input_type(css):input_props('with_responsive=1'):arg_name(Block style):arg_section(1, 0, 'Line 1', 'picture-o')}">
-				<div data-style="${args->line1_text_style:html:input_type(css):input_props('with_responsive=1'):arg_name(Text style):arg_section(1, 2, 'Line 1', 'picture-o')}">${args->line1_text:html:arg_name(Text):arg_section(1, 1, 'Line 1', 'picture-o')}</div>
-			</td>
-		</tr>
-		<tr style="height: 1px;">
-			<td data-style="${args->line2_style:html:default('background-color: #F1F2F6; text-align: center; vertical-align: middle;'):input_type(css):input_props('with_responsive=1'):arg_name(Block style):arg_section(2, 0, 'Line 2', 'picture-o')}">
-				<div data-style="display: inline-block; ${args->line2_text_style:html:default('margin: 20px 10px; font-size: 18px; color: ##040507; vertical-align: middle;'):input_type(css):input_props('with_responsive=1'):arg_name(Text style):arg_section(2, 2, 'Line 2', 'picture-o')}">${args->line2_text:default(TEXT TEXT):arg_name(Text):arg_section(2, 1, 'Line 2', 'picture-o')}</div>
-				<a ${args->href:default('href="" data-personyze-click-target=""'):input_type(a_attrs):arg_name(URL):arg_section(2, 5, 'Line 2', 'picture-o')}
-					data-style="display: inline-block; ${args->button_text_style:html:default('margin: 20px 10px; padding: 0 8px; height: 32px; line-height: 32px; font-size: 16px; font-weight: 600; background-color: transparent; color: #4C4D51; border: 2px solid #929397; border-radius: 5px; text-align: center; vertical-align: middle; text-decoration: none;'):input_type(css):input_props('with_responsive=1'):arg_name(Button text style):arg_section(2, 3, 'Line 2', 'picture-o')}">  ${args->button_text:default(SHOP NOW):arg_name(Text_button):arg_section(2, 4, 'Line 2', 'picture-o')}
-				</a>
-			</td>
-		</tr>
-	</table>
-
-    ${block->with_label:default(1):arg_name(With Label):arg_section(3, 0, 'Label', 'th-large')}
-    <div data-style="position: absolute; display: inline-block; ${args->label_style:html:default('top: 10px; right: 12px; padding: 0 16px; height: 32px; line-height: 32px; font-size: 16px; font-weight: 600; background-color: #DF6E2D; color: #FBF6EC; border-radius: 16px; vertical-align: middle;'):input_type(css):input_props('with_responsive=1'):arg_name(Label style):arg_section(3, 2, 'Label', 'th-large')}">
-    	${args->currency:html:arg_name(Currency symbol):arg_section(0, 2, 'Frame', 'th-large')}
-    	${args->price:sprintf('%[#.00]f'):default(TEXT):arg_name(Price):arg_section(3, 1, 'Label', 'th-large')}
-    </div>
-</div>
-```
-
-
-## Items dispaly
-
-
-
-```
-<div class="$responsive $a_add_params" data-style="display:block; position:relative; ${args->style:html:default('max-width: 100vw; margin: 0 auto; box-sizing: border-box;')}" data-json-params="${args->url_params:html}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,500,500i,600,600i,700,700i">
-	<style>
-		.-s-t-202007031-card {
-			width: 100% !important;
-			margin: 0 0 1.5rem !important;
-		}
-
-		@media (max-width: 785px) and (min-width: 512px) {
-			.-s-t-202007031-card {
-				width: 49% !important;
-			    margin-right: 2% !important;;
-			    margin-bottom: 2% !important;;
-			}
-		}
-
-		@media (min-width: 786px) {
-			.-s-t-202007031-card {
-			    width: 32% !important;;
-			    margin-right: 2% !important;;
-			    margin-bottom: 2% !important;;
-			}
-		}
-
-		@media (min-width: 786px) {
-			.-s-t-202007031-card:nth-of-type(3n+3) {
-				margin-right: 0 !important;;
-			}
-		}
-
-		@media (max-width: 785px) and (min-width: 512px) {
-			.-s-t-202007031-card:nth-of-type(2n+2) {
-				margin-right: 0 !important;;
-			}
-		}
-	</style>
-	${block->item1:default(1)}
-	<div class="-s-t-202007031-card" data-style="display: inline-block; float: left; ${args->item_style:html:default('background-color: #E5F0F9; border:1px solid #CAE0F3; font-family: &quot;Open Sans&quot;, Arial, sans-serif;')}; box-sizing: border-box;">
-		<a ${args->item1_link_url:default('href="#" data-personyze-click-target=""')} data-style="display: block; ${args->item_image_style:html:default('max-height: 160px; margin: 0 0 1.6rem; overflow: hidden; color: #006ec7; text-decoration: none; cursor: pointer; outline: none;')}; box-sizing: border-box;">
-			<img src="${args->item1_image_url:html:default('https://cdn.personyze.com/upload/362/1bab0cf807153953.jpeg')}" style="width: 100%; height: auto; border: 0;" />
-		</a>
-		<div data-style="${args->item_text_style:html:default('min-height: 18.4rem; margin: 0 25px;')}; box-sizing: border-box;">
-			<a ${args->item1_link_url} data-style="${args->item_title_style:html:default('display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; max-height: 160px; margin: 0 0 1.6rem; overflow: hidden; color: #34383c; text-decoration:none; cursor:pointer; outline: none; font-weight: 600; font-size: 1.8rem; line-height: 2.4rem;')}; box-sizing: border-box;">${args->item1_title:default(text  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text text)}</a>
-			<p data-style="${args->item_description_style:html:default('display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; margin: 0 0 1.6rem; font-size:14px; overflow: hidden; line-height: 22px; color: #4C5157;')}; box-sizing: border-box;">${args->item1_description:default(text  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text text)}</p>
-		</div>
-		<a ${args->item1_link_url} data-style="display: block; ${args->item_link_style:html:default('padding: 12px 25px; text-decoration: none; cursor: pointer; outline: none; text-transform: uppercase; font-weight: 600; color: rgba(0, 110, 199, .75); border-top: 1px solid #CAE0F3;')}; box-sizing: border-box;">${args->item1_link_text:default(Recommended for you)}</a>
-	</div>
-	${block->item2:default(1)}
-	<div class="-s-t-202007031-card" data-style="display: inline-block; float: left; ${args->item_style:html}; box-sizing: border-box;">
-		<a ${args->item2_link_url:default('href=""')} data-style="display: block; ${args->item_image_style:html}; box-sizing: border-box;">
-			<img src="${args->item2_image_url:html:default('https://cdn.personyze.com/upload/362/7d0a26d42b6f9a72.jpeg')}" style="width: 100%; height: auto; border: 0;" />
-		</a>
-		<div data-style="${args->item_text_style:html}; box-sizing: border-box;">
-			<a ${args->item2_link_url} data-style="${args->item_title_style:html}; box-sizing: border-box;">${args->item2_title:default(text  text texttext  text texttext  text texttext  text texttext  text text)}</a>
-			<p data-style="${args->item_description_style:html}; box-sizing: border-box;">${args->item2_description:default(text  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text text)}</p>
-		</div>
-		<a ${args->item2_link_url} data-style="display: block; ${args->item_link_style:html}; box-sizing: border-box;">${args->item2_link:default(Read More)}</a>
-	</div>
-	${block->item3:default(1)}
-	<div class="-s-t-202007031-card" style="display: inline-block; float: left; ${args->item_style:html}; box-sizing: border-box;">
-		<a ${args->item3_link_url:default('href="#" data-personyze-click-target=""')} data-style="display: block; ${args->item_image_style:html}; box-sizing: border-box;" target="_blank">
-			<img src="${args->item3_image_url:html:default('https://cdn.personyze.com/upload/362/1bab0cf807153953.jpeg')}" style="width: 100%; height: auto; border: 0;" />
-		</a>
-		<div data-style="${args->item_text_style:html}; box-sizing: border-box;">
-			<a ${args->item3_link_url} data-style="${args->item_title_style:html}; box-sizing: border-box;">${args->item3_title:default(text  text te  xttext  text texttext  text texttext  text texttext  text texttext  text texttext  text text)}</a>
-			<p data-style="${args->item_description_style:html}; box-sizing: border-box;">${args->item3_description:default(Text text  text text text  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text texttext  text text)}</p>
-		</div>
-		<a ${args->item3_link_url} data-style="display: block; ${args->item_link_style:html}; box-sizing: border-box;">${args->item3_link:default(Recommended for you)}</a>
-	</div>
-	${block->item4:default(0)}
-	<div class="-s-t-202007031-card" style="display: inline-block; float: left; ${args->item_style:html}; box-sizing: border-box;">
-		<a ${args->item4_link_url} data-style="display: block; ${args->item_image_style:html}; box-sizing: border-box;" target="_blank">
-			<img src="${args->item3_image_url:html}" style="width: 100%; height: auto; border: 0;" />
-		</a>
-		<div data-style="${args->item_text_style:html}; box-sizing: border-box;">
-			<a ${args->item4_link_url} data-style="${args->item_title_style:html}; box-sizing: border-box;">${args->item4_title}</a>
-			<p data-style="${args->item_description_style:html}; box-sizing: border-box;">${args->item4_description}</p>
-		</div>
-		<a ${args->item4_link_url} data-style="display: block; ${args->item_link_style:html}; box-sizing: border-box;">${args->item4_link}</a>
-	</div>
-</div>
-
-${menu name='Frame', icon='th-large'}
-	${menu args->style name='Style', type='css', param='with_responsive=1'}
-	${menu args->url_params name='URL additional parameters', type='external_media_url_params'}
-${menu name='Item frame', icon='th-large'}
-	${menu args->item_style name='Style', type='css', param='with_responsive=1'}
-	${menu args->item_image_style name='Image style', type='css', param='with_responsive=1'}
-	${menu args->item_text_style name='Text block style', type='css', param='with_responsive=1'}
-	${menu args->item_title_style name='Title style', type='css', param='with_responsive=1'}
-	${menu args->item_description_style name='Description style', type='css', param='with_responsive=1'}
-	${menu args->item_link_style name='Link style', type='css', param='with_responsive=1'}
-${menu name='Item 1', icon='bookmark'}
-	${menu block->item1 name='With item 1'}
-	${menu args->item1_image_url name='Image URL', type='personyze_media_url'}
-	${menu args->item1_title name='Title'}
-	${menu args->item1_description name='Description'}
-	${menu args->item1_link_text name='Link text'}
-	${menu args->item1_link_url name='Link URL', type='a_attrs'}
-${menu name='Item 2', icon='bookmark'}
-	${menu block->item2 name='With item 2'}
-	${menu args->item2_image_url name='Image URL', type='personyze_media_url'}
-	${menu args->item2_title name='Title'}
-	${menu args->item2_description name='Description'}
-	${menu args->item2_link name='Link text'}
-	${menu args->item2_link_url name='Link URL', type='a_attrs'}
-${menu name='Item 3', icon='bookmark'}
-	${menu block->item3 name='With item 3'}
-	${menu args->item3_image_url name='Image URL', type='personyze_media_url'}
-	${menu args->item3_title name='Title'}
-	${menu args->item3_description name='Description'}
-	${menu args->item3_link name='Link text'}
-	${menu args->item3_link_url name='Link URL', type='a_attrs'}
-${menu name='Item 4', icon='bookmark'}
-	${menu block->item4 name='With item 4'}
-	${menu args->item4_title name='Title'}
-	${menu args->item4_description name='Description'}
-	${menu args->item4_link name='Link text'}
-	${menu args->item4_link_url name='Link URL', type='a_attrs'}
-```
-
-
-## Big Slider with 2 images and 2 call to action
-
-
-
-```
-<div class="$responsive $a_add_params -s-t-root" data-style="display:inline-block; position:relative; ${args->style:html:default('width: 100%;
-height: auto;
-min-height: 26rem;
-background: rgb(248, 248, 248);
-background-image: url(''https://cdn.personyze.com/upload/362/1bab0cf807153953.jpeg'');
-background-size: cover;
-background-position: 50% 50%;
-font-family: ''Open Sans'', Arial, sans-serif;
-text-align: left;
-border: none;
-overflow: hidden;'):input_type(css):input_props('with_responsive=1'):arg_name(Style):arg_section(0, 0, 'Frame', 'th-large')}; box-sizing: border-box;" data-json-params="${args->url_params:html:input_type(external_media_url_params):arg_name(URL additional parameters):arg_section(0, 1, 'Frame', 'th-large')}">
-    <style>
-        .-s-t-root {
-            padding: 8% !important;
-        }
-        .-s-t-content {
-            max-width: 104rem !important;
-            margin: 0 auto !important;
-            padding: 0 1rem !important;
-            box-sizing: box-content !important;
-        }
-        .-s-t-text {
-            display: inline-block !important;
-            margin-top: 3.5rem !important;
-            max-width: 80rem !important;
-        }
-        .-s-t-title {
-            font-size: 2.8rem !important;
-        }
-        .-s-t-description {
-            font-size: 2.2rem !important;
-        }
-        .-s-t-image {
-            margin-top: 5rem !important;
-            max-height: 100% !important;
-            text-align: center !important;
-            box-sizing: box-content !important;
-        }
-        @media (min-width: 512px) {
-            .-s-t-root {
-                padding: 0 6% !important;
-            }
-            .-s-t-content {
-                padding: 6rem 2rem !important;
-            }
-            .-s-t-text {
-                width: 60% !important;
-            }
-            .-s-t-title {
-                font-size: 3.5rem !important;
-            }
-            .-s-t-description {
-                font-size: 2.8rem !important;
-            }
-            .-s-t-image {
-                display: inline-block !important;
-                float: right !important;
-                margin-top: 0 !important;
-                margin-bottom: 6rem !important;
-                max-width: 85% !important;
-                width: 35% !important;
-            }
-        }
-    </style>
-    ${block->x:default(1):arg_name(With close button):arg_section(7, 0, 'Close button', 'close')}
-    <div style="position: absolute; ${args->x_position:html:default('top: 5px; right: 5px;'):input_type(css):input_props('with_responsive=1'):arg_name(Position):arg_section(7, 2, 'Close button', 'close')}; cursor:pointer;">
-        ${args->x:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 2px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>'):input_type(dontshowagain):arg_name(Close button):arg_section(7, 1, 'Close button', 'close')}
-    </div>
-    <div class="-s-t-content">
-        <div class="-s-t-text">
-            ${block->title:default(1):arg_name(With title):arg_section(1, 0, 'Title', 'bookmark')}
-            <div data-style="${args->title_block_style:html:default('margin-left: 1rem;'):input_type(css):arg_name(Block style):arg_section(1, 1, 'Title', 'bookmark')}">
-                <a class="-s-t-title" ${args->link:default('href="" data-personyze-click-target=""'):input_type(a_attrs):arg_name(Link URL):arg_section(5, 0, 'Link URL', 'bookmark')} data-style="${args->title_style:html:default('line-height: 145%; background-color: white; color: #006ec7; border-top: 0.1rem solid white; border-bottom: 0.1rem solid white; box-shadow: 1rem 0.15rem white, 1rem -0.15rem white, -1rem 0.15rem white, -1rem -0.15rem white; font-weight: 200;'):input_type(css):arg_name(Style):arg_section(1, 3, 'Title', 'bookmark')}; text-decoration: none;">${args->title:default(Your title):arg_name(Text):arg_section(1, 2, 'Title', 'bookmark')}</a>
-            </div>
-            ${block->description:default(1):arg_name(With description):arg_section(2, 0, 'Description', 'bookmark')}
-            <div data-style="${args->description_block_style:html:default('margin-left: 1rem;'):input_type(css):arg_name(Block style):arg_section(2, 1, 'Description', 'bookmark')}">
-                <span class="-s-t-description" data-style="${args->description_style:html:default('line-height: 149%; background-color: white; color: #4C5157; border-top: 0.1rem solid white; border-bottom: 0.1rem solid white; box-shadow: 1rem 0.15rem white, 1rem -0.15rem white, -1rem 0.15rem white, -1rem -0.15rem white; font-weight: 200;'):input_type(css):arg_name(Style):arg_section(2, 3, 'Description', 'bookmark')}; text-decoration: none;">${args->description:default(Your description):arg_name(Text):arg_section(2, 2, 'Description', 'bookmark')}</span>
-            </div>
-            ${block->button:default(1):arg_name(With button):arg_section(3, 0, 'Button', 'text-height')}
-            <a ${args->link} data-style="${args->button_style:html:default('display: inline-block;
-margin-top: 4rem;
-padding-top: 1rem;
-padding-right: 2rem;
-padding-bottom: 1rem;
-padding-left: 2rem;
-line-height: 2rem;
-background-color: #006ec7;
-color: white;
-border-color: #006ec7;
-border-radius: 0.5rem;
-border-width: 0.2rem;
-border-style: solid;
-font-size: 1.6rem;
-font-weight: normal;
-letter-spacing: 0.1rem;
-white-space: nowrap;'):input_type(css):arg_name(Style):arg_section(3, 2, 'Button', 'text-height')}; text-decoration: none;">${args->button_text:default(Buy it):arg_name(Text):arg_section(3, 1, 'Button', 'text-height')}
-            </a>
-            ${block->button2:default(1):arg_name(With button 2):arg_section(6, 0, 'Second button', 'text-height')}
-            <a ${args->link2:default('href="" data-personyze-click-target=""'):input_type(a_attrs):arg_name(Link URL):arg_section(6, 3, 'Second button', 'text-height')}} data-style="${args->button2_style:html:default('display: inline-block;
-margin-top: 4rem;
-padding-top: 1rem;
-padding-right: 2rem;
-padding-bottom: 1rem;
-padding-left: 2rem;
-line-height: 2rem;
-background-color: rgb(71, 123, 77);
-color: white;
-border-color: rgb(220, 229, 229);
-border-radius: 0.5rem;
-border-width: 0.2rem;
-border-style: solid;
-font-size: 1.6rem;
-font-weight: normal;
-letter-spacing: 0.1rem;
-white-space: nowrap;'):input_type(css):arg_name(Style):arg_section(6, 2, 'Second button', 'text-height')}; text-decoration: none;">${args->button2_text:default(Buy it more):arg_name(Text):arg_section(6, 1, 'Second button', 'text-height')}
-            </a>
-        </div>
-        ${block->image:default(1):arg_name(With image):arg_section(4, 0, 'Image', 'image')}
-        <div class="-s-t-image">
-            <a ${args->link} style="text-decoration: none;">
-                <img data-src="${args->image_url:html:default('https://cdn.personyze.com/upload/362/7d0a26d42b6f9a72.jpeg'):input_type(personyze_media_url):arg_name(Image URL):arg_section(4, 1, 'Image', 'image')}" alt="cp2 promotional action product bboard en prod" data-style="${args->image_style:html:default('max-width: 100%; max-height: 28rem; box-sizing: box-content;'):input_type(css):arg_name(Style):arg_section(4, 2, 'Image', 'image')}">
-            </a>
-            <img data-src="${args->shadow_url:html:default('https://cdn.personyze.com/upload/4241/854f4b7eec00d6a3.png'):input_type(personyze_media_url):arg_name(Shadow image URL):arg_section(4, 3, 'Image', 'image')}" data-style="${args->shadow_style:html:default('opacity: 0.2; max-width: 80%;'):input_type(css):arg_name(Shadow style):arg_section(4, 4, 'Image', 'image')}">
-        </div>
-    </div>
-</div>
-```
-
-
-## Responsive CTA: Top Image (Mobile), Side Image (Desktop)
-
-Image Position Changes Based on Device
-
-```
-<div class="$responsive" data-style="position:relative; overflow:hidden; ${args->box_style:html:default('max-width: sel(100%, 100vw);
-background-color: rgb(231, 233, 227);
-width: 900px;
-border-radius: 5px;
-padding: 0px;')}">
-	<style>
-		@media (max-width: 768px)
-		{	.ac${action_id:html} {flex-direction:column}
-		}
-	</style>
-	<div class="ac${action_id:html}" style="display:flex; align-items:stretch">
-		<div style="background-repeat:no-repeat; background-position:center; ${args->image_style:html:default('background-image: url(''https://cdn.personyze.com/upload/5971/99feeb36688f640a.png'');
-background-color: rgba(256, 256, 256, 0);
-background-size: contain;
-padding: 0px;
-margin: 20px;')}">
-			<div data-style="width:${args->image_width:html:default(350px)}; height:${args->image_height:html:default(300px)}"></div>
-		</div>
-		<div style="padding:0 1em">
-			<div data-style="max-height:${args->image_height:html}">
-				<div data-style="outline:0; ${args->title_style:html:default('font-size: sel(30px, 22px);
-font-weight: 700;
-line-height: sel(32px, 35px);
-text-align: center;
-margin-top: 50px;
-margin-right: 0px;
-margin-bottom: 0px;
-margin-left: 0px;
-text-transform: uppercase;
-width: sel(450px, auto);
-max-width: 100%;
-height: auto;
-visibility: visible;')}">
-					${args->title:default('<div style="text-align: center;">TITLE TITLE&nbsp;&nbsp;<br />
-&nbsp;</div>
-')}
-				</div>
-				<div data-style="outline:0; ${args->text_style:html:default('font-size: sel(22px, 17px);
-font-weight: 300;
-line-height: sel(25px, 20px);
-text-align: center;
-margin: 0px;
-color: rgb(13, 7, 7);
-width: sel(440px, auto);
-height: auto;
-display: block;
-box-sizing: content-box;
-float: none;')}">
-					${args->text:default('TEXTTEXTTEXTTEXTTEXTTEXTTETE<br />
-TEXTTEXTTEXTTEXTTEXTTEXTTETE<br />
-TEXTTEXTTEXTTEXTTEXTTEXTTETE<br />
-TEXTTEXTTEXTTEXTTEXTTEXTTETE')}
-				</div>
-				<div style="text-align:center; ${args->buttons_style:html:default('margin-top: 4em;
-margin-right: 0;
-margin-bottom: 2em;
-margin-left: 0;')}">
-					${block->show_button:default(1)}
-					<a ${args->href:default('href=""')} data-style="${args->button_text_style:html:default('font-family: Arial;
-font-size: sel(15px, 13px);
-color: white;
-text-decoration: none;
-background-color: #f7941e;
-padding-top: 15px;
-padding-right: 20px;
-padding-bottom: 15px;
-padding-left: 20px;
-border-radius: 2px;
-font-weight: bolder;
-width: 100%;')}">  ${args->button_t:default(GOT IT)}
-					</a>
-
-					${block->show_button_2:default(0)}
-					<a ${args->href_3:default('href=""')} data-style="display:inline-block; ${args->button_text_style_2:html}">
-						${args->button_t_2}
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	${block->show_close_button:default(1)}
-	<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: 8px;
-right: 8px;
-z-index: 9999;')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 3px; background-color: rgba(207, 58, 58, 0); text-decoration-color: rgba(207, 58, 58, 0); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-top-left-radius: 50%; border-top-right-radius: 50%; border-bottom-right-radius: 50%; border-bottom-left-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
-	</div>
-</div>
-
-${menu name='Box', icon='th-large'}
-	${menu args->box_style name='Box style', type='css', param='with_responsive=1'}
-${menu name='Picture', icon='image'}
-	${menu args->image_style name='Picture URL', type='css'}
-	${menu args->image_width name='Image width', type='css_length', param='with_responsive=1'}
-	${menu args->image_height name='Image height', type='css_length', param='with_responsive=1'}
-${menu name='Content', icon='bars'}
-	${menu args->title name='Title'}
-	${menu args->title_style name='Title style', type='css', param='with_responsive=1'}
-	${menu args->text name='Text'}
-	${menu args->text_style name='Title style', type='css', param='with_responsive=1'}
-${menu name='First Button', icon='hand-o-up'}
-	${menu block->show_button name='Show button'}
-	${menu args->button_t name='Text_button'}
-	${menu args->href name='URL', type='a_attrs'}
-	${menu args->button_text_style name='Button text style', type='css', param='with_responsive=1'}
-	${menu args->buttons_style name='Buttons margin', type='css', param='with_responsive=1'}
-${menu name='Second Button', icon='hand-o-up'}
-	${menu block->show_button_2 name='Show second button'}
-	${menu args->button_t_2 name='Text_button'}
-	${menu args->href_3 name='URL', type='a_attrs'}
-	${menu args->button_text_style_2 name='Button text style', type='css', param='with_responsive=1'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->show_close_button name='Show close button'}
+	${menu block->x name='Show Close Button'}
 	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-```
-
-
-## Image/banner with text layer
-
-Simple banner with optional text and multiple buttons
-
-```
-<div class="$responsive" data-style="position:relative; box-sizing:border-box; ${args->style:html:default('margin: 0px;
-text-align: center;
-width: auto;
-height: auto;
-')}">
-	<img src="${args->img_src:html:default('https://cdn.personyze.com/upload/362/6413c369509b8110.jpeg')}" data-style="display:block; width:auto; height:auto; ${args->img_style:html:default('max-width: 100%;
-max-height: 300px;
-object-fit: fill;
-')}">
-
-	${block->with_close_button:default(0)}
-	<div data-style="position:absolute; z-index:1; cursor:pointer; ${args->close_button_style:html:default('text-align: right;
-width: auto;
-top: 10px;
-right: 10px;
-bottom: 0;
-position: absolute;
-left: 0px;
-')}">
-		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 2px solid; box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 3px; background-color: rgb(207, 120, 58); text-decoration-color: rgb(207, 120, 58); outline-color: rgb(206, 54, 64); outline-width: 10px; color: rgb(10, 4, 4); cursor: pointer; transition: all 0.3s ease 0s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: all 0.3s ease 0s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
-	</div>
-
-	<div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column-reverse">
-		${block->with_button_1:default(0)}
-		<div style="flex-shrink:0; display:flex; flex-wrap:wrap; justify-content:center; align-items:center">
-			<a ${args->href:default('href="#"')}
-				data-style="display:inline-block; ${args->button_text_style:html:default('margin: 2em;
-padding-top: 0;
-padding-right: 18px;
-padding-bottom: 0;
-padding-left: 18px;
-font-size: 11px;
-border: none;
-border-radius: 5px;
-letter-spacing: 2px;
-color: #fff;
-background-color: #F8BA31;
-box-sizing: border-box;
-height: 32px;
-line-height: 32px;
-font-weight: 700;
-text-decoration: inherit;
-')}">  ${args->button_t:default(TRY IT)}
-			</a>
-
-			${block->with_button_2}
-			<a ${args->href_2:default('href="javascript:" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="0"')}
-				data-style="display:inline-block; ${args->button_text_style_2:html:default('margin-top: 2em;
-margin-right: 2em;
-margin-bottom: 2em;
-margin-left: 10px;
-color: #fff;
-font-size: 12px;
-font-family: Poppins, Helvetica, Arial, sans-serif;
-text-transform: none;
-')}">
-				${args->button_t_2:default(Not now)}
-			</a>
-		</div>
-		${block->with_text:default(0)}
-		<div data-style="flex-grow:1000; ${args->text_1_style:html:default('text-align: center;
-')}">
-			<div style="width:100%; height:100%; overflow:auto">
-				<div data-style="${args->line_1_style:html:default('font-size: 28px;
-color: white;
-padding-top: 60px;
-padding-right: 60px;
-padding-bottom: 30px;
-padding-left: 60px;
-font-weight: bold;
-')}">
-					${args->line_1:default(TEXT TEXT)}
-				</div>
-				<div data-style="${args->line_2_style:html:default('font-size: 14px;
-color: rgb(224, 215, 215);
-padding-top: 0px;
-padding-right: 0px;
-padding-bottom: 30px;
-padding-left: 0px;
-font-weight: lighter;
-text-align: center;
-')}">
-					${args->line_2:default(TEXT TEXT TEXT TEXT)}
-				</div>
-			</div>
-		</div>
-	</div>
-
-	${block->with_banner_href:default(1)}
-	<a ${args->banner_href:default('href=""')} style="position:absolute; display:block; left:0; top:0; width:100%; height:100%"></a>
-</div>
-
-${menu name='Image', icon='image'}
-	${menu args->img_src name='Image URL', type='media_url'}
-	${menu args->img_style name='Image style', type='css', param='with_responsive=1'}
-	${menu args->style name='Box style', type='css', param='with_responsive=1'}
-${menu name='Whole banner link', icon='external-link'}
-	${menu block->with_banner_href name='Whole banner link', onchange='block.with_button_1 = block.with_button_1 && !block.with_banner_href; block.with_button_2 = block.with_button_2 && !block.with_banner_href'}
-	${menu args->banner_href name='URL', type='a_attrs'}
-${menu name='Text 1', icon='bars'}
-	${menu block->with_text name='Show text'}
-	${menu args->text_1_style name='Text 1 style', type='css', param='with_responsive=1'}
-	${menu args->line_1 name='Text 1 line 1'}
-	${menu args->line_1_style name='Text 1 style', type='css', param='with_responsive=1'}
-	${menu args->line_2 name='Text 1 line 2'}
-	${menu args->line_2_style name='Text 1 style', type='css', param='with_responsive=1'}
-${menu name='Button', icon='hand-o-up'}
-	${menu block->with_button_1 name='Show button', onchange='block.with_banner_href = block.with_banner_href && !block.with_button_1'}
-	${menu args->button_t name='Text_button'}
-	${menu args->href name='URL', type='a_attrs'}
-	${menu args->button_text_style name='Button text style', type='css', param='with_responsive=1'}
-${menu name='Second Button', icon='hand-o-up'}
-	${menu block->with_button_2 name='Show second button', onchange='block.with_banner_href = block.with_banner_href && !block.with_button_1'}
-	${menu args->button_t_2 name='Text_button'}
-	${menu args->href_2 name='URL', type='a_attrs'}
-	${menu args->button_text_style_2 name='Button text style', type='css', param='with_responsive=1'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->with_close_button name='Show close button'}
-	${menu args->close_button_style name='Close_btn_Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
-```
-
-
-## Full-Screen Overlay
-
-Full-Page promotion popup
-
-```
-<table class="$responsive" data-style="border-collapse:collapse; ${args->style:html:default('width: sel(100%, auto);
-height: sel(100%, auto);
-background-image: none;
-background-size: contain;
-background-color: white;
-background-repeat: repeat;
-display: table;
-overflow: hidden;
-min-width: 0;
-')}">
-	<tr>
-		<td data-style="position:relative; ${args->style_2:html:default('background-color: rgb(253, 253, 253);
-color: black;
-text-align: center;
-vertical-align: middle;
-padding-top: 10%;
-padding-right: sel(10%, 10px);
-padding-bottom: 10%;
-padding-left: sel(10%, 10px);
-width: auto;
-height: auto;
-')}">
-			<img src="${args->image_src:html:default('https://cdn.personyze.com/upload/362/705130cf0b17aa64.png')}" style="${args->image_style:html:default('width: auto;
-height: auto;
-border: none;
-')}">
-			<div>
-				<div data-style="margin:${args->margin:html:default('sel(12px, 8px)')} 0; ${args->style_t1:html:default('color: rgb(9, 9, 9);
-font-size: sel(25px, 5vw);
-width: 100%;
-')}">
-					${args->text_1:default(Your Title Goes Here)}
-				</div>
-				<div data-style="margin:${args->margin:html} 0; ${args->style_t2:html:default('color: rgb(10, 6, 6);
-font-size: sel(14px, 4vw);
-')}">
-					${args->text_2:default('Sub tile goes here Sub tile goes here Sub tile goes<br />
-Sub tile goes here Sub tile goes here Sub tile goes<br />
-Sub tile goes here Sub tile goes here Sub tile goes<br />
-Sub tile goes here Sub tile goes here Sub tile goes<br />
-Sub tile goes here Sub tile goes here Sub tile goes<br />
-Sub tile goes here Sub tile goes here Sub tile goes<br />
-&nbsp;')}
-				</div>
-				<div data-style="margin:${args->margin:html} 0">
-					${block->with_button:default(1)}
-					<a class="$flat_btn" with_responsive="1" data-style="display:inline-block; width:${args->button_width:html:default('sel(130px, 33vw)')}; height:${args->button_height:html:default(30px)}; line-height:${args->button_height:html}; ${args->yes_style:html:default('height: auto;
-border: 5px solid rgb(6, 3, 3);
-border-radius: 26px;
-background-color: rgb(2, 2, 2);
-margin-top: 20px;
-margin-right: 1px;
-margin-bottom: 1px;
-margin-left: 1px;
-padding-top: 10px;
-padding-right: 30px;
-padding-bottom: 10px;
-padding-left: 30px;
-color: rgb(251, 250, 250);
-text-align: center;
-font-size: 22px;
-text-decoration: none;
-font-weight: bold;
-width: 130px;
-text-transform: none;
-font-family: sans-serif;
-')}" hover_style="${args->yes_h_style:html:default('border: 5px solid rgb(237, 2, 13);
-border-radius: 26px;
-background-color: rgb(237, 2, 13);
-')}" ${args->yes_attrs:default('href="" data-personyze-click-target=""')}>
-						${args->yes_1:default(Button 1)}
-					</a>
-
-					${block->with_second_button:default(1)}
-					<a class="$flat_btn $personyze_button_dont_show_again" with_responsive="1" data-action_id="${action_id:html}" data-style="display:inline-block; width:${args->button_width:html}; height:${args->button_height:html}; line-height:${args->button_height:html}; ${args->b2_style:html:default('height: auto;
-border: 5px solid rgb(44, 203, 39);
-border-radius: 26px;
-background-color: rgb(44, 203, 39);
-margin-top: 20px;
-margin-right: 1px;
-margin-bottom: 1px;
-margin-left: 1px;
-padding-top: 10px;
-padding-right: 30px;
-padding-bottom: 10px;
-padding-left: 30px;
-color: rgb(247, 246, 246);
-text-align: center;
-font-size: 22px;
-text-decoration: none;
-font-weight: bold;
-width: 130px;
-text-transform: none;
-font-family: sans-serif;
-')}" hover_style="${args->yes_h_style:html}" ${args->b2_attrs}>
-						${args->b2_1:default(Button 2)}
-					</a>
-				</div>
-			</div>
-
-			${block->show_close_button:default(1)}
-			<div data-style="position:absolute; cursor:pointer; ${args->close_button_style:html:default('top: 6px;
-right: 6px;
-')}">
-				${args->close_button:default('<a href="javascript:" style="font-size: 72px; color: black; font-weight: 700; line-height: 1; text-decoration: none; position: absolute; top: 15px; right: 15px;" class="$personyze_button_dont_show_again" data-action_id="${action_id}">×</a>')}
-			</div>
-		</td>
-	</tr>
-</table>
-
-${menu name='Box', icon='th-large'}
-	${menu args->style name='Style', type='css', param='with_responsive=1'}
-	${menu args->style_2 name='Style', type='css', param='with_responsive=1'}
-	${menu args->margin name='Paragraph spacing', type='css_length', param='with_responsive=1'}
-	${menu args->button_width name='Button Width', type='css_length', param='with_responsive=1'}
-	${menu args->button_height name='Button Height', type='css_length', param='with_responsive=1'}
-${menu name='Top Image', icon='image'}
-	${menu args->image_src name='URL', type='personyze_media_url'}
-	${menu args->image_style name='Image style', type='css', param='with_responsive=1'}
-${menu name='Text', icon='bars'}
-	${menu args->text_1 name='Line 1'}
-	${menu args->style_t1 name='Style', type='css', param='with_responsive=1'}
-	${menu args->text_2 name='Line 1'}
-	${menu args->style_t2 name='Style', type='css', param='with_responsive=1'}
-${menu name='Button', icon='bars'}
-	${menu block->with_button name='Show Button'}
-	${menu args->yes_1 name='Button 1 text'}
-	${menu args->yes_attrs name='Button action', type='a_attrs'}
-	${menu args->yes_style name='Button  Style', type='css'}
-	${menu args->yes_h_style name='Button  Hover Style', type='css'}
-${menu name='Button 2', icon='bars'}
-	${menu block->with_second_button name='Show Button 2'}
-	${menu args->b2_1 name='Button text'}
-	${menu args->b2_attrs name='Button action', type='a_attrs'}
-	${menu args->b2_style name='Button 2 Style', type='css'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->show_close_button name='Show close button'}
-	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
+	${menu args->x name='Close Button HTML', type='dontshowagain'}
 ```
 
 
@@ -3327,111 +577,6 @@ ${menu name='Close Button', icon='times-circle'}
 ```
 
 
-## Minimalist design bar message
-
-
-
-```
-<div class="$responsive" data-style="box-sizing: border-box; position: relative; ${args->box_style:html:default('background-color: #5253A4;
-border-radius: 14px;
-padding: 24px 32px;
-max-width: 100%;
-margin: 0 auto;
-font-family: Arial, sans-serif;
-')}">
-
-  <style>
-    @media (max-width: 768px) {
-      .travel-banner-flex {
-        flex-direction: column !important;
-        text-align: center;
-      }
-      .cta-banner-button {
-        margin-top: 16px;
-      }
-    }
-
-    .cta-banner-button.icon-left i {
-      order: -1;
-      margin-right: 8px;
-    }
-
-    .cta-banner-button.icon-right i {
-      order: 1;
-      margin-left: 8px;
-    }
-  </style>
-
-  <div class="travel-banner-flex" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
-
-    <!-- Main Text -->
-    <div data-style="${args->text_style:html:default('color: white;
-font-size: 20px;
-font-weight: 600;
-')}">
-      ${args->text:default('✈️ Escape the ordinary – discover exclusive travel deals and getaways!')}
-    </div>
-
-    <!-- CTA Button -->
-    ${block->with_cta:default(1)}
-    <div>
-      <a class="cta-banner-button ${args->cta_icon_position:html:default(icon-left)}" ${args->cta_link:default('href="#"')}
-         data-style="${args->cta_style:html:default('background-color: white;
-color: black;
-padding-top: 14px;
-padding-right: 28px;
-padding-bottom: 14px;
-padding-left: 28px;
-border-radius: 10px;
-font-size: 16px;
-font-weight: bold;
-text-decoration: none;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-')}">
-        <span>${args->cta_text:default(Book Now)}</span>
-        ${if args->cta_icon_class:default(angle-right) != ''}<i class="$icon ${args->cta_icon_class:html}" style="${args->cta_icon_style:html:default('font-size: 16px;
-margin: 0px;
-padding: 5px;
-')}"></i>${end}
-      </a>
-    </div>
-  </div>
-
-  <!-- Close Button -->
-  ${block->with_close_button:default(1)}
-  <div data-style="${args->close_button_style:html:default('position: absolute;
-top: 10px;
-right: 10px;
-z-index: 99;
-')}">
-    ${args->close_button:default('<div class="$personyze_button_dont_show_again" data-action_id="${action_id}" style="display: inline-block; width: 20px; height: 20px; background-color: rgba(255,255,255,0.4); color: white; text-align: center; line-height: 20px; border-radius: 50%; font-size: 16px; cursor: pointer;">×</div>')}
-  </div>
-</div>
-
-<!-- ✅ PERSONYZE MENU OPTIONS -->
-
-${menu name='Banner Container', icon='th-large'}
-	${menu args->box_style name='Container Style', type='css', param='with_responsive=1'}
-${menu name='Main Text', icon='font'}
-	${menu args->text name='Promo Text'}
-	${menu args->text_style name='Text Style', type='css', param='with_responsive=1'}
-${menu name='CTA Button', icon='hand-o-up'}
-	${menu block->with_cta name='Show CTA'}
-	${menu args->cta_text name='CTA Text'}
-	${menu args->cta_link name='CTA Link', type='a_attrs'}
-	${menu args->cta_style name='CTA Style', type='css', param='with_responsive=1'}
-	${menu args->cta_icon_class name='Icon Class', type='icon'}
-	${menu args->cta_icon_style name='Icon Style', type='css'}
-	${menu args->cta_icon_position name='Icon Position', type='select', param='options=[["Before Text","icon-left"],["After Text","icon-right"]]'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->with_close_button name='Show Close Button'}
-	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close Button HTML', type='dontshowagain'}
-```
-
-
 ## Promo message
 
 
@@ -3538,123 +683,6 @@ ${menu name='Close Button', icon='times-circle'}
 	${menu block->with_close_button name='Show Close Button'}
 	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
 	${menu args->close_button name='Close Button', type='dontshowagain'}
-```
-
-
-## Review mesaage box
-
-
-
-```
-<div class="$responsive" data-style="box-sizing: border-box; position: relative; ${args->box_style:html:default('
-background-color: white;
-border-radius: 10px;
-padding: 20px;
-max-width: 600px;
-margin: 0 auto;
-box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-font-family: Arial, sans-serif;
-')}">
-
-  <!-- Close Button -->
-  ${block->with_close_button:default(1)}
-  <div data-style="${args->close_button_style:html:default('
-position: absolute;
-top: 10px;
-right: 10px;
-z-index: 1;
-')}">
-    ${args->close_button:default('<div style="width: 24px; height: 24px; background-color: rgba(0,0,0,0.05); border-radius: 50%; text-align: center; line-height: 24px; font-weight: bold; color: #333; cursor: pointer;">×</div>')}
-  </div>
-
-  <!-- Title -->
-  <div data-style="${args->title_style:html:default('
-font-size: 22px;
-font-weight: bold;
-margin-bottom: 20px;
-text-align: center;
-color: #000;
-')}">
-    ${args->title:default(Here is what our customers said)}
-  </div>
-
-  <!-- Testimonial Row -->
-  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; text-align: center;">
-
-    <!-- User Image -->
-    <div>
-      <img src="${args->user_image:html:default('https://cdn.personyze.com/upload/362/12cb99165533447c.png')}"
-           data-style="${args->user_image_style:html:default('width: 60px;
-height: 60px;
-border-radius: 50%;
-object-fit: cover;
-')}">
-    </div>
-
-    <!-- Text Block -->
-    <div style="flex: 1 1 300px;">
-      <div data-style="${args->review_text_style:html:default('font-size: 14px;
-color: #333;
-margin-bottom: 10px;
-text-align: center;
-')}">
-        ${args->review_text:default(I was totally satisfied with how Andrew dealt with our prenuptial agreement. We were able to get legal recognition within two weeks!)}
-      </div>
-      <div data-style="${args->reviewer_name_style:html:default('font-weight: bold;
-font-size: 14px;
-color: #000;
-text-align: center;
-')}">
-        ${args->reviewer_name:default(Liz Sure)}
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA Button -->
-  ${block->with_cta:default(1)}
-  <div style="text-align: center; margin-top: 20px;">
-    <a ${args->cta_link:default('href="#"')}
-       data-style="${args->cta_style:html:default('background-color: #4a70f8;
-color: white;
-padding-top: 10px;
-padding-right: 20px;
-padding-bottom: 10px;
-padding-left: 20px;
-border-radius: 8px;
-font-weight: bold;
-text-decoration: none;
-font-size: 14px;
-display: inline-block;
-')}">
-      ${args->cta_text:default(See more reviews)}
-    </a>
-  </div>
-</div>
-
-<!-- ✅ PERSONYZE MENU OPTIONS -->
-
-${menu name='Box Style', icon='th-large'}
-	${menu args->box_style name='Box style', type='css', param='with_responsive=1'}
-${menu name='Title', icon='header'}
-	${menu args->title name='Headline'}
-	${menu args->title_style name='Headline style', type='css', param='with_responsive=1'}
-${menu name='User Image', icon='user-circle'}
-	${menu args->user_image name='User image URL', type='media_url'}
-	${menu args->user_image_style name='User image style', type='css', param='with_responsive=1'}
-${menu name='Review Content', icon='comment'}
-	${menu args->review_text name='Testimonial text'}
-	${menu args->review_text_style name='Text style', type='css', param='with_responsive=1'}
-	${menu args->reviewer_name name='Reviewer name'}
-	${menu args->reviewer_name_style name='Reviewer name style', type='css', param='with_responsive=1'}
-${menu name='CTA Button', icon='hand-o-up'}
-	${menu block->with_cta name='Show CTA button'}
-	${menu args->cta_text name='CTA button text'}
-	${menu args->cta_link name='CTA link', type='a_attrs'}
-	${menu args->cta_style name='CTA button style', type='css', param='with_responsive=1'}
-${menu name='Close Button', icon='times-circle'}
-	${menu block->with_close_button name='Show close button'}
-	${menu args->close_button_style name='Close button style', type='css', param='with_responsive=1'}
-	${menu args->close_button name='Close button', type='dontshowagain'}
 ```
 
 
@@ -4655,6 +1683,7 @@ background-image: url(''https://cdn.personyze.com/upload/362/c8e7302d0a03f885.pn
 width: 100%;
 top: -10px;
 right: -10px;
+z-index: 9999;
 ')}">
     ${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px inset, rgba(0, 0, 0, 0.2) 0px 1px 2px; padding: 6px; background-color: rgb(248, 186, 49); text-decoration-color: rgb(248, 186, 49); outline-color: rgb(206, 54, 64); outline-width: 15px; color: rgb(255, 255, 255); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 43%, currentcolor 43%, currentcolor 59%, transparent 59%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 43%, currentcolor 43%, currentcolor 59%, transparent 59%, transparent 100%);"></div></div>')}
   </div>
@@ -4716,3 +1745,1181 @@ ${menu name='Overlay Text & CTA', icon='font', description='Enable optional titl
 	${menu args->cta_link name='CTA Link', description='Target URL for the CTA button', type='a_attrs'}
 	${menu args->cta_style name='CTA Button Style', description='CSS for the CTA button appearance', type='css', param='with_responsive=1'}
 ```
+
+
+## Info Banner with CTAs
+
+ clean, responsive banner featuring an info message, primary and secondary call-to-action buttons, and an optional top image for visual impact.
+
+```
+<!-- Info Message Banner with CTA Buttons and Optional Top Image -->
+<div class="$responsive" data-style="${args->box_style:html:default('background-color: #E7E7E7;
+padding: 20px;
+border-radius: 8px;
+margin: auto;
+position: relative;
+width: 510.171875px;
+height: auto;
+')}">
+
+  <!-- Optional Top Image: toggled by block->with_image -->
+  ${block->with_image:default(1)}
+    <img
+      src="${args->image_url:html:default('https://cdn.personyze.com/upload/362/836ce71c4644386c.png')}"
+      alt="${args->image_alt:html:default(Top Image)}"
+      data-style="${args->image_style:html:default('max-width: 200px;
+height: auto;
+display: block;
+margin-top: auto;
+margin-right: auto;
+margin-bottom: 20px;
+margin-left: auto;
+')}"
+    />
+  ${endblock}
+
+  <div data-style="${args->td_style:html:default('padding: 20px; text-align: center; color: #333; font-size: 14px;')}">
+    ${args->content:default('Info Message: Download our FREE Testing Toolkit! Discover how our toolkit can help you optimize your testing process and boost efficiency.')}
+
+    <!-- Primary and Secondary CTA Buttons -->
+    ${block->with_cta:default(1)}
+    <div style="margin-top: 20px;">
+      <a ${args->cta_link:default('href="#"')}
+         data-style="${args->cta_style:html:default('display: inline-block;
+padding-top: 10px;
+padding-right: 20px;
+padding-bottom: 10px;
+padding-left: 20px;
+background-color: #007bff;
+color: white;
+text-decoration: none;
+border-radius: 5px;
+')}"
+         class="btn-primary"
+         title="Primary action button">
+         ${args->cta_text:default(GET IT NOW)}
+      </a>
+      ${block->with_cta_2:default(1)}
+      <a ${args->cta_link_2:default('href="#"')}
+         data-style="${args->cta_style_2:html:default('display:inline-block; padding: 10px 20px; background-color: gray; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;')}"
+         class="btn-secondary"
+         title="Secondary action button: Maybe Later">
+         ${args->cta_text_2:default(Maybe Later)}
+      </a>
+      ${endblock}
+    </div>
+    ${endblock}
+
+    <!-- Close Button -->
+    ${block->with_close_button:default(1)}
+    <div data-style="${args->close_button_style:html:default('position: absolute;
+top: 8px;
+right: 8px;
+')}" title="Close this banner">
+      ${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 4px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 5px; color: rgb(10, 4, 4); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%);"></div></div>')}
+    </div>
+    ${endblock}
+
+  </div>
+</div>
+
+<!-- PERSONYZE MENU OPTIONS -->
+
+${menu name='Box Style', icon='th-large'}
+	${menu args->box_style name='Banner Container Style', type='css', param='with_responsive=1'}
+${menu name='Image', icon='image'}
+	${menu block->with_image name='Show Top Image'}
+	${menu args->image_url name='Image URL', type='media_url'}
+	${menu args->image_alt name='Image Alt Text'}
+	${menu args->image_style name='Image Style', type='css', param='with_responsive=1'}
+${menu name='Content', icon='font'}
+	${menu args->content name='Message Text'}
+	${menu args->td_style name='Text Container Style', type='css', param='with_responsive=1'}
+${menu name='Primary CTA Button', icon='link'}
+	${menu block->with_cta name='Show Primary CTA'}
+	${menu args->cta_text name='Primary CTA Text'}
+	${menu args->cta_link name='Primary CTA Link', type='a_attrs'}
+	${menu args->cta_style name='Primary CTA Style', type='css', param='with_responsive=1'}
+${menu name='Secondary CTA Button', icon='clock'}
+	${menu block->with_cta_2 name='Show Secondary CTA'}
+	${menu args->cta_text_2 name='Secondary CTA Text'}
+	${menu args->cta_link_2 name='Secondary CTA Link', type='a_attrs'}
+	${menu args->cta_style_2 name='Secondary CTA Style', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times-circle'}
+	${menu block->with_close_button name='Show Close Button'}
+	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
+	${menu args->close_button name='Close Button HTML', type='dontshowagain'}
+```
+
+
+## Responsive Full-Width Top Bar Banner with Inline CTA & Close Button
+
+A fully responsive top bar banner template for Personyze featuring a logo, customizable text, primary and secondary CTA buttons, and an inline close button. All elements are easily styled via the Personyze CSS editor for seamless integration
+
+```
+<style>
+  /* System fonts only */
+  body, div, a, input, button, span {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Animation Keyframes */
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .$responsive {
+      flex-direction: column;
+      padding: 16px;
+    }
+    .button-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    /* On mobile, place the close button at the top of the button container */
+    .button-container .close-btn {
+      order: -1;
+    }
+  }
+
+  /* Transparent corner fix */
+  .transparent-corner {
+    background-color: transparent !important;
+  }
+</style>
+
+<!-- Template Content -->
+<div class="$responsive" data-style="position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${args->framebgcolor:html:default('rgb(40, 43, 65)')};
+  border-radius: 16px;
+  padding: sel(20px, 16px);
+  width: 100%;
+  text-align: center;
+  ${args->style:html:default('height: auto;
+border-radius: 15px;
+width: 100%;
+box-sizing: border-box;
+')}
+">
+
+  <!-- Left Block: Logo and Text -->
+  <div style="display: flex; flex: 1 1 auto; align-items: center; gap: 20px; flex-wrap: wrap;">
+    <!-- Logo -->
+    ${block->logo:default(1)}
+    <div style="flex: 0 0 auto; max-width: 120px; ${args->logo_visibility_mobile:html}">
+      <img src="${args->logo_src:html:default('https://cdn.personyze.com/upload/362/18a94c1299224ec8.png')}"
+           data-style="${args->logo_style:html:default('width: 100%; max-width: 120px; border-radius: 10px;')}"
+           alt="Logo">
+    </div>
+    <!-- Text -->
+    ${block->with_left_text:default(1)}
+    <div style="flex: 1 1 auto;"
+         data-style="${args->left_style:html:default('color: #fff; font-size: sel(22px, 16px); font-weight: 600;')}">
+      ${args->left_text:default('<strong>Time is Running Out!</strong><br /><span style="font-size: sel(18px, 14px); font-weight: normal;">Don’t miss your chance to save!</span>')}
+    </div>
+  </div>
+
+  <!-- Buttons Block -->
+  <div class="button-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+    ${block->button1:default(1)}
+    <a ${args->href1:default('href="#"')}
+       data-style="${args->button1_style:html:default('font-size: 16px; background-color: #3498db; color: #fff; padding: 10px 24px; border-radius: 30px; text-decoration: none;')}"
+       style="animation: ${args->button1_animation:html:default(bounce)} 1.5s infinite;">
+      ${args->button1_text:default(Join Now)}
+    </a>
+    ${block->button2:default(1)}
+    <a ${args->href2:default('href="javascript:"')}
+       data-style="${args->button2_style:html:default('font-size: 14px; background: transparent; color: #eee; text-decoration: underline; padding: 10px 20px; border-radius: 20px;')}"
+       onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+      ${args->button2_text:default(Maybe Later)}
+    </a>
+    <!-- Close Button placed inline with CTA buttons -->
+
+    ${args->x:default('<a href="javascript:" style="font-size: 24px; color: rgb(252, 252, 252); font-weight: lighter; line-height: 1; text-decoration: none; position: absolute; top: 10px; right: 10px;" class="$personyze_button_dont_show_again" data-action_id="${action_id}" title="Close">×</a>')}
+  </div>
+</div>
+
+<!-- PERSONYZE MENU OPTIONS -->
+
+${menu name='Banner Settings', icon='th-large'}
+	${menu args->framebgcolor name='Background color', description='Banner background color', type='color'}
+	${menu args->style name='Custom CSS styles for the banner', description='Full CSS for the banner container', type='css', param='with_responsive=1'}
+${menu name='Logo Settings', icon='image'}
+	${menu block->logo name='Show logo'}
+	${menu args->logo_src name='Logo URL', type='personyze_media_url'}
+	${menu args->logo_style name='Logo style', type='css', param='with_responsive=1'}
+	${menu args->logo_visibility_mobile name='Hide logo on mobile', type='checkbox'}
+${menu name='Text Block', icon='align-left'}
+	${menu block->with_left_text name='Show text block'}
+	${menu args->left_text name='Text content'}
+	${menu args->left_style name='Text style', type='css', param='with_responsive=1'}
+${menu name='CTA Button', icon='hand-pointer-o'}
+	${menu block->button1 name='Show CTA button 1'}
+	${menu args->button1_text name='Button text'}
+	${menu args->href1 name='Button URL', type='a_attrs'}
+	${menu args->button1_style name='Button style', type='css', param='with_responsive=1'}
+	${menu args->button1_animation name='Button animation', type='select', param='options=[["None",""],["Bounce","bounce"],["Pulse","pulse"],["Shake","shake"]]'}
+${menu name='CTA Button 2', icon='hand-o-up'}
+	${menu block->button2 name='Show CTA button 2'}
+	${menu args->button2_text name='Button 2 text'}
+	${menu args->href2 name='Button 2 URL', type='a_attrs'}
+	${menu args->button2_style name='Button 2 style', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times'}
+	${menu args->x name='Close button HTML', type='dontshowagain'}
+```
+
+
+## Minimalist design bar message
+
+
+
+```
+<div class="$responsive" data-style="box-sizing: border-box; position: relative; ${args->box_style:html:default('background-color: #5253A4;
+border-radius: 14px;
+padding: 24px 32px;
+max-width: 100%;
+margin: 0 auto;
+font-family: Arial, sans-serif;
+')}">
+
+  <style>
+    @media (max-width: 768px) {
+      .travel-banner-flex {
+        flex-direction: column !important;
+        text-align: center;
+      }
+      .cta-banner-button {
+        margin-top: 16px;
+      }
+    }
+
+    .cta-banner-button.icon-left i {
+      order: -1;
+      margin-right: 8px;
+    }
+
+    .cta-banner-button.icon-right i {
+      order: 1;
+      margin-left: 8px;
+    }
+  </style>
+
+  <div class="travel-banner-flex" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+
+    <!-- Main Text -->
+    <div data-style="${args->text_style:html:default('color: white;
+font-size: 20px;
+font-weight: 600;
+')}">
+      ${args->text:default('✈️ Escape the ordinary – discover exclusive travel deals and getaways!')}
+    </div>
+
+    <!-- CTA Button -->
+    ${block->with_cta:default(1)}
+    <div>
+      <a class="cta-banner-button ${args->cta_icon_position:html:default(icon-left)}" ${args->cta_link:default('href="#"')}
+         data-style="${args->cta_style:html:default('background-color: white;
+color: black;
+padding-top: 14px;
+padding-right: 28px;
+padding-bottom: 14px;
+padding-left: 28px;
+border-radius: 10px;
+font-size: 16px;
+font-weight: bold;
+text-decoration: none;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+')}">
+        <span>${args->cta_text:default(Book Now)}</span>
+        ${if args->cta_icon_class:default(angle-right) != ''}<i class="$icon ${args->cta_icon_class:html}" style="${args->cta_icon_style:html:default('font-size: 16px;
+margin: 0px;
+padding: 5px;
+')}"></i>${end}
+      </a>
+    </div>
+  </div>
+
+  <!-- Close Button -->
+  ${block->with_close_button:default(1)}
+  <div data-style="${args->close_button_style:html:default('position: absolute;
+top: 10px;
+right: 10px;
+z-index: 99;
+')}">
+    ${args->close_button:default('<div class="$personyze_button_dont_show_again" data-action_id="${action_id}" style="display: inline-block; width: 20px; height: 20px; background-color: rgba(255,255,255,0.4); color: white; text-align: center; line-height: 20px; border-radius: 50%; font-size: 16px; cursor: pointer;">×</div>')}
+  </div>
+</div>
+
+<!-- ✅ PERSONYZE MENU OPTIONS -->
+
+${menu name='Banner Container', icon='th-large'}
+	${menu args->box_style name='Container Style', type='css', param='with_responsive=1'}
+${menu name='Main Text', icon='font'}
+	${menu args->text name='Promo Text'}
+	${menu args->text_style name='Text Style', type='css', param='with_responsive=1'}
+${menu name='CTA Button', icon='hand-o-up'}
+	${menu block->with_cta name='Show CTA'}
+	${menu args->cta_text name='CTA Text'}
+	${menu args->cta_link name='CTA Link', type='a_attrs'}
+	${menu args->cta_style name='CTA Style', type='css', param='with_responsive=1'}
+	${menu args->cta_icon_class name='Icon Class', type='icon'}
+	${menu args->cta_icon_style name='Icon Style', type='css'}
+	${menu args->cta_icon_position name='Icon Position', type='select', param='options=[["Before Text","icon-left"],["After Text","icon-right"]]'}
+${menu name='Close Button', icon='times-circle'}
+	${menu block->with_close_button name='Show Close Button'}
+	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
+	${menu args->close_button name='Close Button HTML', type='dontshowagain'}
+```
+
+
+## Review mesaage box
+
+
+
+```
+<div class="$responsive" data-style="box-sizing: border-box; position: relative; ${args->box_style:html:default('
+background-color: white;
+border-radius: 10px;
+padding: 20px;
+max-width: 600px;
+margin: 0 auto;
+box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+font-family: Arial, sans-serif;
+')}">
+
+  <!-- Close Button -->
+  ${block->with_close_button:default(1)}
+  <div data-style="${args->close_button_style:html:default('
+position: absolute;
+top: 10px;
+right: 10px;
+z-index: 1;
+')}">
+    ${args->close_button:default('<div style="width: 24px; height: 24px; background-color: rgba(0,0,0,0.05); border-radius: 50%; text-align: center; line-height: 24px; font-weight: bold; color: #333; cursor: pointer;">×</div>')}
+  </div>
+
+  <!-- Title -->
+  <div data-style="${args->title_style:html:default('
+font-size: 22px;
+font-weight: bold;
+margin-bottom: 20px;
+text-align: center;
+color: #000;
+')}">
+    ${args->title:default(Here is what our customers said)}
+  </div>
+
+  <!-- Testimonial Row -->
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 20px; text-align: center;">
+
+    <!-- User Image -->
+    <div>
+      <img src="${args->user_image:html:default('https://cdn.personyze.com/upload/362/12cb99165533447c.png')}"
+           data-style="${args->user_image_style:html:default('width: 60px;
+height: 60px;
+border-radius: 50%;
+object-fit: cover;
+')}">
+    </div>
+
+    <!-- Text Block -->
+    <div style="flex: 1 1 300px;">
+      <div data-style="${args->review_text_style:html:default('font-size: 14px;
+color: #333;
+margin-bottom: 10px;
+text-align: center;
+')}">
+        ${args->review_text:default(I was totally satisfied with how Andrew dealt with our prenuptial agreement. We were able to get legal recognition within two weeks!)}
+      </div>
+      <div data-style="${args->reviewer_name_style:html:default('font-weight: bold;
+font-size: 14px;
+color: #000;
+text-align: center;
+')}">
+        ${args->reviewer_name:default(Liz Sure)}
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Button -->
+  ${block->with_cta:default(1)}
+  <div style="text-align: center; margin-top: 20px;">
+    <a ${args->cta_link:default('href="#"')}
+       data-style="${args->cta_style:html:default('background-color: #4a70f8;
+color: white;
+padding-top: 10px;
+padding-right: 20px;
+padding-bottom: 10px;
+padding-left: 20px;
+border-radius: 8px;
+font-weight: bold;
+text-decoration: none;
+font-size: 14px;
+display: inline-block;
+')}">
+      ${args->cta_text:default(See more reviews)}
+    </a>
+  </div>
+</div>
+
+<!-- ✅ PERSONYZE MENU OPTIONS -->
+
+${menu name='Box Style', icon='th-large'}
+	${menu args->box_style name='Box style', type='css', param='with_responsive=1'}
+${menu name='Title', icon='header'}
+	${menu args->title name='Headline'}
+	${menu args->title_style name='Headline style', type='css', param='with_responsive=1'}
+${menu name='User Image', icon='user-circle'}
+	${menu args->user_image name='User image URL', type='media_url'}
+	${menu args->user_image_style name='User image style', type='css', param='with_responsive=1'}
+${menu name='Review Content', icon='comment'}
+	${menu args->review_text name='Testimonial text'}
+	${menu args->review_text_style name='Text style', type='css', param='with_responsive=1'}
+	${menu args->reviewer_name name='Reviewer name'}
+	${menu args->reviewer_name_style name='Reviewer name style', type='css', param='with_responsive=1'}
+${menu name='CTA Button', icon='hand-o-up'}
+	${menu block->with_cta name='Show CTA button'}
+	${menu args->cta_text name='CTA button text'}
+	${menu args->cta_link name='CTA link', type='a_attrs'}
+	${menu args->cta_style name='CTA button style', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times-circle'}
+	${menu block->with_close_button name='Show close button'}
+	${menu args->close_button_style name='Close button style', type='css', param='with_responsive=1'}
+	${menu args->close_button name='Close button', type='dontshowagain'}
+```
+
+
+## Promotion Banner with Optional Image, Logo, and CTA Buttons
+
+It includes an optional logo positioned above the headline text, optional main promotional image with responsive positioning options (top/bottom on mobile, left/right on desktop), customizable primary and secondary CTA buttons, optional decorative CSS shapes, and a close button
+
+```
+<div class="$responsive ${args->mobile_img_order:html:default(img-mobile-top img-desktop-right)}"
+     data-style="${args->banner_style:html:default('background-color:#004481; position:relative; padding:20px 40px; border-radius:8px; overflow:hidden; color:#fff;')}">
+
+  <style>
+    .banner-flex-container {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      position:relative;
+    }
+
+    @media (max-width:768px){
+      .banner-flex-container { flex-direction:column; }
+      .img-mobile-top .image-container{ order:-1 !important; }
+      .img-mobile-bottom .image-container{ order:2 !important; }
+      .banner-content, .logo-container { text-align:center; }
+      .cta-row { justify-content:center !important; }
+    }
+
+    @media (min-width:769px){
+      .img-desktop-left .image-container{ order:-1 !important; }
+      .img-desktop-right .image-container{ order:2 !important; }
+    }
+
+    .image-container img, .logo-container img { width:100%; height:auto; object-fit:cover; }
+  </style>
+
+  <!-- Close Button -->
+  ${block->close_button:default(1)}
+  <div style="position:absolute; top:10px; right:10px; cursor:pointer; z-index:10;">
+    ${args->close_button_html:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 7px; color: rgb(245, 245, 245); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%);"></div></div>')}
+  </div>
+
+  <!-- Banner Flex Container -->
+  <div class="banner-flex-container">
+
+    <!-- Optional Image -->
+    ${block->right_image:default(1)}
+    <div class="image-container" style="${args->right_image_style:html:default('width: 21%;
+max-width: 500px;
+margin-top: 0px;
+margin-right: 0px;
+margin-bottom: -24px;
+margin-left: 0px;
+')}">
+      <img src="${args->right_image_src:html:default('https://cdn.personyze.com/upload/362/705130cf0b17aa64.png')}" alt="Banking Image">
+    </div>
+
+    <!-- Banner Content -->
+    <div class="banner-content" data-style="${args->banner_content_style:html:default('flex: 1;
+max-width: 600px;
+position: relative;
+z-index: 2;
+color: #fff;
+')}">
+
+      <!-- Optional Logo -->
+      ${block->with_logo:default(1)}
+      <div class="logo-container" style="${args->logo_style:html:default('width: 180px;
+margin-bottom: 15px;
+')}">
+        <img src="${args->logo_src:html:default('https://cdn.personyze.com/upload/362/18a94c1299224ec8.png')}" alt="Bank Logo">
+      </div>
+
+      <!-- Headline -->
+      <div class="banner-headline" data-style="${args->headline_style:html:default('font-size: 28px;
+font-weight: bold;
+margin-bottom: 10px;
+')}">
+        ${args->headline_text:default('Grow Your Savings with Our <span style="color:#ffe500;">High-Yield Accounts</span>')}
+        <div class="tooltip">${args->headline_tooltip:default(Rates subject to terms and conditions.)}</div>
+      </div>
+
+      <!-- Subheading -->
+      <div class="banner-subheading" data-style="${args->subheading_style:html:default('font-size: 16px;
+margin-bottom: 20px;
+')}">
+        ${args->subheading_text:default(Open an account online in just minutes and start earning today.)}
+      </div>
+
+      <!-- CTA Row -->
+      <div class="cta-row" data-style="${args->cta_row_style:html:default('display: flex;
+align-items: center;
+gap: 20px;
+')}">
+        <!-- Primary CTA -->
+        ${block->primary_cta:default(1)}<a ${args->primary_cta_link:default('href="#"')}
+           class="signup-btn"
+           data-style="${args->primary_cta_style:html:default('background-color:#ffe500;color:#004481;border:2px solid #ffe500;padding:12px 24px;border-radius:6px;font-weight:600;text-decoration:none;')}">
+          ${args->primary_cta_text:default(Open Account)}
+        </a>
+
+        <!-- Secondary CTA -->
+        ${block->secondary_cta:default(1)}<a ${args->secondary_cta_link:default('href="#"')}
+           class="signin-link"
+           data-style="${args->secondary_cta_style:html:default('color:#fff;text-decoration:underline;')}">
+          ${args->secondary_cta_text:default(Learn More)}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Decorative CSS Shapes -->
+  ${block->with_shape:default(1)}<div style="${args->shape_style:html:default('position: absolute;
+bottom: -20px;
+left: -20px;
+width: 100px;
+height: 100px;
+background: #ffe500;
+border-radius: 50%;
+opacity: 0.3;
+')}"></div>
+  ${block->with_shape2:default(1)}<div style="${args->shape2_style:html:default('position: absolute;
+top: -30px;
+right: -30px;
+width: 120px;
+height: 120px;
+background: #00a1e0;
+transform: rotate(45deg);
+opacity: 0.2;
+')}"></div>
+
+</div>
+
+<!-- PERSONYZE MENU -->
+
+${menu name='Banner Container', icon='th-large'}
+	${menu args->banner_style name='Banner Style', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times'}
+	${menu block->close_button name='Show Close Button'}
+	${menu args->close_button_html name='Close Button HTML', type='dontshowagain'}
+${menu name='Optional Logo', icon='image'}
+	${menu block->with_logo name='Show Logo'}
+	${menu args->logo_src name='Logo URL', type='personyze_media_url'}
+	${menu args->logo_style name='Logo Style', type='css', param='with_responsive=1'}
+${menu name='Optional Main Image', icon='image'}
+	${menu block->right_image name='Show Main Image'}
+	${menu args->right_image_src name='Main Image URL', type='personyze_media_url'}
+	${menu args->right_image_style name='Main Image Style', type='css', param='with_responsive=1'}
+	${menu args->mobile_img_order name='Image Position', type='select', param='options=[["Mobile top, Desktop right","img-mobile-top img-desktop-right"],["Mobile bottom, Desktop right","img-mobile-bottom img-desktop-right"],["Mobile top, Desktop left","img-mobile-top img-desktop-left"],["Mobile bottom, Desktop left","img-mobile-bottom img-desktop-left"]]'}
+${menu name='Main Content', icon='align-left'}
+	${menu args->banner_content_style name='Content Area Style', type='css', param='with_responsive=1'}
+${menu name='Headline', icon='heading'}
+	${menu args->headline_text name='Headline Text'}
+	${menu args->headline_style name='Headline Style', type='css', param='with_responsive=1'}
+	${menu args->headline_tooltip name='Tooltip Text'}
+${menu name='Subheading', icon='paragraph'}
+	${menu args->subheading_text name='Subheading Text'}
+	${menu args->subheading_style name='Subheading Style', type='css', param='with_responsive=1'}
+${menu name='CTA Row', icon='hand-pointer-o'}
+	${menu args->cta_row_style name='CTA Row Style', type='css', param='with_responsive=1'}
+${menu name='Primary CTA', icon='hand-o-up'}
+	${menu block->primary_cta name='Show Primary CTA'}
+	${menu args->primary_cta_text name='Primary CTA Text'}
+	${menu args->primary_cta_link name='Primary CTA Link', type='a_attrs'}
+	${menu args->primary_cta_style name='Primary CTA Style', type='css', param='with_responsive=1'}
+${menu name='Secondary CTA', icon='sign-in'}
+	${menu block->secondary_cta name='Show Secondary CTA'}
+	${menu args->secondary_cta_text name='Secondary CTA Text'}
+	${menu args->secondary_cta_link name='Secondary CTA Link', type='a_attrs'}
+	${menu args->secondary_cta_style name='Secondary CTA Style', type='css', param='with_responsive=1'}
+${menu name='Decorative Shapes', icon='paint-brush'}
+	${menu block->with_shape name='Show Shape 1'}
+	${menu args->shape_style name='Shape 1 Style', type='css', param='with_responsive=1'}
+	${menu block->with_shape2 name='Show Shape 2'}
+	${menu args->shape2_style name='Shape 2 Style', type='css', param='with_responsive=1'}
+```
+
+
+## Single-Line top/bottom bar
+
+Full screen width, featuring an optional coupon code with double-click copy-to-clipboard, toggleable Apple/Google icons (each with its own link), an optional “Download app” link, and a close button.
+
+```
+<!-- HEAD + STYLE -->
+<style>
+  .banner-offer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .banner-offer img {
+    height: 18px; /* icon size */
+    vertical-align: middle;
+  }
+  .coupon-code:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    top: -32px; /* position above */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0.85;
+    z-index: 9999;
+  }
+</style>
+
+<!-- BANNER CONTAINER -->
+<div class="$responsive"
+     data-style="${args->banner_style:html:default('background-color: #fff;
+padding: 10px;
+text-align: center;
+border-bottom: 0px solid #000;
+min-width: 99%;
+')}">
+
+  <!-- Close Button SINGLE-LINE TOGGLE -->
+  ${block->close_button:default(1)}<div style="position:absolute; top:5px; right:5px;">
+    ${args->close_button_html:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 27px; height: 27px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 5px; color: rgb(10, 4, 4); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%);"></div></div>')}
+  </div>
+
+  <!-- Banner content row -->
+  <div class="banner-offer" data-style="${args->offer_text_style:html:default('color: #000;
+font-size: 14px;
+')}">
+
+    <!-- Main Offer Text (always shown) -->
+    ${args->offer_text:default('Enjoy 10% off. Use code:')}
+
+    <!-- Coupon Code (toggle) -->
+    ${block->coupon_code:default(1)}<span class="coupon-code"
+      data-style="${args->coupon_code_style:html:default('font-weight: bold;
+color: red;
+margin-top: 0;
+margin-right: 6px;
+margin-bottom: 0;
+margin-left: 6px;
+cursor: pointer;
+position: relative;
+')}"
+      data-tooltip="Double-click to copy"
+      ondblclick="navigator.clipboard.writeText('${args->coupon_code_value:html:default(APPORDER)}'); alert('Coupon code copied!')"
+    >
+      ${args->coupon_code_value}
+    </span>
+
+    <!-- Apple Icon (toggle) -->
+    ${block->apple_icon:default(1)}<a ${args->apple_icon_link:default('href="#"')}>
+      <img src="${args->apple_icon_src:html:default('https://cdn.personyze.com/upload/362/fc0a267b78425575.svg')}" alt="Apple Store Icon">
+    </a>
+
+    <!-- Google Icon (toggle) -->
+    ${block->google_icon:default(1)}<a ${args->google_icon_link:default('href="#"')}>
+      <img src="${args->google_icon_src:html:default('https://cdn.personyze.com/upload/362/3630764c3a3750f5.svg')}" alt="Google Play Icon">
+    </a>
+
+    <!-- Download Link (toggle) -->
+    ${block->download_link:default(0)}<a ${args->download_attrs:default('href="#"')}
+       data-style="${args->download_link_style:html:default('font-weight:bold; color:#000; text-decoration:none;')}"
+       style="margin-left:6px;">
+      Download app
+    </a>
+  </div>
+</div>
+
+<!-- PERSONYZE MENU -->
+
+${menu name='Banner Container', icon='th-large'}
+	${menu args->banner_style name='Banner Style', description='Main container CSS (e.g. full width, fixed top, etc.)', type='css', param='with_responsive=1'}
+${menu name='Offer Text', icon='comment'}
+	${menu args->offer_text name='Banner Text (HTML)'}
+	${menu args->offer_text_style name='Banner Text Style', type='css', param='with_responsive=1'}
+${menu name='Coupon Code', icon='tag'}
+	${menu block->coupon_code name='Show Coupon Code?'}
+	${menu args->coupon_code_value name='Coupon Code Text'}
+	${menu args->coupon_code_style name='Coupon Code Style', description='Double-click to copy', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times'}
+	${menu block->close_button name='Show Close Button'}
+	${menu args->close_button_html name='Close Button HTML', type='dontshowagain'}
+${menu name='Apple Icon', icon='apple'}
+	${menu block->apple_icon name='Show Apple Icon'}
+	${menu args->apple_icon_src name='Apple Icon (Media)', description='Select Apple icon from library', type='personyze_media_url'}
+	${menu args->apple_icon_link name='Apple Icon Link', description='Where Apple icon links to', type='a_attrs'}
+${menu name='Google Icon', icon='android'}
+	${menu block->google_icon name='Show Google Icon'}
+	${menu args->google_icon_src name='Google Icon (Media)', description='Select Google badge from library', type='personyze_media_url'}
+	${menu args->google_icon_link name='Google Icon Link', description='Where Google icon links to', type='a_attrs'}
+${menu name='Download Link', icon='hand-pointer-o'}
+	${menu block->download_link name='Show Download Link'}
+	${menu args->download_attrs name='Download Link Attributes', type='a_attrs'}
+	${menu args->download_link_style name='Download Link Style', type='css', param='with_responsive=1'}
+```
+
+
+## Animated Notification Bar with Full Customization
+
+It features a smooth vertical scrolling animation with full user control over the animation speed, duration, and easing style through intuitive menu settings. Each notification line includes customizable text, optional icons, and buttons with editable links and CSS styling.
+
+```
+<div style="position: relative; overflow: hidden; font-family: 'Montserrat', Arial, sans-serif; width:100%;">
+
+  ${block->show_close_button:default(1)}
+  <div style="position:absolute;top:10px;right:10px;cursor:pointer;z-index:10;display:">
+    ${args->close_button_html:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 35px; height: 35px; box-sizing: border-box; border-radius: 50%; padding: 9px; background-color: rgba(75,75,75,0.65); outline-color: rgb(206,54,64); outline-width: 8px; color: rgb(254,253,253); transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="width:100%;height:100%;transition:0.3s;border-radius:50%;background-image:linear-gradient(-45deg,transparent 47%,currentcolor 47%,currentcolor 55%,transparent 55%),linear-gradient(45deg,transparent 47%,currentcolor 47%,currentcolor 55%,transparent 55%);"></div></div>')}
+  </div>
+
+  <div style="${args->style:html:default('background-color: rgb(54, 32, 32);
+color: #fff;
+border-radius: 0px;
+text-align: center;
+font-size: 15px;
+padding: 8px;
+width: 100%;
+margin: auto;
+line-height: 2em;
+overflow: hidden;
+height: 2.5em;
+position: relative;
+')}">
+    <div style="animation: ${args->animation_type:html:default(scrollCustom)} ${args->anim_duration:html:default(10s)} ${args->anim_easing:html:default(ease-in-out)} infinite;">
+
+      ${block->with_line_1:default(1)}
+      <div style="padding:5px;height:2.5em;">
+        <i class="$icon ${args->line_1_icon:html:default(user)}" style="${args->line_1_icon_style:html:default('font-size:18px;margin-right:4px;vertical-align:middle;')}"></i>
+        <span style="vertical-align:middle;">${args->line_1_text:default(Welcome to Our Website!)}</span>
+        ${block->with_line_1_button:default(1)}
+        <a ${args->line_1_button} style="${args->line_1_button_style:html:default('color: inherit;
+text-decoration: underline;
+margin-left: 4px;
+vertical-align: middle;
+')}">${args->line_1_button_text:default(Learn More)}</a>
+      </div>
+
+      ${block->with_line_2:default(1)}
+      <div style="padding:5px;height:2.5em;">
+        <i class="$icon ${args->line_2_icon:html:default(star)}" style="${args->line_2_icon_style:html:default('font-size:18px;margin-right:4px;vertical-align:middle;')}"></i>
+        <span style="vertical-align:middle;">${args->line_2_text:default(Special Offer Available!)}</span>
+        ${block->with_line_2_button:default(1)}
+        <a ${args->line_2_button} style="${args->line_2_button_style:html:default('color: inherit;
+text-decoration: underline;
+margin-left: 4px;
+vertical-align: middle;
+')}">${args->line_2_button_text:default(Claim Now)}</a>
+      </div>
+
+      ${block->with_line_3:default(1)}
+      <div style="padding:5px;height:2.5em;">
+        <i class="$icon ${args->line_3_icon:html:default(info-circle)}" style="${args->line_3_icon_style:html:default('font-size:18px;margin-right:4px;vertical-align:middle;')}"></i>
+        <span style="vertical-align:middle;">${args->line_3_text:default(Discover Our Features)}</span>
+        ${block->with_line_3_button:default(1)}
+        <a ${args->line_3_button} style="${args->line_3_button_style:html:default('color: inherit;
+text-decoration: underline;
+margin-left: 4px;
+vertical-align: middle;
+')}">${args->line_3_button_text:default(Explore)}</a>
+      </div>
+
+      ${block->with_line_4:default(1)}
+      <div style="padding:5px;height:2.5em;">
+        <i class="$icon ${args->line_4_icon:html:default(envelope)}" style="${args->line_4_icon_style:html:default('font-size:18px;margin-right:4px;vertical-align:middle;')}"></i>
+        <span style="vertical-align:middle;">${args->line_4_text:default(Subscribe to Our Newsletter)}</span>
+        ${block->with_line_4_button:default(1)}
+        <a ${args->line_4_button} style="${args->line_4_button_style:html:default('color: inherit;
+text-decoration: underline;
+margin-left: 4px;
+vertical-align: middle;
+')}">${args->line_4_button_text:default(Subscribe)}</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes scrollCustom {
+  0%,20% { transform: translateY(0%); }
+  25%,45% { transform: translateY(-25%); }
+  50%,70% { transform: translateY(-50%); }
+  75%,95% { transform: translateY(-75%); }
+  100% { transform: translateY(0%); }
+}
+</style>
+
+${menu name='Animation Settings', icon='cog'}
+	${menu args->anim_duration name='Animation Duration', type='text'}
+	${menu args->anim_easing name='Animation Easing', type='select', param='options=[["Linear","linear"],["Ease","ease"],["Ease-in","ease-in"],["Ease-out","ease-out"],["Ease-in-out","ease-in-out"]]'}
+	${menu args->animation_type name='Animation Type', type='select', param='options=[["Scroll Vertical","scrollCustom"],["Fade","fade"],["Flip","flip"],["Slide Right","slideRight"]]'}
+${menu name='Close Button', icon='times'}
+	${menu block->show_close_button name='Show Close Button'}
+	${menu args->close_button_html name='Close Button HTML', type='dontshowagain'}
+${menu name='Content Controls', icon='edit'}
+	${menu block->with_line_1 name='Show Line 1'}
+	${menu args->line_1_icon name='Line 1 Icon', type='icon'}
+	${menu args->line_1_text name='Line 1 Text', type='text'}
+	${menu args->line_1_button name='Line 1 Link', type='a_attrs'}
+	${menu args->line_1_button_text name='Line 1 Button Text', type='text'}
+	${menu args->line_1_button_style name='Line 1 Button CSS', type='css'}
+	${menu block->with_line_2 name='Show Line 2'}
+	${menu args->line_2_icon name='Line 2 Icon', type='icon'}
+	${menu args->line_2_text name='Line 2 Text', type='text'}
+	${menu args->line_2_button name='Line 2 Link', type='a_attrs'}
+	${menu args->line_2_button_text name='Line 2 Button Text', type='text'}
+	${menu args->line_2_button_style name='Line 2 Button CSS', type='css'}
+	${menu block->with_line_3 name='Show Line 3'}
+	${menu args->line_3_icon name='Line 3 Icon', type='icon'}
+	${menu args->line_3_text name='Line 3 Text', type='text'}
+	${menu args->line_3_button name='Line 3 Link', type='a_attrs'}
+	${menu args->line_3_button_text name='Line 3 Button Text', type='text'}
+	${menu args->line_3_button_style name='Line 3 Button CSS', type='css'}
+	${menu block->with_line_4 name='Show Line 4'}
+	${menu args->line_4_icon name='Line 4 Icon', type='icon'}
+	${menu args->line_4_text name='Line 4 Text', type='text'}
+	${menu args->line_4_button name='Line 4 Link', type='a_attrs'}
+	${menu args->line_4_button_text name='Line 4 Button Text', type='text'}
+	${menu args->line_4_button_style name='Line 4 Button CSS', type='css'}
+${menu name='Settings', icon='sliders'}
+	${menu args->style name='Main Container Style', type='css'}
+```
+
+
+## Full-Screen Responsive Banner Template
+
+designed to occupy 100% of viewport width and height, providing a clean and visually appealing layout. It supports easy editing of images, alignment, headlines, CTAs, decorative shapes, and more.
+
+```
+<div class="$responsive ${args->mobile_img_order:html:default(img-mobile-top img-desktop-right)}"
+     data-style="${args->banner_style:html:default('background-color: #0A2540;
+position: relative;
+padding-top: 20px;
+padding-right: 40px;
+padding-bottom: 20px;
+padding-left: 40px;
+border-radius: 0px;
+overflow: hidden;
+color: #fff;
+display: flex;
+justify-content: center;
+align-items: center;
+box-sizing: border-box;
+width: 100%;
+height: 100%;
+')}">
+
+  <style>
+    .banner-flex-container {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      width:100%;
+      max-width:1200px;
+    }
+
+    @media (max-width:768px){
+      .banner-flex-container { flex-direction:column; text-align:center; }
+      .img-mobile-top .image-container { order:-1 !important; }
+      .img-mobile-bottom .image-container { order:2 !important; }
+      .logo-container { justify-content:center !important; margin:0 auto 15px !important; }
+    }
+
+    @media (min-width:769px){
+      .img-desktop-left .image-container { order:-1 !important; }
+      .img-desktop-right .image-container { order:2 !important; }
+    }
+
+    .image-container img, .logo-container img { width:100%; height:auto; object-fit:cover; display:block; }
+
+    .cta-row-container {
+      display:flex;
+      justify-content:center;
+      gap:10px;
+    }
+  </style>
+
+  ${block->close_button:default(1)}
+  <div style="position:absolute;top:10px;right:10px;cursor:pointer;z-index:10;">
+    ${args->close_button_html:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 35px; height: 35px; box-sizing: border-box; border-radius: 50%; border: 0px solid; box-shadow: none; padding: 9px; background-color: rgba(75, 75, 75, 0.65); text-decoration-color: rgba(75, 75, 75, 0.65); outline-color: rgb(206, 54, 64); outline-width: 8px; color: rgb(254, 253, 253); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 47%, currentcolor 47%, currentcolor 55%, transparent 55%, transparent 100%);"></div></div>')}
+  </div>
+
+  <div class="banner-flex-container">
+
+    ${block->right_image:default(1)}
+    <div class="image-container" style="${args->right_image_style:html:default('flex:1; max-width:500px;')}">
+      <img src="${args->right_image_src:html:default('https://cdn.personyze.com/upload/362/08ca0a5265164e9d.png')}" style="${args->right_image_img_style:html:default('object-fit: contain;
+padding: 15px;
+max-height: 45vh;
+width: 100%;
+')}" alt="Cool Gadget">
+    </div>
+
+    <div class="banner-content" style="${args->banner_content_style:html:default('flex: 1;
+max-width: 600px;
+color: #fff;
+')}">
+
+      ${block->with_logo:default(1)}
+      <div class="logo-container ${args->logo_position_desktop:html:default(desktop-center)} ${args->logo_position_mobile:html:default(mobile-center)}" style="${args->logo_style:html:default('width: 150px;
+margin-bottom: 15px;
+display: flex;
+')}">
+        <img src="${args->logo_src:html:default('https://cdn.personyze.com/upload/362/18a94c1299224ec8.png')}" alt="Tech Logo">
+      </div>
+
+      <div class="banner-headline" style="${args->headline_style:html:default('font-size:32px;font-weight:bold;margin-bottom:10px;line-height:1.2;')}">
+        ${args->headline_text:default('Meet the Future of Tech: The <span style="color:#34D399;">XGizmo Pro!</span> ?')}
+        <div class="tooltip">${args->headline_tooltip:default(Limited stock available!)}</div>
+      </div>
+
+      <div class="banner-subheading" style="${args->subheading_style:html:default('font-size: 18px;
+margin-bottom: 20px;
+')}">
+        ${args->subheading_text:default(Experience innovation with cutting-edge features designed for you.)}
+      </div>
+
+      <div class="cta-row-container">
+        <div class="cta-row" style="${args->cta_row_style_desktop:html:default('display: flex;
+align-items: center;
+gap: 20px;
+justify-content: center;
+')}">
+          ${block->primary_cta:default(1)}
+          <a ${args->primary_cta_link:default('href="#"')} class="signup-btn" style="${args->primary_cta_style:html:default('background-color: #34D399;
+color: #0A2540;
+border: 2px solid #34D399;
+padding-top: 12px;
+padding-right: 24px;
+padding-bottom: 12px;
+padding-left: 24px;
+border-radius: 6px;
+font-weight: 600;
+text-decoration: none;
+')}">
+            ${args->primary_cta_text:default(Order Now)}
+          </a>
+
+          ${block->secondary_cta:default(1)}
+          <a ${args->secondary_cta_link:default('href="#"')} class="signin-link" style="${args->secondary_cta_style:html:default('color:#fff;text-decoration:underline;')}">
+            ${args->secondary_cta_text:default(Explore Features)}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  ${block->with_shape:default(1)}<div style="${args->shape_style:html:default('position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;background:#34D399;border-radius:50%;opacity:0.3;')}"></div>
+
+  ${block->with_shape2:default(1)}<div style="${args->shape2_style:html:default('position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:#6366F1;transform:rotate(45deg);opacity:0.2;')}"></div>
+</div>
+
+${menu name='Banner Container', icon='th-large'}
+	${menu args->banner_style name='Banner Style', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times'}
+	${menu block->close_button name='Show Close Button'}
+	${menu args->close_button_html name='Close Button HTML', type='dontshowagain'}
+${menu name='Optional Logo', icon='image'}
+	${menu block->with_logo name='Show Logo'}
+	${menu args->logo_src name='Logo URL', type='personyze_media_url'}
+	${menu args->logo_style name='Logo Style', type='css', param='with_responsive=1'}
+	${menu args->logo_position_desktop name='Desktop Logo Alignment', type='select', param='options=[["Center","desktop-center"],["Left","desktop-left"],["Right","desktop-right"]]'}
+	${menu args->logo_position_mobile name='Mobile Logo Alignment', type='select', param='options=[["Center","mobile-center"],["Left","mobile-left"],["Right","mobile-right"]]'}
+${menu name='Main Image', icon='image'}
+	${menu block->right_image name='Show Main Image'}
+	${menu args->right_image_src name='Main Image URL', type='personyze_media_url'}
+	${menu args->right_image_img_style name='Main Image (Inner) Style', description='Control image fit, e.g., object-fit: cover/contain', type='css', param='with_responsive=1'}
+	${menu args->mobile_img_order name='Image Position', type='select', param='options=[["Mobile top, Desktop right","img-mobile-top img-desktop-right"],["Mobile bottom, Desktop right","img-mobile-bottom img-desktop-right"],["Mobile top, Desktop left","img-mobile-top img-desktop-left"],["Mobile bottom, Desktop left","img-mobile-bottom img-desktop-left"]]'}
+${menu name='Main Content', icon='align-left'}
+	${menu args->banner_content_style name='Content Area Style', type='css', param='with_responsive=1'}
+${menu name='Headline', icon='heading'}
+	${menu args->headline_text name='Headline Text'}
+	${menu args->headline_style name='Headline Style', type='css', param='with_responsive=1'}
+	${menu args->headline_tooltip name='Tooltip Text'}
+${menu name='Subheading', icon='paragraph'}
+	${menu args->subheading_text name='Subheading Text'}
+	${menu args->subheading_style name='Subheading Style', type='css', param='with_responsive=1'}
+${menu name='CTA Alignment', icon='hand-pointer-o'}
+	${menu args->cta_row_style_desktop name='CTA Buttons Container Style', description='CSS for button alignment (e.g., justify-content:center;)', type='css', param='with_responsive=1'}
+${menu name='Primary CTA', icon='hand-o-up'}
+	${menu block->primary_cta name='Show Primary CTA'}
+	${menu args->primary_cta_text name='Primary CTA Text'}
+	${menu args->primary_cta_link name='Primary CTA Link', type='a_attrs'}
+	${menu args->primary_cta_style name='Primary CTA Style', type='css', param='with_responsive=1'}
+${menu name='Secondary CTA', icon='sign-in'}
+	${menu block->secondary_cta name='Show Secondary CTA'}
+	${menu args->secondary_cta_text name='Secondary CTA Text'}
+	${menu args->secondary_cta_link name='Secondary CTA Link', type='a_attrs'}
+	${menu args->secondary_cta_style name='Secondary CTA Style', type='css', param='with_responsive=1'}
+${menu name='Decorative Shapes', icon='paint-brush'}
+	${menu block->with_shape name='Show Shape 1'}
+	${menu args->shape_style name='Shape 1 Style', type='css', param='with_responsive=1'}
+	${menu block->with_shape2 name='Show Shape 2'}
+	${menu args->shape2_style name='Shape 2 Style', type='css', param='with_responsive=1'}
+```
+
+
+## Scheduled Maintenance Notification Banner
+
+Includes optional FontAwesome icons, close button, customizable title, description, and actionable link.
+
+```
+<!-- Load FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="$responsive" data-style="${args->banner_style:html:default('position: relative;
+background-color: #1E69F0;
+border-radius: 8px;
+padding-top: 16px;
+padding-right: 20px;
+padding-bottom: 16px;
+padding-left: 20px;
+color: #FFFFFF;
+font-family: Arial, sans-serif;
+box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+max-width: 320px;
+')}">
+
+  <style>
+    .banner-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-right: 8px;
+    }
+    .banner-headline {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .banner-description {
+      font-size: 14px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .banner-link {
+      font-size: 14px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+
+  <!-- Personyze Close Button -->
+  ${block->close_button:default(1)}
+  <div style="${args->close_button_style:html:default('position: absolute;
+top: 10px;
+right: 10px;
+cursor: pointer;
+')}">
+    ${args->close_button_html:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 17px; height: 17px; box-sizing: border-box; border-radius: 50%; border: 0px solid; -webkit-box-shadow: none; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 5px; color: rgb(247, 247, 247); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 48%, currentcolor 48%, currentcolor 54%, transparent 54%, transparent 100%);"></div></div>')}
+  </div>
+
+  <div style="display:flex;align-items:center;">
+    ${block->with_icon:default(1)}
+    <div class="banner-icon">
+      <i class="$icon ${args->icon_class:html:default(bell)}" style="${args->icon_style:html:default('color:#FFFFFF;')}"></i>
+    </div>
+
+    <div>
+      ${block->with_headline:default(1)}
+      <div class="banner-headline" style="${args->headline_style:html}">
+        ${args->headline:default(Scheduled Maintenance)}
+      </div>
+
+      ${block->with_description:default(1)}
+      <div class="banner-description" style="${args->description_style:html}">
+        ${args->description:default('16 Apr 2025 from 19:00 to 21:00 EDT')}
+      </div>
+
+      ${block->with_link:default(1)}
+      <div>
+        <a ${args->link_attrs:default('href="#"')} class="banner-link" style="${args->link_style:html:default('color: rgb(252, 252, 252);
+')}">
+          ${args->link_text:default(View latest updates)}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ COMPLETE PERSONYZE MENU -->
+
+${menu name='Banner Container', icon='square'}
+	${menu args->banner_style name='Banner Style', type='css', param='with_responsive=1'}
+${menu name='Close Button', icon='times-circle'}
+	${menu block->close_button name='Show Close Button'}
+	${menu args->close_button_html name='Close Button HTML', type='dontshowagain'}
+	${menu args->close_button_style name='Close Button Style', type='css', param='with_responsive=1'}
+${menu name='Icon Settings', icon='info-circle'}
+	${menu block->with_icon name='Show Icon'}
+	${menu args->icon_class name='Icon', type='icon'}
+	${menu args->icon_style name='Icon Style', type='css', param='with_responsive=1'}
+${menu name='Headline Text', icon='header'}
+	${menu block->with_headline name='Show Headline'}
+	${menu args->headline name='Headline Text'}
+	${menu args->headline_style name='Headline Style', type='css', param='with_responsive=1'}
+${menu name='Description Text', icon='align-left'}
+	${menu block->with_description name='Show Description'}
+	${menu args->description name='Description Text'}
+	${menu args->description_style name='Description Style', type='css', param='with_responsive=1'}
+${menu name='Link Settings', icon='link'}
+	${menu block->with_link name='Show Link'}
+	${menu args->link_text name='Link Text'}
+	${menu args->link_attrs name='Link Attributes', type='a_attrs'}
+	${menu args->link_style name='Link Style', type='css', param='with_responsive=1'}
+```
+
+

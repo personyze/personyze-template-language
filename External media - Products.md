@@ -1,29 +1,3 @@
-## Default Product Cell
-
-
-
-```
-${foreach recom_products as p limit 4}<table>
-	<tr>
-		<td style="text-align:center">
-			<img src="${p->image_medium_url:html}" style="${args->img:html:default('width:250px; height:250px'):input_type(css):arg_name(Size):arg_section(0, 0, 'Image', 'image')}">
-		</td>
-	</tr>
-	<tr>
-		<td style="${args->title_style:html:default('text-align:left; color:black'):input_type(css):arg_name(Product Title Style):arg_section(1, 0, 'Product Title', 'bookmark')}">
-			${p->title:arg_name(Product Title):arg_section(1, 1, 'Product Title', 'bookmark')}
-		</td>
-	</tr>
-	${block->with_more:default(1):arg_name(With More Text):arg_section(2, 0, 'More Text', 'font')}
-	<tr>
-		<td style="${args->more_style:html:default('text-align:left; color:black'):input_type(css):arg_name(More Text Style):arg_section(2, 2, 'More Text', 'font')}">
-			${args->more:default('<u>Shop now</u> &gt;'):arg_name(More Text):arg_section(2, 1, 'More Text', 'font')}
-		</td>
-	</tr>
-</table>${end}
-```
-
-
 ## Horizontal display
 
 
