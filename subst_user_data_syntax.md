@@ -113,8 +113,10 @@ or
 
 If the parameter contains commas or closing parenthesis, or if there are more than 1 parameter, it must be quoted.
 
+Here are supported function names:
+
 - **html** - escapes HTML-special characters. Converts `&` to `&amp;`, `"` to `&quot;`, `<` to `&lt;`.
-- **default** - specifies the current value of the variable to which it will be substituted. If the same variable appears multiple times, `default` must be placed only near one of the occurances.
+- **default** - in `args` variables specifies the current value of the variable to which it will be substituted. If the same variable appears multiple times, `default` must be placed only near one of the occurances. In user profile variables this function specifies default variable value, i.e. text that will be printed if the variable is empty.
 - **sprintf** - formats a text string. `${p->price:sprintf(Text before %s text after)}` - the value of `${p->price}` will be inserted into the format string in place of `%s`.
 Use `%f` to format as number, and use `%[#,###.##]f` to specify thousands and decimal separators and number of digits in thousands group and in fraction (at most). `#` - optional digit, `0` - mandatory digit, so `%[#,###.00]f` for number `12.3` will produce `12.30`. To use arabic digits use `٠` instead of `0`, i.e. `%[#,##٠.##]f` for number `12.3` will produce `١٢.٣`. If you want to always include 2 digits after decimal point, even for whole numbers, do `%[#,###.00]f`. But if you want to include those 2 digits only for fractional numbers (e.g. 12.30), and not for whole numbers (12), use `g` specifier instead of `f`: `%[#,###.00]g`.
 - **price** - Format number as price using number format defined in the account. You can have 2 predefined formats. Use `${p->price_after_discount:price}` for the default format, and `${p->price_after_discount:price('alternative')}` for the alternative one. GUI control will appear to let you change the format, and to save it for all templates.
@@ -270,8 +272,8 @@ However Personyze substitutes some parts in the HTML structure.
 
 If template has elements with `id` attributes these attributes are removed.
 
-Any HTML tag can have `ontplready` attribute with piece of Javascript that will be executed once the template is inserted into the document.
-Within this Javascript `this` variable will refer to the current element where `ontplready` is found.
+Any HTML tag can have `ontplready` attribute with piece of JavaScript that will be executed once the template is inserted into the document.
+Within this JavaScript `this` variable will refer to the current element where `ontplready` is found.
 Also there will be special variable called `by_id` that will contain references to all the elements that had `id` attribute (that was cut off).
 Also `by_id` will be available in event handlers, like "onclick", etc.
 
@@ -287,6 +289,17 @@ In popup actions, if root element doesn't have `style` attribute with `backgroun
 There're special class names. Elements that have such class names can be modified or substituted with different elements by the template engine.
 These special class names start with a dollar-sign.
 
+Special class names include: [$responsive](#responsive), [$btn](#btn), [$flat_btn](#flat_btn), [$personyze_button_dont_show_again](#personyze_button_dont_show_again),
+[$a_add_params](#a_add_params), [$hint](#hint), [$icon](#icon), [$popup](#popup), [$switch-elem](#switch-elem), [$cform](#cform), `$info_lines_scroller`, `$rating`, `$table_slider`, `$table_slider_pagination`, `$button_add_to_cart`.
+
+Special class names are removed from the "class" attribute.
+
+## Recognized special classes
+
+As noted above, HTML elements with special classes are processed by the template engine.
+
+### $responsive
+
 Usually the template root element has class `$responsive`.
 
 ```
@@ -295,7 +308,7 @@ Usually the template root element has class `$responsive`.
 </div>
 ```
 
-If the root element is `$responsive`, styles can be written not only in `style` attribute, but also in `data-style`.
+If the root element is `$responsive`, styles in this template can be written not only in `style` attribute, but also in `data-style`.
 `data-style` attributes can use special syntax in CSS rules: `sel` function.
 
 ```
@@ -307,12 +320,297 @@ If the root element is `$responsive`, styles can be written not only in `style` 
 ```
 
 And the template engine will select the best option from `sel` that causes less overflow.
-It can select either the first option in all `sel` function in the template, or the second one (but not differently on different elements).
+It can select either the first option in all `sel` functions found in the template, or the second one for all (but not differently in each individual element).
 Usually the first option is called "Desktop view", and the second one is called "Mobile view".
 
 If the popup element doesn't fit the screen (is too large), and this template is `$responsive`, then the popup will be scaled down by applying `zoom`.
 
 Note that when using `$responsive` regular `style` attributes and `<style>` tags can still be used, as usual.
+
+### $btn
+
+Applies to the element CSS style and behavior to turn this element to a button.
+
+The button can have icon before the text. To specify the icon, use `data-icon="..."` attribute.
+Icon name can be one of names found in "Font Awesome 4" icon library.
+
+```
+<a class="$btn" data-icon="bullhorn" href="javascript:" onclick="alert(this.dataset.message)" data-message="${args->message:html:default(Hello)}" style="text-decoration:none; padding:0.1em 0.3em">
+	Show message
+</a>
+
+${menu name='Settings', icon='sliders'}
+	${menu args->message name='Message text'}
+```
+
+Alternatively use `data-icon_append="..."` attribute to attach icon to the button after the text.
+
+The button element will have the following javascript methods:
+
+- `_set_disabled(value)` - Call with true argument to set "disabled" state for the button. Disabled buttons are dimmed and not clickable. Call with false to reset the disabled state.
+- `_get_disabled()` - Get current disabled state (boolean).
+- `_load_begin()` - Sets "loading" state for the button. Buttons in the loading state show spinner icon, and are not clickable.
+- `_load_end()` - Call to reset the loading state.
+
+```
+<a class="$btn" data-icon="bullhorn" href="javascript:" onclick="this._load_begin(); setTimeout(() => {this._load_end(); alert(this.dataset.message)}, 1000)" data-message="${args->message:html:default(Hello)}" style="text-decoration:none; padding:0.1em 0.3em">
+	Show message
+</a>
+
+${menu name='Settings', icon='sliders'}
+	${menu args->message name='Message text'}
+```
+
+### $flat_btn
+
+Like [$btn](#btn), but the button looks flat, and changes color on mouse hover.
+
+To specify CSS style on mouse hover, use `data-hover_style="..."` attribute.
+
+### $personyze_button_dont_show_again
+
+When user clicks on the element, Personyze will hide the current action, and will not show it to this user again during specified number of sessions.
+
+Current action ID must be provided in `data-action_id="..."` attribute (use `${action_id}` variable).
+
+Attribute `data-n_sessions="..."` specifies the number of sessions.
+
+```
+<img src="https://counter.personyze.com/images/close-buttons/black-16x16.png" style="width:16px; height:16px" class="$personyze_button_dont_show_again" data-action_id="${action_id}" data-n_sessions="1">
+```
+
+Usually you'll use [${menu} item](#menu-items) with `type='dontshowagain'` to control how close button looks like.
+
+```
+<div class="$responsive" data-style="position:relative; overflow:hidden; ${args->box_style:html:default('max-width: 700px;
+background-color: white;
+')}">
+	${block->show_close_button:default(1)}
+	<div class="close-button-wrapper">
+		${args->close_button:default('<div onmouseenter="this.style.backgroundColor=this.style.outlineColor" onmouseleave="this.style.backgroundColor=this.style.textDecorationColor" style="display: inline-block; vertical-align: text-bottom; width: 24px; height: 24px; box-sizing: border-box; border-radius: 50%; border: 0px solid; box-shadow: none; padding: 2px; background-color: rgba(0, 0, 0, 0); text-decoration-color: rgba(0, 0, 0, 0); outline-color: rgb(206, 54, 64); outline-width: 9px; color: rgb(10, 4, 4); cursor: pointer; transition: 0.3s;" class="$personyze_button_dont_show_again" data-action_id="${action_id}"><div style="display: block; width: 100%; height: 100%; transition: 0.3s; border-radius: 50%; background-image: linear-gradient(-45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%), linear-gradient(45deg, transparent 0%, transparent 46%, currentcolor 46%, currentcolor 56%, transparent 56%, transparent 100%);"></div></div>')}
+	</div>
+	<p>
+		Text text text text text text text text text.
+		Text text text text text text text text text.
+		Text text text text text text text text text.
+		Text text text text text text text text text.
+	</p>
+</div>
+
+${menu name='Layout', icon='bars'}
+	${menu args->box_style name='Box Style', type='css'}
+${menu name='Close Button', icon='bars'}
+	${menu block->show_close_button name='Show Close Button'}
+	${menu args->close_button name='Close Button HTML', type='dontshowagain'}
+```
+
+### $a_add_params
+
+If the root tag has this class, all the links (HTML `a` elements) in the template will be modified by adding URL parameters to them.
+This can be useful for passing ad-tracking parameters.
+Which parameters will be added is specified in `data-json-params="..."` attribute.
+Use [${menu} item](#menu-items) with `type='external_media_url_params'` to create GUI element in the menu where you can specify the parameters.
+
+```
+<div class="$responsive $a_add_params" data-json-params="${args->url_params:html}">
+	...
+</div>
+
+${menu name='Frame', icon='th-large'}
+	${menu args->url_params name='URL additional parameters', type='external_media_url_params'}
+```
+
+### $hint
+
+Allows to show tooltip on mouse hover.
+
+The tooltip text is specified in `title="..."` attribute.
+
+```
+<a href="https://example.com/" class="$hint" title="Example">Link</a>
+```
+
+To include HTML in the tooltip, use nested element marked with `data-content="1"` attribute, instead of using `title="..."` attribute.
+
+```
+<a href="https://example.com/" class="$hint">
+	<span data-content="1">
+		This is <b>Example</b> site.
+	</span>
+	Link
+</a>
+```
+
+You can apply CSS style to the tooltip popup by providing it in `data-popup_style="..."` attribute.
+
+```
+<a href="https://example.com/" class="$hint" data-popup_style="background-color:gold; color:purple; padding:1em">
+	<span data-content="1">
+		This is <b>Example</b> site.
+	</span>
+	Link
+</a>
+```
+
+### $icon
+
+Renders "Font Awesome 4" icon. The name of the icon is specified in the class attribute.
+
+```
+<i class="$icon envelope"></i>
+```
+
+OR:
+
+```
+<i class="$icon ${args->icon_name:html:default(envelope)}" style="font-size:125%; color:crimson"></i>
+
+${menu args->icon_name name='Icon', type='icon'}
+```
+
+### $popup
+
+Allows to show a popup element when the user clicks a button, or hovers some another element.
+
+```
+<div>
+	<a href="javascript:" id="trigger_1">More info</a>
+	<div class="$popup" data-trigger_id="trigger_1" style="max-width:10em; border:solid 1px; border-radius:5px; background-color:lightgreen; padding:1em">Blah blah blah blah blah blah blah.</div>
+</div>
+```
+
+There a some attributes, that affect the popup behavior:
+
+- `data-trigger_id="..."` id of element that triggers the popup.
+- `data-trigger_onmouseover="1"` - if true, trigger the popup on mouse hover, rather than click.
+- `data-trigger_onfocus="1"` - if the trigger is a text input field, the popup will be shown when the field gets focus.
+- `data-is_modal="1"` - if true, the popup will be a modal dialog.
+- `data-json-trigger_transit="..."` - specify one of `{"template": "animator_fade"}` or `{"template": "animator_swap_top"}` to set showing effect.
+
+Example of modal dialog:
+
+```
+<div>
+	<a href="javascript:" id="trigger_1">More info</a>
+	<div id="popup_1" class="$popup" data-trigger_id="trigger_1" data-is_modal="1" data-json-trigger_transit='{"template": "animator_fade"}' style="max-width:10em; border:solid 1px; border-radius:5px; background-color:lightgreen; padding:1em">
+		Blah blah blah blah blah blah blah.
+		<div>
+			<a href="javascript:" onclick="by_id.popup_1._hide()">Close</a>
+		</div>
+	</div>
+</div>
+```
+
+### $switch-elem
+
+Creates area where you can switch between different parts of HTML.
+
+Element marked with this class can have 1 or more child elements, each marked with `data-case="case_name"` attribute, and only one of them will be shown at a time.
+Also it's possible to show none of the cases.
+Initial case is specified with `data-case="case_name"` on the switch itself, and then it's possible to switch to another case using JavaScript.
+
+```
+<div id="sw" class="$switch-elem" data-case="step-a" style="position:relative; overflow:hidden">
+	<div data-case="step-a" style="width:15em; text-align:center; background-color:lightyellow">
+		<p style="padding:2em">Step A.</p>
+		<div style="padding:2em">
+			<button class="$btn" data-icon_append="angle-right" onclick="by_id.sw._set_case('step-b', null, false, {template: 'animator_swap_bottom'})">Next</button>
+		</div>
+	</div>
+	<div data-case="step-b" style="width:15em; text-align:center; background-color:purple; color:white">
+		<p style="padding:2em">Step B.</p>
+		<div style="padding:2em">
+			<button class="$btn" data-icon="angle-left" onclick="by_id.sw._set_case('step-a', null, false, {template: 'animator_swap_top'})">Previous</button>
+			<button class="$btn" data-icon_append="angle-right" onclick="by_id.sw._set_case('step-c', null, false, {template: 'animator_swap_bottom'})">Next</button>
+		</div>
+	</div>
+	<div data-case="step-c" style="width:15em; text-align:center; background-color:teal; color:yellow">
+		<p style="padding:2em">Step C.</p>
+		<div style="padding:2em">
+			<button class="$btn" data-icon="angle-left" onclick="by_id.sw._set_case('step-b', null, false, {template: 'animator_swap_top'})">Previous</button>
+		</div>
+	</div>
+</div>
+```
+
+The element marked with `class="$switch-elem"` will have the following JavaScript methods:
+
+- `_set_case(case_name)` - Switch to case. If `case_name` is `null`, will change to empty element.
+- `_get_case()` - Get currently showing case.
+- `_get_cases()` - Get all cases as array of strings.
+
+### $cform
+
+Allows to create a form that can send data to Personyze. You can use it to collect information about the user and his preferences.
+
+Form must have name specified in the "class" attribute, together with "$cform". For example this `class="$cform form1"` creates form called "name1".
+Input fields that belong to the form (the form will send them to Personyze) must be marked with `form="form_name"`.
+
+Form element can have the following attributes:
+
+- `data-required_field_message="Please fill out this field"` - Sets message that will be displayed near required field if sending the form with this field being empty.
+- `data-invalid_value_message="Invalid value for this input"` - Sets message that will be displayed near field with invalid input.
+- `ontplchange="..."` - JavaScript code that will be executed each time a form value changes.
+- `ontplsubmit="..."` - JavaScript code that will be executed when the user submits the form (clicks on button `type="submit"` that belongs to the form). This method can reject the submission by returning anything except boolean true. If it accepts, it must do whatever is needed to submit the form. When submitted successfully, it must call `arguments[1]()`, and when submitted with error `arguments[2](error)`. To submit to Personyze do: `personyze.push(['Submit', '${action_id:html}', this._get_value_ex(), arguments[1], arguments[2]]); return true`.
+- `ontplaftersubmit="..."` - JavaScript code that will be executed when `ontplsubmit` completed successfully (called `arguments[1]()`).
+
+Example:
+
+```
+<div class="$cform form1" ontplsubmit="personyze.push(['Submit', '${action_id:html}', this._get_value_ex(), arguments[1], arguments[2]]); return true" ontplaftersubmit="alert('Success')">
+	...
+</div>
+```
+
+The form element will have the following JavaScript methods:
+
+- `_get_value()` - Returns object with keys and values for each form input.
+- `_get_value_ex()` - Returns object with keys and values as objects. For each input there will be object with "value" property that will contain the input value. Also input properties specified as attributes like `data-prop-prop_name="prop_value"` will be contained in the object.
+- `_set_value(new_value)` - Sets the form value.
+
+Form can contain text input fields, checkboxes, drop-down menues, and other HTML input elements.
+They must have `form="form_name"` and `name="input_name"` attributes.
+Also they can have the following attributes that will be handled by the form:
+
+- `required="1"` - Makes the input required (the form cannot be submitted if this input is not filled in).
+- `pattern="..."` - Regular expression to validate the input.
+- `data-valid_if="..."` - JavaScript code that will be executed to validate the input. If it returns boolean true, then the value is considered to be ok. If boolean false - the value is invalid, and error message will be shown. Either the message set on the form element in `data-invalid_value_message="..."` attribute, or a default one. If the code returns string, this string will be shown as error message.
+- `data-use_hidden="1"` - Normally, if the input is hidden (see about form cases below), it's value is not returned by `form._get_value()` or `form._get_value_ex()`. If you specify this attribute, the input will be included in the form value anyway.
+- `data-value_if_hidden="..."` - like `data-use_hidden="1"`, but specifies predefined value that will be returned for this input if it's hidden.
+- `data-prop-prop_name="prop_value"` - Inputs can have 0 or more property name/value pairs. They will appear in `form._get_value_ex()`. If you pass the value returned by `form._get_value_ex()` to `personyze.push(['Submit', action_id, value_ex, ...]`, then property called "column" will define to which user profile field on Personyze to store this input value.
+
+```
+<input form="form1" name="Email" pattern="[^\s@]+@[^\s@\.]+\.[^\s@]+" required="1" data-prop-column="email" value="${email:html}">
+```
+
+Also the form must have at least one submit button - a button that belongs to the form (`form="form_name"`) and has `type="submit"`.
+
+```
+<button form="form1" type="submit">Submit</button>
+```
+
+Form inputs and input groups can be visible or hidden depending on condition.
+
+```
+<div class="$cform form1" ontplsubmit="alert(JSON.stringify(this._get_value()))">
+	<div>
+		Name: <input form="form1" name="Name">
+	</div>
+
+	<label>
+		<input form="form1" name="ContactMe" type="checkbox">
+		Contact me back
+	</label>
+
+	<div form="form1" data-form_case="v.Name!='' && v.ContactMe">
+		Phone: <input form="form1" name="Phone" type="tel">
+	</div>
+
+	<div>
+		<button form="form1" type="submit">Submit</button>
+	</div>
+</div>
+```
 
 ## Menu items
 
@@ -333,7 +631,7 @@ ${menu name='Section name', icon='icon-name'}
 It has 2 parameters:
 
 - **name** - Text that appears in the GUI
-- **icon** - (optional) Icon that also appears in the GUI. Icon name can be one of names from "Font Awesome 4". Usually used icons: `image`, `envelope`, `user`, `check`, `times-circle`, `edit`, `font`, etc.
+- **icon** - (optional) Icon that also appears in the GUI. Icon name can be one of names found in "Font Awesome 4" icon library. Usually used icons: `image`, `envelope`, `user`, `check`, `times-circle`, `edit`, `font`, etc.
 
 Menu item directive looks like the following:
 
@@ -420,7 +718,7 @@ Example:
 ${menu args->img_position name='Image Position', type='select', param='options=[["On Top","top"],["On Bottom","bottom"],["On Right Side","right"]]'}
 ```
 
-## textarea
+### textarea
 
 Shows multiline text input box.
 
