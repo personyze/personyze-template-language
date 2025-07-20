@@ -111,7 +111,7 @@ or
 :func_name('Parameter 1', 'Parameter 2', 'Parameter 3')
 ```
 
-If the parameter contains commas or closing parenthesis, or if there are more than 1 parameter, it must be quoted.
+If the parameter contains commas, apostrophes or closing parentheses, or if there are more than 1 parameter, it must be quoted. To represent an apostrophe, need to double it in the quoted string (`:func_name('I''m a string')`).
 
 Here are supported function names:
 
@@ -278,9 +278,37 @@ Also there will be special variable called `by_id` that will contain references 
 Also `by_id` will be available in event handlers, like "onclick", etc.
 
 ```
-<div style="background-color:transparent">
+<div style="background-color:transparent; display:flex; align-items:center; gap:0.3em">
 	<img id="main_icon" src="https://www.google.com/favicon.ico">
-	<button type="button" onclick="alert(by_id.main_icon.width)">Get width</button>
+	<button type="button" onclick="by_id.display.textContent = by_id.main_icon.width">Get icon width</button>
+	<div id="display"></div>
+</div>
+```
+
+JavaScript code in the template should prefer not to create global variables or functions.
+Variables and functions for template-internal use can be created in `ontplready` attribute of the root element, and bound to this element.
+These functions can be accessed through the `by_id` object.
+
+```
+<div id="root" ontplready="this._hide_message = () => by_id.message.style.display = 'none'">
+	<div id="message">
+		Text text text.
+	</div>
+
+	<button type="button" onclick="by_id.root._hide_message()">Hide</button>
+</div>
+```
+
+When using `querySelector()` and the such, it's preferred to scope it to template root element, or some other element from `by_id`.
+
+```
+<div id="root">
+	<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="/categories/">Categories</a></li>
+		<li><a href="/contact/">Contact Us</a></li>
+	</ul>
+	<button type="button" onclick="alert([...by_id.root.querySelectorAll('a')].length)">Show number of links</button>
 </div>
 ```
 
@@ -505,7 +533,7 @@ Example of modal dialog:
 
 Creates area where you can switch between different parts of HTML.
 
-Element marked with this class can have 1 or more child elements, each marked with `data-case="case_name"` attribute, and only one of them will be shown at a time.
+Element marked with this class can have 1 or more child elements, each marked with `data-case="case_name"` attribute, and only one of them will be shown at a time (technically only 1 DOM element will be attached to it's parent).
 Also it's possible to show none of the cases.
 Initial case is specified with `data-case="case_name"` on the switch itself, and then it's possible to switch to another case using JavaScript.
 
@@ -535,7 +563,7 @@ Initial case is specified with `data-case="case_name"` on the switch itself, and
 
 The element marked with `class="$switch-elem"` will have the following JavaScript methods:
 
-- `_set_case(case_name)` - Switch to case. If `case_name` is `null`, will change to empty element.
+- `_set_case(case_name)` - Switch to case. If `case_name` is `null`, will disable all the cases.
 - `_get_case()` - Get currently showing case.
 - `_get_cases()` - Get all cases as array of strings.
 
